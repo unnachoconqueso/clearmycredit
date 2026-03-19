@@ -1,86 +1,61 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Info</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f7f7f7;
-    padding: 20px;
-  }
+    body {
+      font-family: -apple-system, sans-serif;
+      background: #f5f7fb;
+    }
 
-  .container {
-    max-width: 500px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
+    .container {
+      max-width: 480px;
+      margin: 50px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+    }
 
-  button {
-    background: #0070f3;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 6px;
-    width: 100%;
-    font-size: 16px;
-    margin-top: 10px;
-  }
+    input, button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
 
-  input, select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-  }
-</style>
-  <title>Fill Your Info</title>  
-</head>  
-<body>  
-  
-<h2>Fill Your Information</h2>  
-  
-<input type="text" id="userName" placeholder="Your Name"><br><br>  
-<input type="text" id="userAddress" placeholder="Your Address"><br><br>  
-<input type="text" id="accountNumber" placeholder="Account Number"><br><br>  
-<input type="text" id="bankName" placeholder="Bank / Creditor Name"><br><br>  
-<input type="text" id="creditBureau" placeholder="Credit Bureau"><br><br>  
-<input type="date" id="reportDate"><br><br>  
-  
-<button onclick="generateFinalLetter()">Generate My Letter</button>  
-  
-<script>  
-function generateFinalLetter() {  
-  
-  const name = document.getElementById("userName").value;  
-  const address = document.getElementById("userAddress").value;  
-  const account = document.getElementById("accountNumber").value;  
-  const bank = document.getElementById("bankName").value;  
-  const bureau = document.getElementById("creditBureau").value;  
-  const date = document.getElementById("reportDate").value;  
-  const reason = localStorage.getItem("selectedReason");  
-  
-  const letter = `To ${bureau},  
-  
-I am writing to dispute the following information in my credit report:  
-  
-Account: ${account}  
-Creditor: ${bank}  
-Date of Last Reported Status: ${date}  
-  
-The reason for this dispute is: ${reason}  
-  
-Please investigate and remove or correct this item.  
-  
-Sincerely,  
-${name}  
-${address}`;  
-  
-  localStorage.setItem("finalLetter", letter);  
-  
-  window.location.href = "result.html";  
-}  
-</script>  
-  
-</body>  
-</html>  
+    button {
+      background: #0070f3;
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Your Information</h2>
+
+    <input id="name" placeholder="Full Name">
+    <input id="address" placeholder="Address">
+    <input id="creditor" placeholder="Bank / Company Name">
+    <input id="account" placeholder="Account Number">
+
+    <button onclick="generate()">Continue</button>
+  </div>
+
+  <script>
+    function generate() {
+      localStorage.setItem("name", document.getElementById("name").value);
+      localStorage.setItem("address", document.getElementById("address").value);
+      localStorage.setItem("creditor", document.getElementById("creditor").value);
+      localStorage.setItem("account", document.getElementById("account").value);
+
+      window.location.href = "result.html";
+    }
+  </script>
+</body>
+</html>
