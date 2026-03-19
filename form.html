@@ -46,16 +46,26 @@
 
     <button onclick="generate()">Continue</button>
   </div>
+<script>
+  function generate() {
+    const name = document.getElementById("name").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const creditor = document.getElementById("creditor").value.trim();
+    const account = document.getElementById("account").value.trim();
 
-  <script>
-    function generate() {
-      localStorage.setItem("name", document.getElementById("name").value);
-      localStorage.setItem("address", document.getElementById("address").value);
-      localStorage.setItem("creditor", document.getElementById("creditor").value);
-      localStorage.setItem("account", document.getElementById("account").value);
-
-      window.location.href = "result.html";
+    if (!name || !address || !creditor || !account) {
+      alert("Please fill out all fields");
+      return;
     }
-  </script>
+
+    localStorage.setItem("name", name);
+    localStorage.setItem("address", address);
+    localStorage.setItem("creditor", creditor);
+    localStorage.setItem("account", account);
+
+    window.location.href = "./result.html";
+  }
+</script>
+  
 </body>
 </html>
