@@ -3,72 +3,132 @@
 <head>
   <title>ClearMyCredit</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
       background: #f5f7fb;
       margin: 0;
+      padding: 20px;
     }
 
     .container {
-      max-width: 480px;
-      margin: 80px auto;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .card {
       background: white;
-      padding: 30px;
+      padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      text-align: center;
+      margin-top: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
     }
 
     h1 {
+      font-size: 28px;
       margin-bottom: 10px;
     }
 
     p {
-      color: #666;
-      margin-bottom: 20px;
+      color: #555;
     }
 
-    select, button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-size: 16px;
-    }
-
-    button {
+    .cta {
       background: #0070f3;
       color: white;
+      padding: 16px;
       border: none;
+      border-radius: 10px;
+      width: 100%;
+      font-size: 18px;
+      margin-top: 20px;
       font-weight: bold;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .steps {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .step {
+      flex: 1;
+      min-width: 180px;
+      background: #fafafa;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .footer-cta {
+      text-align: center;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>Fix Your Credit Fast</h1>
-    <p>Generate a professional dispute letter in seconds</p>
 
-    <select id="reason">
-      <option>Account not mine</option>
-      <option>Incorrect late payment</option>
-      <option>Paid debt still showing</option>
-      <option>Duplicate account</option>
-      <option>Identity theft</option>
-    </select>
+    <!-- HERO -->
+    <div class="card">
+      <h1>Fix Credit Report Errors in 60 Seconds</h1>
+      <p>Generate a legally formatted dispute letter based on FCRA.</p>
 
-    <button onclick="goToForm()">Generate My Letter</button>
+      <button class="cta" onclick="goToForm()">Generate My Letter – $9</button>
+    </div>
+
+    <!-- PROBLEM -->
+    <div class="card">
+      <h2>Credit report errors are more common than you think</h2>
+      <ul>
+        <li>Late payments reported incorrectly</li>
+        <li>Accounts that don’t belong to you</li>
+        <li>Paid debts still appearing</li>
+        <li>Duplicate accounts</li>
+      </ul>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="card">
+      <h2>How it works</h2>
+
+      <div class="steps">
+        <div class="step">
+          <strong>Step 1</strong>
+          <p>Enter your information</p>
+        </div>
+
+        <div class="step">
+          <strong>Step 2</strong>
+          <p>Select your dispute type</p>
+        </div>
+
+        <div class="step">
+          <strong>Step 3</strong>
+          <p>Download your ready-to-send letter</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINAL CTA -->
+    <div class="card footer-cta">
+      <h2>Start Now – Only $9</h2>
+      <p>Takes less than 1 minute</p>
+
+      <button class="cta" onclick="goToForm()">Generate My Letter</button>
+    </div>
+
   </div>
 
   <script>
     function goToForm() {
-      const reason = document.getElementById("reason").value;
-      localStorage.setItem("reason", reason);
       window.location.href = "form.html";
     }
   </script>
+
 </body>
 </html>
