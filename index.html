@@ -1,65 +1,74 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ClearMyCredit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f7f7f7;
-    padding: 20px;
-  }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+    }
 
-  .container {
-    max-width: 500px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
+    .container {
+      max-width: 480px;
+      margin: 80px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      text-align: center;
+    }
 
-  button {
-    background: #0070f3;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 6px;
-    width: 100%;
-    font-size: 16px;
-    margin-top: 10px;
-  }
+    h1 {
+      margin-bottom: 10px;
+    }
 
-  input, select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-  }
-</style>
-  <title>ClearMyCredit</title>  
-</head>  
-<body>  
-  
-<h1>ClearMyCredit</h1>  
-<p>Select your dispute reason:</p>  
-  
-<select id="reason">  
-  <option value="Account not mine">Account not mine</option>  
-  <option value="Incorrect late payment">Incorrect late payment</option>  
-  <option value="Paid debt still showing">Paid debt still showing</option>  
-  <option value="Duplicate account">Duplicate account</option>  
-  <option value="Identity theft">Identity theft</option>  
-</select>  
-  
-<br><br>  
-  
-<button onclick="goToForm()">Generate My Letter</button>  
-  
-<script>  
-function goToForm() {  
-  const reason = document.getElementById("reason").value;  
-  localStorage.setItem("selectedReason", reason);  
-  window.location.href = "form.html";  
-}  
-</script>  
-  
-</body>  
-</html>  
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    button {
+      background: #0070f3;
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Fix Your Credit Fast</h1>
+    <p>Generate a professional dispute letter in seconds</p>
+
+    <select id="reason">
+      <option>Account not mine</option>
+      <option>Incorrect late payment</option>
+      <option>Paid debt still showing</option>
+      <option>Duplicate account</option>
+      <option>Identity theft</option>
+    </select>
+
+    <button onclick="goToForm()">Generate My Letter</button>
+  </div>
+
+  <script>
+    function goToForm() {
+      const reason = document.getElementById("reason").value;
+      localStorage.setItem("reason", reason);
+      window.location.href = "form.html";
+    }
+  </script>
+</body>
+</html>
