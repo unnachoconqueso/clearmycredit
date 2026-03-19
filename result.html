@@ -1,61 +1,75 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Letter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f7f7f7;
-    padding: 20px;
-  }
+    body {
+      font-family: -apple-system, sans-serif;
+      background: #f5f7fb;
+    }
 
-  .container {
-    max-width: 500px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+    }
 
-  button {
-    background: #0070f3;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 6px;
-    width: 100%;
-    font-size: 16px;
-    margin-top: 10px;
-  }
+    .letter {
+      white-space: pre-line;
+      margin-top: 20px;
+    }
 
-  input, select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-  }
-</style>
-  <title>Your Letter</title>  
-</head>  
-<body>  
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      background: #0070f3;
+      color: white;
+      border: none;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
   <div class="container">
-    <h1>CleaMyCredit</h1>
-<h2>Your Dispute Letter</h2>  
-  
-<div id="letter" style="white-space: pre-wrap; border:1px solid black; padding:15px;"></div>  
-  
-<br>  
-  
-<button onclick="copyText()">Copy Letter</button>  
-  
-<script>  
-const letter = localStorage.getItem("finalLetter");  
-document.getElementById("letter").innerText = letter;  
-  
-function copyText() {  
-  navigator.clipboard.writeText(letter);  
-  alert("Letter copied!");  
-}  
-</script>  
+    <h2>Your Dispute Letter</h2>
+
+    <div class="letter" id="letter"></div>
+
+    <button onclick="alert('Payment step coming next')">Download PDF</button>
   </div>
-</body>  
-</html>  
+
+  <script>
+    const name = localStorage.getItem("name");
+    const address = localStorage.getItem("address");
+    const creditor = localStorage.getItem("creditor");
+    const account = localStorage.getItem("account");
+    const reason = localStorage.getItem("reason");
+
+    const letter = `
+${name}
+${address}
+
+Re: Account ${account}
+
+To whom it may concern,
+
+I am writing to dispute the following item on my credit report: ${reason}.
+
+This account with ${creditor} is inaccurate and should be removed or corrected immediately.
+
+Please investigate this matter and provide a response within 30 days.
+
+Sincerely,
+${name}
+`;
+
+    document.getElementById("letter").innerText = letter;
+  </script>
+</body>
+</html>
