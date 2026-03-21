@@ -1,131 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Your Info - ClearMyCredit</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f3f4f6;
-      margin: 0;
-      padding: 20px;
-      color: #1f2937;
-    }
-
-    .container {
-      max-width: 480px;
-      margin: 40px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-    }
-
-    h2 { margin-top: 0; color: #111827; margin-bottom: 20px; }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: 500;
-      font-size: 14px;
-      color: #374151;
-    }
-
-    .hint {
-      font-size: 12px;
-      color: #6b7280;
-      margin-top: 4px;
-      display: block;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-top: 6px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      box-sizing: border-box;
-      font-family: inherit;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-
-    button {
-      background: #2563eb;
-      color: white;
-      border: none;
-      font-weight: bold;
-      font-size: 16px;
-      padding: 16px;
-      width: 100%;
-      border-radius: 8px;
-      margin-top: 25px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    button:hover { background: #1d4ed8; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 1: Your Details | ClearMyCredit</title>
+    <style>
+        :root { --primary: #2563eb; --bg: #f8fafc; --text: #1e293b; }
+        body { font-family: sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 400px; margin: 20px; }
+        .step-indicator { font-size: 0.875rem; color: var(--primary); font-weight: 600; margin-bottom: 8px; }
+        h2 { margin: 0 0 24px 0; font-size: 1.5rem; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 6px; }
+        input, select {
+            width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px;
+            font-size: 1rem; box-sizing: border-box;
+        }
+        input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+        .submit-btn {
+            width: 100%; background: var(--primary); color: white; border: none;
+            padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: 700;
+            cursor: pointer; margin-top: 10px;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="container">
-    <h2>Your Information</h2>
-    
-    <form id="disputeForm">
-      
-      <label for="name">Full Name</label>
-      <input type="text" id="name" required placeholder="John Doe">
+    <div class="card">
+        <div class="step-indicator">Step 1 of 2</div>
+        <h2>Tell us about your credit issue</h2>
+        
+        <form id="disputeForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+                <label for="issue">Primary Credit Issue</label>
+                <select id="issue" name="issue" required>
+                    <option value="" disabled selected>Select an issue...</option>
+                    <option value="Late payment">Late payment</option>
+                    <option value="Collection">Collection</option>
+                    <option value="Identity error">Identity error</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Continue</button>
+        </form>
+    </div>
 
-      <label for="address">Current Physical Address</label>
-      <input type="text" id="address" required placeholder="123 Main St, Apt 4B, City, ST 12345">
+    <script>
+        document.getElementById('disputeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Captura de datos
+            const userData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                issue: document.getElementById('issue').value
+            };
 
-      <label for="email">Email Address</label>
-      <input type="email" id="email" required placeholder="john@example.com">
+            // Guardado en localStorage
+            localStorage.setItem('clearmycredit_user_data', JSON.stringify(userData));
 
-      <label for="accountNumber">Account Number (as seen on report)</label>
-      <input type="text" id="accountNumber" required placeholder="e.g. 123456XXXX">
-      <span class="hint">Enter the account number exactly as it appears on your credit report.</span>
-
-      <label for="issueType">Credit Problem Type</label>
-      <select id="issueType" required>
-        <option value="" disabled selected>Select the main issue...</option>
-        <option value="Late payment reported incorrectly">Late payment reported incorrectly</option>
-        <option value="Account doesn't belong to me">Account doesn't belong to me</option>
-        <option value="Paid debt still appearing">Paid debt still appearing</option>
-        <option value="Duplicate account">Duplicate account</option>
-        <option value="Other">Other</option>
-      </select>
-
-      <label for="description">Description (Optional)</label>
-      <textarea id="description" rows="3" placeholder="Briefly describe the error..."></textarea>
-
-      <button type="submit">Continue</button>
-    </form>
-  </div>
-
-  <script>
-    document.getElementById('disputeForm').addEventListener('submit', function(event) {
-      event.preventDefault(); 
-
-      const userData = {
-        name: document.getElementById('name').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        accountNumber: document.getElementById('accountNumber').value.trim(),
-        issueType: document.getElementById('issueType').value,
-        description: document.getElementById('description').value.trim()
-      };
-
-      localStorage.setItem('clearmycredit_user_data', JSON.stringify(userData));
-      window.location.href = 'result.html';
-    });
-  </script>
+            // Redirección
+            window.location.href = "result.html";
+        });
+    </script>
 </body>
 </html>
