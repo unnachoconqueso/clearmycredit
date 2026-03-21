@@ -1,137 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClearMyCredit | Your Letter</title>
-    <style>
-        :root { --primary: #2563eb; --primary-hover: #1d4ed8; --bg: #f8fafc; --surface: #ffffff; --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text-main); }
-        
-        /* UI Elements */
-        .ui-container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
-        .success-card { background: var(--surface); padding: 40px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); text-align: center; margin-bottom: 40px; }
-        .success-card h1 { font-size: 2rem; margin-bottom: 16px; letter-spacing: -0.02em; }
-        
-        .btn { display: inline-block; background: var(--primary); color: white; padding: 16px 32px; border-radius: 10px; font-size: 1.125rem; font-weight: 700; border: none; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-        .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
-
-        /* Paywall & Letter Protection */
-        .letter-preview-container { position: relative; max-width: 8.5in; margin: 0 auto 60px auto; overflow: hidden; border-radius: 8px; border: 1px solid var(--border); }
-        
-        .paywall-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(2px);
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            text-align: center;
-        }
-
-        .paywall-content {
-            background: white;
-            padding: 32px;
-            border-radius: 16px;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-            max-width: 400px;
-            border: 1px solid var(--border);
-        }
-
-        .is-locked {
-            filter: blur(10px);
-            user-select: none;
-            pointer-events: none;
-            opacity: 0.6;
-        }
-
-        /* Letter Styling (The actual document) */
-        .letter-preview-wrapper { background: white; padding: 1in; }
-        #letter-content { font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.5; color: black; text-align: left; }
-        #letter-content p { margin-bottom: 12pt; }
-        .letter-header { margin-bottom: 30pt; }
-        .signature-block { margin-top: 40pt; }
-        .legal-footer { font-size: 10pt; color: #666; border-top: 1px solid #ccc; padding-top: 10pt; margin-top: 50pt; text-align: center; }
-
-        /* Print Specific Styles */
-        @media print {
-            body { background: white; }
-            .ui-container, .paywall-overlay { display: none !important; }
-            .is-locked { filter: none !important; opacity: 1 !important; user-select: auto !important; pointer-events: auto !important; }
-            .letter-preview-container { border: none; margin: 0; padding: 0; max-width: 100%; }
-            .letter-preview-wrapper { padding: 0; }
-            @page { margin: 1in; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="ui-container">
-        <div class="success-card">
-            <h1>✅ Your dispute letter is ready</h1>
-            <p style="color: var(--text-muted);">We have formatted your letter based on FCRA standards. Complete your purchase to download the print-ready version.</p>
-        </div>
-    </div>
-
-    <div class="letter-preview-container">
-        <div id="paywall" class="paywall-overlay">
-            <div class="paywall-content">
-                <div style="font-size: 3rem; margin-bottom: 16px;">📄</div>
-                <h2 style="margin-bottom: 12px;">Unlock your document</h2>
-                <p style="color: var(--text-muted); margin-bottom: 24px;">Get your professional dispute letter and instructions for only $9.</p>
-                <button onclick="unlockLetter()" class="btn">Pay $9 to Unlock</button>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 4px;">
-                    <svg style="width:12px; height:12px" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
-                    Secure 256-bit SSL Payment
-                </p>
-            </div>
-        </div>
-
-        <div id="letter-wrapper" class="letter-preview-wrapper is-locked">
-            <div id="letter-content">
-                <div class="letter-header">
-                    <p><span id="l-name"></span><br><span id="l-address"></span></p>
-                    <p>Date: <span id="l-date"></span></p>
-                    <p><strong>To:</strong> Credit Reporting Agency<br>(Equifax / Experian / TransUnion)</p>
-                </div>
-
-                <p><strong>Subject: Formal Dispute under the Fair Credit Reporting Act (15 U.S.C. § 1681i)</strong></p>
-                <p>To Whom It May Concern,</p>
-                <p>I am writing to formally dispute inaccurate information currently appearing on my credit report. Under the Fair Credit Reporting Act (FCRA), you are required to conduct a reasonable investigation into this matter within 30 days.</p>
-                
-                <p>The disputed item is associated with the following creditor:</p>
-                <p style="padding-left: 20px;">
-                    <strong>Creditor Name:</strong> <span id="l-cred"></span><br>
-                    <strong>Account Number:</strong> <span id="l-acc"></span>
-                </p>
-
-                <p><strong>Reason for Dispute:</strong><br><span id="l-issue"></span></p>
-
-                <p>I request that you investigate this item, verify its accuracy with the furnisher, and either correct or completely remove this unverified or inaccurate information from my credit file.</p>
-                <p>Enclosed, please find copies of my identification documents to verify my identity.</p>
-                <p>Thank you for your prompt attention to this matter.</p>
-                
-                <div class="signature-block">
-                    <p>Sincerely,</p>
-                    <br><br>
-                    <p>___________________________</p>
-                    <p><strong id="l-sign-name"></strong></p>
-                </div>
-
-                <div class="legal-footer">
-                    Notice: This letter is a template utilized for self-dispute. No specific credit results are guaranteed.
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Populate the letter with data
+<script>
+        // Llenar la carta con los datos guardados
         window.addEventListener('DOMContentLoaded', () => {
             const name = localStorage.getItem('cmc_name') || '[Your Name]';
             const address = localStorage.getItem('cmc_address') || '[Your Address]';
@@ -150,20 +18,21 @@
             document.getElementById('l-acc').textContent = account;
             document.getElementById('l-issue').textContent = issue;
             document.getElementById('l-sign-name').textContent = name;
-        });
 
-        // Simple function to simulate payment/unlock
-        function unlockLetter() {
-            // Aquí integrarías Stripe o PayPal. Por ahora, simulamos el éxito.
-            if(confirm("Simulating secure payment... Click OK to confirm $9 charge.")) {
+            // --- NUEVA LÓGICA DE STRIPE ---
+            // Verificar si el usuario acaba de pagar (revisando la URL)
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('status') === 'success') {
+                // El pago fue exitoso, quitamos el candado
                 document.getElementById('paywall').style.display = 'none';
                 document.getElementById('letter-wrapper').classList.remove('is-locked');
                 
-                // Actualizar la UI superior
+                // Actualizar el mensaje de arriba
                 document.querySelector('.success-card h1').textContent = "✅ Payment Successful!";
                 document.querySelector('.success-card p').innerHTML = "Your letter is unlocked. <strong>Press Ctrl+P (or Cmd+P) to save as PDF.</strong>";
                 
-                // Añadir botón de impresión real
+                // Mostrar el botón real para imprimir/descargar PDF
                 const printBtn = document.createElement('button');
                 printBtn.className = 'btn';
                 printBtn.style.marginTop = '20px';
@@ -171,15 +40,18 @@
                 printBtn.onclick = () => window.print();
                 document.querySelector('.success-card').appendChild(printBtn);
             }
+        });
+
+        // Función que redirige al usuario a tu checkout de Stripe
+        function unlockLetter() {
+            window.location.href = "https://buy.stripe.com/8x28wRgI90gveqhfjQbwk01";
         }
 
-        // Prevent printing if locked
+        // Bloquear impresión si no han pagado
         window.onbeforeprint = () => {
             if (document.getElementById('letter-wrapper').classList.contains('is-locked')) {
-                alert("Please unlock the document to enable printing.");
+                alert("Please complete your purchase to enable printing.");
                 return false;
             }
         };
     </script>
-</body>
-</html>
