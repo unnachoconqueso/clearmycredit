@@ -82,6 +82,9 @@
       <label for="name">Full Name</label>
       <input type="text" id="name" required placeholder="John Doe">
 
+      <label for="address">Current Physical Address</label>
+      <input type="text" id="address" required placeholder="123 Main St, Apt 4B, City, ST 12345">
+
       <label for="email">Email Address</label>
       <input type="email" id="email" required placeholder="john@example.com">
 
@@ -96,7 +99,7 @@
       </select>
 
       <label for="description">Description (Optional)</label>
-      <textarea id="description" rows="3" placeholder="Briefly describe the error..."></textarea>
+      <textarea id="description" rows="3" placeholder="Briefly describe the error (e.g., Account number ending in 1234)..."></textarea>
 
       <button type="submit">Continue</button>
     </form>
@@ -104,21 +107,18 @@
 
   <script>
     document.getElementById('disputeForm').addEventListener('submit', function(event) {
-      // 1. Prevenir la recarga de la página
       event.preventDefault(); 
 
-      // 2. Capturar todos los inputs relevantes
+      // Capturamos la nueva variable: address
       const userData = {
         name: document.getElementById('name').value.trim(),
+        address: document.getElementById('address').value.trim(),
         email: document.getElementById('email').value.trim(),
         issueType: document.getElementById('issueType').value,
         description: document.getElementById('description').value.trim()
       };
 
-      // 3. Guardar los datos en localStorage como un string JSON
       localStorage.setItem('clearmycredit_user_data', JSON.stringify(userData));
-
-      // 4. Redirección correcta a la página de resultados
       window.location.href = 'result.html';
     });
   </script>
