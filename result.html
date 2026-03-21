@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+    /* Estilos de la Interfaz (Pantalla) */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: #f3f4f6;
@@ -23,12 +24,8 @@
       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
     }
 
-    h1, h2 {
-      color: #111827;
-      margin-top: 0;
-    }
+    h1, h2 { color: #111827; margin-top: 0; }
 
-    /* Estado de Alerta Personalizada */
     .alert {
       background: #eff6ff;
       border-left: 4px solid #2563eb;
@@ -37,151 +34,169 @@
       margin-bottom: 30px;
       color: #1e3a8a;
     }
+    
+    .alert p { margin: 0 0 10px 0; }
+    .alert p:last-child { margin: 0; }
 
-    .alert p {
-      margin: 0 0 10px 0;
-    }
-    .alert p:last-child {
-      margin: 0;
-    }
-
-    /* Steps UI */
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 20px;
-      margin-bottom: 30px;
-    }
-
+    .steps { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; margin-bottom: 30px; }
+    
     .step {
       background: #f9fafb;
       border: 1px solid #e5e7eb;
       padding: 18px;
       border-radius: 8px;
     }
-
+    
     .step strong {
-      color: #2563eb;
-      display: block;
-      margin-bottom: 5px;
-      font-size: 1.1em;
+      color: #2563eb; display: block; margin-bottom: 5px; font-size: 1.1em;
     }
 
-    /* Botones */
     .btn {
-      display: block;
-      width: 100%;
-      text-align: center;
-      background: #2563eb;
-      color: white;
-      padding: 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      box-sizing: border-box;
-      transition: background 0.2s;
+      display: block; width: 100%; text-align: center; background: #2563eb; color: white;
+      padding: 16px; border-radius: 8px; text-decoration: none; font-weight: bold;
+      border: none; cursor: pointer; font-size: 16px; transition: background 0.2s;
+    }
+    
+    .btn:hover { background: #1d4ed8; }
+
+    /* Contenedor de la carta (Oculto en pantalla) */
+    #letterTemplate {
+      display: none; 
     }
 
-    .btn:hover {
-      background: #1d4ed8;
-    }
+    /* ESTILOS DE IMPRESIÓN (PDF) */
+    @media print {
+      /* Ocultar toda la interfaz web */
+      .ui-elements, #errorState { display: none !important; }
+      body { background: white; padding: 0; color: black; font-size: 12pt; }
+      
+      /* Mostrar y formatear solo la carta */
+      #letterTemplate {
+        display: block !important;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: "Times New Roman", Times, serif; /* Formato legal clásico */
+        line-height: 1.6;
+      }
 
-    .btn-outline {
-      background: white;
-      color: #2563eb;
-      border: 2px solid #2563eb;
-    }
-
-    .btn-outline:hover {
-      background: #eff6ff;
-    }
-
-    /* Control de Vistas */
-    #errorState {
-      display: none;
-      text-align: center;
-      padding: 40px 0;
-    }
-
-    #successState {
-      display: none;
+      .letter-header { margin-bottom: 30px; }
+      .letter-body { margin-bottom: 40px; }
+      .letter-footer { margin-top: 50px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
+  <div class="container ui-elements">
     
-    <div id="errorState">
+    <div id="errorState" style="display: none; text-align: center; padding: 40px 0;">
       <h2>Oops! Data missing.</h2>
       <p style="color: #6b7280; margin-bottom: 25px;">No data found. Please complete the form first to generate your plan.</p>
-      <a href="form.html" class="btn btn-outline">Go back to form</a>
+      <button class="btn" style="background: white; color: #2563eb; border: 2px solid #2563eb;" onclick="window.location.href='form.html'">Go back to form</button>
     </div>
 
-    <div id="successState">
+    <div id="successState" style="display: none;">
       <h1>Your Dispute Plan</h1>
       
       <div class="alert">
         <p>Hi <strong id="display-name"></strong>,</p>
-        <p>Based on your situation regarding <strong>"<span id="display-issue"></span>"</strong>, you may have a strong case to dispute this item under the FCRA.</p>
+        <p>Based on your situation regarding <strong>"<span id="display-issue"></span>"</strong>, we've generated a legally formatted FCRA dispute letter for you.</p>
       </div>
 
       <h2>Next Steps</h2>
       <div class="steps">
         <div class="step">
-          <strong>Step 1: Review your credit report</strong>
-          Make sure all identifying information matches the error you are disputing.
+          <strong>Step 1: Download & Print</strong>
+          Click the button below to save your letter as a PDF or print it directly.
         </div>
         <div class="step">
-          <strong>Step 2: Submit dispute letters</strong>
-          Mail your legally formatted letters to Equifax, Experian, and TransUnion via certified mail.
+          <strong>Step 2: Sign & Attach ID</strong>
+          Sign the letter and include a copy of your ID and a utility bill to verify your identity.
         </div>
         <div class="step">
-          <strong>Step 3: Follow up in 30 days</strong>
-          By law, credit bureaus have 30 days to investigate and respond to your dispute.
+          <strong>Step 3: Mail it Certified</strong>
+          Send the letter to the credit bureaus via Certified Mail with Return Receipt.
         </div>
       </div>
 
-      <button class="btn" onclick="downloadPlan()">Download my dispute plan</button>
+      <button class="btn" onclick="downloadPDF()">Download Letter (PDF)</button>
+    </div>
+  </div>
+
+  <div id="letterTemplate">
+    <div class="letter-header">
+      <p><strong id="letter-name">[Name]</strong></p>
+      <p id="letter-email">[Email]</p>
+      <p>Date: <span id="letter-date"></span></p>
     </div>
 
+    <div class="letter-body">
+      <p><strong>To: Credit Reporting Agency</strong><br>(Equifax, Experian, or TransUnion)</p>
+      
+      <p><strong>Subject: Dispute of Inaccurate Information on Credit Report</strong></p>
+      
+      <p>To Whom It May Concern,</p>
+      
+      <p>I am writing to dispute the following information in my file. I have identified an error regarding my account and request an investigation under the Fair Credit Reporting Act (FCRA), Section 611 (15 U.S.C. § 1681i).</p>
+      
+      <p><strong>Disputed Issue:</strong> <span id="letter-issue">[Issue Type]</span></p>
+      
+      <p><strong>Additional Details:</strong> <span id="letter-desc">I am requesting that this item be investigated and removed or corrected immediately.</span></p>
+
+      <p>By law, you have 30 days to investigate this matter. Please delete or correct this information and supply a corrected credit profile to all persons who have received this inaccurate report in the past. Additionally, please send me a corrected copy of my credit report.</p>
+    </div>
+
+    <div class="letter-footer">
+      <p>Sincerely,</p>
+      <br><br>
+      <p>___________________________</p>
+      <p><strong id="letter-sign-name">[Name]</strong></p>
+    </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // a. Leer datos de localStorage
       const rawData = localStorage.getItem('clearmycredit_user_data');
       
-      const errorState = document.getElementById('errorState');
-      const successState = document.getElementById('successState');
-
-      // b. Edge Case: Validar si existe la data
       if (!rawData) {
-        errorState.style.display = 'block';
-      } else {
-        try {
-          const data = JSON.parse(rawData);
-          
-          // c. Mostrar contenido personalizado
-          document.getElementById('display-name').textContent = data.name || 'User';
-          document.getElementById('display-issue').textContent = data.issueType || 'this credit issue';
+        document.getElementById('errorState').style.display = 'block';
+        return;
+      } 
+      
+      try {
+        const data = JSON.parse(rawData);
+        
+        // 1. Llenar la Interfaz de Usuario
+        document.getElementById('display-name').textContent = data.name || 'User';
+        document.getElementById('display-issue').textContent = data.issueType || 'this credit issue';
 
-          // Mostrar la vista de éxito
-          successState.style.display = 'block';
-        } catch (e) {
-          console.error("Error parsing user data from localStorage", e);
-          errorState.style.display = 'block';
+        // 2. Llenar la Carta de Disputa (Oculta)
+        document.getElementById('letter-name').textContent = data.name;
+        document.getElementById('letter-sign-name').textContent = data.name;
+        document.getElementById('letter-email').textContent = data.email;
+        document.getElementById('letter-issue').textContent = data.issueType;
+        
+        // Fecha actual
+        const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('letter-date').textContent = today;
+
+        if (data.description) {
+          document.getElementById('letter-desc').textContent = data.description + " Please investigate and remove or correct this item immediately.";
         }
+
+        // Mostrar la vista
+        document.getElementById('successState').style.display = 'block';
+
+      } catch (e) {
+        console.error("Error parsing user data", e);
+        document.getElementById('errorState').style.display = 'block';
       }
     });
 
-    function downloadPlan() {
-      // Placeholder para el feature futuro de descarga
-      alert('Downloading your personalized dispute plan... (Coming soon)');
+    // Función que dispara el cuadro de diálogo de impresión
+    function downloadPDF() {
+      window.print();
     }
   </script>
 </body>
