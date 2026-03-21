@@ -3,157 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClearMyCredit | Form</title>
+    <title>ClearMyCredit | Dispute Details</title>
     <style>
-        :root { --primary: #2563eb; --bg: #f8fafc; --text: #1e293b; --border: #e2e8f0; }
-        body { font-family: -apple-system, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 450px; }
-        .step { font-size: 0.8rem; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
-        h2 { margin: 0 0 24px 0; font-size: 1.5rem; }
-        .group { margin-bottom: 18px; }
-        label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 6px; color: #475569; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; box-sizing: border-box; font-family: inherit; }
-        .notice { background: #fff7ed; border: 1px solid #ffedd5; padding: 12px; border-radius: 8px; margin: 20px 0; font-size: 0.75rem; color: #9a3412; }
-        .btn { width: 100%; background: var(--primary); color: white; border: none; padding: 16px; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
-        .btn:hover { background: #1d4ed8; }
+        :root { --primary: #2563eb; --primary-hover: #1d4ed8; --bg: #f8fafc; --surface: #ffffff; --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0; --error: #ef4444; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text-main); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .card { background: var(--surface); padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01); width: 100%; max-width: 500px; border: 1px solid var(--border); }
+        .step { font-size: 0.875rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; display: block; }
+        h2 { margin: 0 0 24px 0; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; }
+        .group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
+        input, select, textarea { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; color: var(--text-main); background-color: var(--bg); transition: border-color 0.2s, box-shadow 0.2s; outline: none; font-family: inherit; }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); background-color: var(--surface); }
+        .hidden { display: none; }
+        .notice { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 16px; border-radius: 8px; margin: 24px 0; font-size: 0.875rem; color: #166534; display: flex; gap: 12px; align-items: flex-start; }
+        .notice svg { flex-shrink: 0; width: 20px; height: 20px; color: #15803d; }
+        .btn { width: 100%; background: var(--primary); color: white; border: none; padding: 16px; border-radius: 10px; font-size: 1.125rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .btn:hover { background: var(--primary-hover); }
+        .back-link { display: inline-block; margin-bottom: 20px; color: var(--text-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; }
+        .back-link:hover { color: var(--text-main); }
     </style>
 </head>
 <body>
-
     <div class="card">
-        <div class="step" id="step-text">Step 1 of 2</div>
-        <h2 id="form-title">Dispute Details</h2>
+        <a href="index.html" class="back-link">&larr; Back</a>
+        <span class="step">Step 1 of 2</span>
+        <h2>Dispute Details</h2>
         
         <form id="disputeForm">
             <div class="group">
-                <label id="lbl-name">Full Name</label>
-                <input type="text" id="name" required>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="As it appears on your ID" required>
             </div>
 
             <div class="group">
-                <label id="lbl-address">Mailing Address</label>
-                <input type="text" id="address" required>
+                <label for="address">Mailing Address</label>
+                <input type="text" id="address" placeholder="Street, City, State, ZIP" required>
             </div>
 
             <div class="group">
-                <label id="lbl-email">Email Address</label>
-                <input type="email" id="email" required>
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="you@example.com" required>
             </div>
 
             <div class="group">
-                <label id="lbl-creditor">Bank / Company Name</label>
-                <input type="text" id="creditor" required>
+                <label for="creditor">Bank / Company Name</label>
+                <input type="text" id="creditor" placeholder="e.g., Chase, Wells Fargo" required>
             </div>
 
             <div class="group">
-                <label id="lbl-account">Account Number</label>
-                <input type="text" id="account" required>
+                <label for="account">Account Number</label>
+                <input type="text" id="account" placeholder="Partial or full account number" required>
             </div>
 
             <div class="group">
-                <label id="lbl-issue">Type of Error</label>
+                <label for="issue">Dispute Reason</label>
                 <select id="issue" required>
-                    <option value="" disabled selected id="opt-placeholder">Select issue...</option>
-                    <option value="Late payment reported incorrectly" id="opt-1">Late payment reported incorrectly</option>
-                    <option value="Account doesn't belong to me" id="opt-2">Account doesn't belong to me</option>
-                    <option value="Paid debt still appearing" id="opt-3">Paid debt still appearing</option>
-                    <option value="Other" id="opt-4">Other</option>
+                    <option value="" disabled selected>Select the issue...</option>
+                    <option value="Late payment reported incorrectly">Late payment reported incorrectly</option>
+                    <option value="Account doesn't belong to me">Account doesn't belong to me</option>
+                    <option value="Paid debt still appearing">Paid debt still appearing</option>
+                    <option value="Duplicate account">Duplicate account</option>
+                    <option value="Other">Other (Please specify)</option>
                 </select>
             </div>
 
-            <div class="notice" id="legal-notice">
-                <strong>Notice:</strong> You are purchasing a dispute letter template, not a guarantee of credit improvement.
+            <div class="group hidden" id="other-issue-group">
+                <label for="other-issue">Specify the exact issue</label>
+                <textarea id="other-issue" rows="3" placeholder="Explain the inaccuracy clearly..."></textarea>
             </div>
 
-            <button type="submit" class="btn" id="btn-text">Generate Letter – $9</button>
+            <div class="notice">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div><strong>Notice:</strong> You are purchasing a professional dispute letter template for $9.</div>
+            </div>
+
+            <button type="submit" class="btn">Proceed to Payment – $9</button>
         </form>
     </div>
 
     <script>
-        // Diccionario de Traducciones
-        const translations = {
-            en: {
-                step: "Step 1 of 2",
-                title: "Dispute Details",
-                name: "Full Name",
-                namePh: "As it appears on ID",
-                address: "Mailing Address",
-                addressPh: "Street, City, State, ZIP",
-                email: "Email Address",
-                creditor: "Bank / Company Name",
-                creditorPh: "e.g., Chase, Wells Fargo",
-                account: "Account Number",
-                issue: "Type of Error",
-                optPh: "Select issue...",
-                opt1: "Late payment reported incorrectly",
-                opt2: "Account doesn't belong to me",
-                opt3: "Paid debt still appearing",
-                opt4: "Other",
-                notice: "<strong>Notice:</strong> You are purchasing a dispute letter template, not a guarantee of credit improvement.",
-                btn: "Generate Letter – $9"
-            },
-            es: {
-                step: "Paso 1 de 2",
-                title: "Detalles de la disputa",
-                name: "Nombre Completo",
-                namePh: "Como aparece en tu ID",
-                address: "Dirección de Envío",
-                addressPh: "Calle, Ciudad, Estado, ZIP",
-                email: "Correo Electrónico",
-                creditor: "Banco o Acreedor",
-                creditorPh: "Ej: Chase, Wells Fargo",
-                account: "Número de Cuenta",
-                issue: "Tipo de Error",
-                optPh: "Selecciona el problema...",
-                opt1: "Pago atrasado incorrecto",
-                opt2: "Cuenta no me pertenece",
-                opt3: "Deuda pagada aún aparece",
-                opt4: "Otro",
-                notice: "<strong>Aviso:</strong> Estás adquiriendo una plantilla de carta de disputa, no una garantía de mejora crediticia.",
-                btn: "Generar Carta – $9"
+        const issueSelect = document.getElementById('issue');
+        const otherIssueGroup = document.getElementById('other-issue-group');
+        const otherIssueInput = document.getElementById('other-issue');
+
+        issueSelect.addEventListener('change', function() {
+            if (this.value === 'Other') {
+                otherIssueGroup.classList.remove('hidden');
+                otherIssueInput.setAttribute('required', 'true');
+            } else {
+                otherIssueGroup.classList.add('hidden');
+                otherIssueInput.removeAttribute('required');
+                otherIssueInput.value = '';
             }
-        };
-
-        function applyLanguage() {
-            const lang = localStorage.getItem('lang') || 'en';
-            const t = translations[lang];
-
-            // Textos estáticos
-            document.getElementById('step-text').textContent = t.step;
-            document.getElementById('form-title').textContent = t.title;
-            document.getElementById('lbl-name').textContent = t.name;
-            document.getElementById('lbl-address').textContent = t.address;
-            document.getElementById('lbl-email').textContent = t.email;
-            document.getElementById('lbl-creditor').textContent = t.creditor;
-            document.getElementById('lbl-account').textContent = t.account;
-            document.getElementById('lbl-issue').textContent = t.issue;
-            document.getElementById('legal-notice').innerHTML = t.notice;
-            document.getElementById('btn-text').textContent = t.btn;
-
-            // Placeholders
-            document.getElementById('name').placeholder = t.namePh;
-            document.getElementById('address').placeholder = t.addressPh;
-            document.getElementById('creditor').placeholder = t.creditorPh;
-
-            // Opciones del Select
-            document.getElementById('opt-placeholder').textContent = t.optPh;
-            document.getElementById('opt-1').textContent = t.opt1;
-            document.getElementById('opt-2').textContent = t.opt2;
-            document.getElementById('opt-3').textContent = t.opt3;
-            document.getElementById('opt-4').textContent = t.opt4;
-        }
-
-        // Ejecutar traducción al cargar
-        applyLanguage();
+        });
 
         document.getElementById('disputeForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            localStorage.setItem("name", document.getElementById('name').value);
-            localStorage.setItem("address", document.getElementById('address').value);
-            localStorage.setItem("email", document.getElementById('email').value);
-            localStorage.setItem("creditor", document.getElementById('creditor').value);
-            localStorage.setItem("account", document.getElementById('account').value);
-            localStorage.setItem("issue", document.getElementById('issue').value);
+            
+            const selectedIssue = issueSelect.value;
+            const finalIssue = selectedIssue === 'Other' ? otherIssueInput.value : selectedIssue;
+
+            localStorage.setItem("cmc_name", document.getElementById('name').value);
+            localStorage.setItem("cmc_address", document.getElementById('address').value);
+            localStorage.setItem("cmc_email", document.getElementById('email').value);
+            localStorage.setItem("cmc_creditor", document.getElementById('creditor').value);
+            localStorage.setItem("cmc_account", document.getElementById('account').value);
+            localStorage.setItem("cmc_issue", finalIssue);
+            
+            // In a real app, this would route to a payment processor (Stripe)
+            // For this micro-SaaS flow, we proceed directly to the result template
             window.location.href = "result.html";
         });
     </script>
