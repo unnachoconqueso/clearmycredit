@@ -1,129 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Your Action Plan - ClearMyCredit</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Results | ClearMyCredit</title>
+    <style>
+        :root { --primary: #2563eb; --bg: #f8fafc; --text: #1e293b; }
+        body { font-family: sans-serif; background-color: var(--bg); margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 40px auto; }
+        .card { background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        
+        /* Dynamic Header */
+        .header-badge { display: inline-block; background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 99px; font-size: 0.875rem; font-weight: 700; margin-bottom: 12px; }
+        h1 { margin: 0 0 16px 0; font-size: 1.75rem; }
+        
+        /* Diagnosis */
+        .diagnosis-box { background: #f1f5f9; padding: 20px; border-radius: 12px; margin-bottom: 24px; border-left: 4px solid var(--primary); }
+        
+        /* Steps */
+        .steps-list { padding: 0; list-style: none; margin-bottom: 32px; }
+        .step-item { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start; }
+        .step-num { background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; }
+        
+        .cta-btn {
+            display: block; width: 100%; background: var(--primary); color: white; text-align: center;
+            padding: 16px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 1.125rem;
+        }
 
-  <style>
-    /* Estilos Interfaz Web */
-    body { font-family: -apple-system, sans-serif; background: #f3f4f6; margin: 0; padding: 20px; }
-    .container { max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    h1 { color: #111827; }
-    .alert { background: #eff6ff; border-left: 4px solid #2563eb; padding: 20px; margin-bottom: 30px; color: #1e3a8a; }
-    .steps { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
-    .step { background: #f9fafb; border: 1px solid #e5e7eb; padding: 18px; border-radius: 8px; }
-    .step strong { color: #2563eb; display: block; margin-bottom: 5px; }
-    .btn { display: block; width: 100%; text-align: center; background: #2563eb; color: white; padding: 16px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; text-decoration: none; box-sizing: border-box; }
-    
-    #letterTemplate { display: none; }
-
-    /* Estilos de Impresión */
-    @media print {
-      .ui-elements, #errorState { display: none !important; }
-      body { background: white; padding: 0; }
-      #letterTemplate {
-        display: block !important;
-        font-family: "Times New Roman", serif;
-        line-height: 1.6;
-      }
-      .letter-header { margin-bottom: 30px; }
-      .letter-footer { margin-top: 50px; }
-    }
-  </style>
+        /* Error state */
+        #error-view { display: none; text-align: center; }
+    </style>
 </head>
-
 <body>
-  <div class="container ui-elements">
-    
-    <div id="errorState" style="display: none; text-align: center;">
-      <h2>No data found</h2>
-      <a href="form.html" class="btn" style="background: white; color: #2563eb; border: 2px solid #2563eb;">Return to form</a>
+    <div class="container">
+        <div id="results-view" class="card">
+            <div class="header-badge">Analysis Complete</div>
+            <h1 id="welcome-msg">Good news, User</h1>
+            
+            <div class="diagnosis-box">
+                <p id="dynamic-diagnosis" style="margin:0; font-weight: 500;"></p>
+            </div>
+
+            <h3>Your Next Steps:</h3>
+            <ul class="steps-list">
+                <li class="step-item"><span class="step-num">1</span> <div><strong>Review report:</strong> Get a copy of your credit report from the major bureaus.</div></li>
+                <li class="step-item"><span class="step-num">2</span> <div><strong>Identify:</strong> Pinpoint the exact account number and date of the error.</div></li>
+                <li class="step-item"><span class="step-num">3</span> <div><strong>Submit:</strong> Use our template to mail your dispute to the bureaus.</div></li>
+                <li class="step-item"><span class="step-num">4</span> <div><strong>Follow up:</strong> They have 30 days by law to respond to your request.</div></li>
+            </ul>
+
+            <a href="#" class="cta-btn">Get My Dispute Letter</a>
+        </div>
+
+        <div id="error-view" class="card">
+            <h2>No data found</h2>
+            <p>Please complete the form to see your personalized plan.</p>
+            <a href="form.html" class="cta-btn">Start Again</a>
+        </div>
     </div>
 
-    <div id="successState" style="display: none;">
-      <h1>Your Dispute Plan</h1>
-      
-      <div class="alert">
-        <p>Hi <strong id="display-name"></strong>,</p>
-        <p>Your dispute letter for account <strong>#<span id="display-account"></span></strong> is ready.</p>
-      </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rawData = localStorage.getItem('clearmycredit_user_data');
+            
+            if (!rawData) {
+                document.getElementById('results-view').style.display = 'none';
+                document.getElementById('error-view').style.display = 'block';
+                return;
+            }
 
-      <h2>Next Steps</h2>
-      <div class="steps">
-        <div class="step"><strong>Step 1: Download & Print</strong>Save as PDF and print your letter.</div>
-        <div class="step"><strong>Step 2: Sign & Attach ID</strong>Include a copy of your ID and address proof.</div>
-        <div class="step"><strong>Step 3: Mail it Certified</strong>Send to the bureau via Certified Mail.</div>
-      </div>
+            const data = JSON.parse(rawData);
+            
+            // Personalización de nombre
+            document.getElementById('welcome-msg').textContent = `Good news, ${data.name.split(' ')[0]}`;
 
-      <button class="btn" onclick="window.print()">Download Letter (PDF)</button>
-    </div>
-  </div>
+            // Lógica de diagnóstico dinámico
+            const diagnosisMap = {
+                'Late payment': 'Late payments can often be disputed if they were reported incorrectly or if you were less than 30 days late.',
+                'Collection': 'Collections can sometimes be removed from your report if the debt collector fails to validate the original debt.',
+                'Identity error': 'Identity errors are high-priority. You can legally demand their immediate removal under the FCRA.',
+                'Other': 'Most credit errors are eligible for a formal dispute process to improve your credit score.'
+            };
 
-  <div id="letterTemplate">
-    <div class="letter-header">
-      <p><strong id="letter-name"></strong></p>
-      <p id="letter-address"></p>
-      <p id="letter-email"></p>
-      <br>
-      <p>Date: <span id="letter-date"></span></p>
-    </div>
-
-    <div class="letter-body">
-      <p><strong>To: Credit Reporting Agency</strong></p>
-      <p><strong>Subject: Formal Dispute of Inaccurate Information - Account #<span id="letter-account"></span></strong></p>
-      
-      <p>To Whom It May Concern,</p>
-      
-      <p>Under the Fair Credit Reporting Act (FCRA), I am formally disputing the following information in my credit file:</p>
-      
-      <p>
-        <strong>Account Number:</strong> <span id="letter-account-body"></span><br>
-        <strong>Type of Error:</strong> <span id="letter-issue"></span>
-      </p>
-      
-      <p><strong>Explanation:</strong> <span id="letter-desc">I am requesting an investigation and immediate correction or removal of this item.</span></p>
-
-      <p>Please provide me with a written notification of the results of your investigation within 30 days. Enclosed are documents to verify my identity.</p>
-    </div>
-
-    <div class="letter-footer">
-      <p>Sincerely,</p>
-      <br><br>
-      <p>___________________________</p>
-      <p><strong id="letter-sign-name"></strong></p>
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const data = JSON.parse(localStorage.getItem('clearmycredit_user_data'));
-      
-      if (!data) {
-        document.getElementById('errorState').style.display = 'block';
-        return;
-      }
-
-      // UI
-      document.getElementById('display-name').textContent = data.name;
-      document.getElementById('display-account').textContent = data.accountNumber;
-
-      // Letter
-      document.getElementById('letter-name').textContent = data.name;
-      document.getElementById('letter-sign-name').textContent = data.name;
-      document.getElementById('letter-address').textContent = data.address;
-      document.getElementById('letter-email').textContent = data.email;
-      document.getElementById('letter-account').textContent = data.accountNumber;
-      document.getElementById('letter-account-body').textContent = data.accountNumber;
-      document.getElementById('letter-issue').textContent = data.issueType;
-      document.getElementById('letter-date').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-      if (data.description) {
-        document.getElementById('letter-desc').textContent = data.description;
-      }
-
-      document.getElementById('successState').style.display = 'block';
-    });
-  </script>
+            document.getElementById('dynamic-diagnosis').textContent = diagnosisMap[data.issue] || diagnosisMap['Other'];
+        });
+    </script>
 </body>
 </html>
