@@ -23,11 +23,7 @@
       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
     }
 
-    h2 {
-      margin-top: 0;
-      color: #111827;
-      margin-bottom: 20px;
-    }
+    h2 { margin-top: 0; color: #111827; margin-bottom: 20px; }
 
     label {
       display: block;
@@ -35,6 +31,13 @@
       font-weight: 500;
       font-size: 14px;
       color: #374151;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+      display: block;
     }
 
     input, select, textarea {
@@ -67,9 +70,7 @@
       transition: background 0.2s;
     }
 
-    button:hover {
-      background: #1d4ed8;
-    }
+    button:hover { background: #1d4ed8; }
   </style>
 </head>
 
@@ -88,6 +89,10 @@
       <label for="email">Email Address</label>
       <input type="email" id="email" required placeholder="john@example.com">
 
+      <label for="accountNumber">Account Number (as seen on report)</label>
+      <input type="text" id="accountNumber" required placeholder="e.g. 123456XXXX">
+      <span class="hint">Enter the account number exactly as it appears on your credit report.</span>
+
       <label for="issueType">Credit Problem Type</label>
       <select id="issueType" required>
         <option value="" disabled selected>Select the main issue...</option>
@@ -99,7 +104,7 @@
       </select>
 
       <label for="description">Description (Optional)</label>
-      <textarea id="description" rows="3" placeholder="Briefly describe the error (e.g., Account number ending in 1234)..."></textarea>
+      <textarea id="description" rows="3" placeholder="Briefly describe the error..."></textarea>
 
       <button type="submit">Continue</button>
     </form>
@@ -109,11 +114,11 @@
     document.getElementById('disputeForm').addEventListener('submit', function(event) {
       event.preventDefault(); 
 
-      // Capturamos la nueva variable: address
       const userData = {
         name: document.getElementById('name').value.trim(),
         address: document.getElementById('address').value.trim(),
         email: document.getElementById('email').value.trim(),
+        accountNumber: document.getElementById('accountNumber').value.trim(),
         issueType: document.getElementById('issueType').value,
         description: document.getElementById('description').value.trim()
       };
