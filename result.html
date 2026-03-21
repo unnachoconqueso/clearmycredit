@@ -3,86 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Results | ClearMyCredit</title>
+    <title>Your Action Plan | ClearMyCredit</title>
     <style>
-        :root { --primary: #2563eb; --bg: #f8fafc; --text: #1e293b; }
-        body { font-family: sans-serif; background-color: var(--bg); margin: 0; padding: 20px; }
-        .container { max-width: 600px; margin: 40px auto; }
-        .card { background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        
-        /* Dynamic Header */
-        .header-badge { display: inline-block; background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 99px; font-size: 0.875rem; font-weight: 700; margin-bottom: 12px; }
-        h1 { margin: 0 0 16px 0; font-size: 1.75rem; }
-        
-        /* Diagnosis */
-        .diagnosis-box { background: #f1f5f9; padding: 20px; border-radius: 12px; margin-bottom: 24px; border-left: 4px solid var(--primary); }
-        
-        /* Steps */
-        .steps-list { padding: 0; list-style: none; margin-bottom: 32px; }
-        .step-item { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start; }
-        .step-num { background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; }
-        
-        .cta-btn {
-            display: block; width: 100%; background: var(--primary); color: white; text-align: center;
-            padding: 16px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 1.125rem;
+        :root {
+            --primary: #0070f3;
+            --bg: #f5f7fb;
+            --text: #1e293b;
+            --success: #10b981;
         }
 
-        /* Error state */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 40px auto;
+        }
+
+        /* UI de la Página */
+        .card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        h1 { margin: 0 0 16px 0; font-size: 1.75rem; font-weight: 800; }
+
+        .diagnosis-box {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 24px;
+        }
+
+        .steps-list { padding: 0; list-style: none; }
+        .step-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            align-items: flex-start;
+        }
+        .step-num {
+            background: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .cta-btn {
+            display: block;
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1.125rem;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .cta-btn:hover { transform: translateY(-2px); background: #0061d1; }
+
+        /* Estado de Error */
         #error-view { display: none; text-align: center; }
+
+        /* CARTA OCULTA EN PANTALLA */
+        #letter-template { display: none; }
+
+        /* ESTILOS PARA IMPRESIÓN (PDF) */
+        @media print {
+            .ui-elements { display: none !important; }
+            body { background: white; padding: 0; }
+            #letter-template {
+                display: block !important;
+                font-family: "Times New Roman", Times, serif;
+                line-height: 1.6;
+                color: black;
+                font-size: 12pt;
+            }
+            .letter-header { margin-bottom: 30px; }
+            .letter-header p { margin: 2px 0; }
+            .letter-body { margin-top: 20px; }
+            .letter-footer { margin-top: 50px; }
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div id="results-view" class="card">
-            <div class="header-badge">Analysis Complete</div>
-            <h1 id="welcome-msg">Good news, User</h1>
+        <div id="results-view" class="card ui-elements">
+            <div class="badge">Analysis Complete</div>
+            <h1 id="welcome-name">Your Action Plan</h1>
             
             <div class="diagnosis-box">
-                <p id="dynamic-diagnosis" style="margin:0; font-weight: 500;"></p>
+                <p style="font-weight: 700; margin-bottom: 8px; color: var(--primary);">Expert Diagnosis:</p>
+                <p id="dynamic-diagnosis" style="margin: 0; line-height: 1.4;"></p>
             </div>
 
-            <h3>Your Next Steps:</h3>
-            <ul class="steps-list">
-                <li class="step-item"><span class="step-num">1</span> <div><strong>Review report:</strong> Get a copy of your credit report from the major bureaus.</div></li>
-                <li class="step-item"><span class="step-num">2</span> <div><strong>Identify:</strong> Pinpoint the exact account number and date of the error.</div></li>
-                <li class="step-item"><span class="step-num">3</span> <div><strong>Submit:</strong> Use our template to mail your dispute to the bureaus.</div></li>
-                <li class="step-item"><span class="step-num">4</span> <div><strong>Follow up:</strong> They have 30 days by law to respond to your request.</div></li>
-            </ul>
+            <h3>Next Steps:</h3>
+            <div class="steps-list">
+                <div class="step-item">
+                    <span class="step-num">1</span>
+                    <div><strong>Download & Print:</strong> Get your legally formatted letter.</div>
+                </div>
+                <div class="step-item">
+                    <span class="step-num">2</span>
+                    <div><strong>Add ID:</strong> Attach a copy of your State ID and a utility bill.</div>
+                </div>
+                <div class="step-item">
+                    <span class="step-num">3</span>
+                    <div><strong>Mail via USPS:</strong> Use Certified Mail for legal proof of delivery.</div>
+                </div>
+            </div>
 
-            <a href="#" class="cta-btn">Get My Dispute Letter</a>
+            <button onclick="window.print()" class="cta-btn">Download Dispute Letter (PDF)</button>
         </div>
 
-        <div id="error-view" class="card">
-            <h2>No data found</h2>
-            <p>Please complete the form to see your personalized plan.</p>
-            <a href="form.html" class="cta-btn">Start Again</a>
+        <div id="error-view" class="card ui-elements">
+            <h1>No data found</h1>
+            <p>Please complete the form to generate your personalized plan.</p>
+            <a href="form.html" class="cta-btn">Back to Form</a>
+        </div>
+
+        <div id="letter-template">
+            <div class="letter-header">
+                <p><strong id="l-name"></strong></p>
+                <p id="l-address"></p>
+                <p id="l-email"></p>
+                <br>
+                <p>Date: <span id="l-date"></span></p>
+            </div>
+
+            <div class="letter-body">
+                <p><strong>To: Credit Reporting Agency</strong><br>Equifax, Experian, or TransUnion</p>
+                
+                <p><strong>RE: Formal Dispute of Inaccurate Information - Account #<span id="l-account-header"></span></strong></p>
+
+                <p>To Whom It May Concern,</p>
+
+                <p>I am writing to formally dispute the following information appearing on my credit report under the Fair Credit Reporting Act (FCRA), 15 U.S.C. § 1681i.</p>
+
+                <div style="border: 1px solid #ccc; padding: 10px; margin: 20px 0;">
+                    <p style="margin: 0;"><strong>Creditor Name:</strong> <span id="l-creditor"></span></p>
+                    <p style="margin: 0;"><strong>Account Number:</strong> <span id="l-account-body"></span></p>
+                    <p style="margin: 0;"><strong>Type of Error:</strong> <span id="l-issue"></span></p>
+                </div>
+
+                <p><strong>Explanation:</strong> <span id="l-desc">I am requesting an immediate investigation of this item. If your investigation does not verify the accuracy of this information, it must be corrected or removed from my file immediately.</span></p>
+
+                <p>Please provide me with a written notification of the results of your investigation within 30 days. Enclosed are copies of documents to verify my identity and address.</p>
+            </div>
+
+            <div class="letter-footer">
+                <p>Sincerely,</p>
+                <br><br>
+                <p>___________________________</p>
+                <p><strong id="l-sign-name"></strong></p>
+            </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const rawData = localStorage.getItem('clearmycredit_user_data');
-            
-            if (!rawData) {
+            // Recuperar todos los datos de localStorage
+            const name = localStorage.getItem("name");
+            const address = localStorage.getItem("address");
+            const email = localStorage.getItem("email");
+            const creditor = localStorage.getItem("creditor");
+            const account = localStorage.getItem("account");
+            const issue = localStorage.getItem("issue");
+            const description = localStorage.getItem("description");
+
+            // Validar si existen los datos mínimos
+            if (!name || !creditor || !account) {
                 document.getElementById('results-view').style.display = 'none';
                 document.getElementById('error-view').style.display = 'block';
                 return;
             }
 
-            const data = JSON.parse(rawData);
+            // 1. Personalizar Interfaz de Usuario
+            document.getElementById('welcome-name').textContent = `Good news, ${name.split(' ')[0]}`;
             
-            // Personalización de nombre
-            document.getElementById('welcome-msg').textContent = `Good news, ${data.name.split(' ')[0]}`;
-
-            // Lógica de diagnóstico dinámico
             const diagnosisMap = {
-                'Late payment': 'Late payments can often be disputed if they were reported incorrectly or if you were less than 30 days late.',
-                'Collection': 'Collections can sometimes be removed from your report if the debt collector fails to validate the original debt.',
-                'Identity error': 'Identity errors are high-priority. You can legally demand their immediate removal under the FCRA.',
-                'Other': 'Most credit errors are eligible for a formal dispute process to improve your credit score.'
+                'Late payment reported incorrectly': 'Late payments can often be disputed if the dates are wrong or if the payment was actually made within the grace period.',
+                'Account doesn\'t belong to me': 'This is a high-priority identity error. Under FCRA, bureaus must remove accounts that you did not authorize.',
+                'Paid debt still appearing': 'If a debt is paid, it must reflect a $0 balance. If it still shows as active, it is a reporting violation.',
+                'Duplicate account': 'Duplicate accounts artificially lower your credit age and increase your debt ratio. These are easily removable.',
+                'Other': 'Your situation requires a formal investigation. The credit bureau is legally obligated to verify the data with the creditor.'
             };
+            document.getElementById('dynamic-diagnosis').textContent = diagnosisMap[issue] || diagnosisMap['Other'];
 
-            document.getElementById('dynamic-diagnosis').textContent = diagnosisMap[data.issue] || diagnosisMap['Other'];
+            // 2. Llenar la Carta Legal (Hidden)
+            document.getElementById('l-name').textContent = name;
+            document.getElementById('l-sign-name').textContent = name;
+            document.getElementById('l-address').textContent = address;
+            document.getElementById('l-email').textContent = email;
+            document.getElementById('l-date').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            
+            document.getElementById('l-creditor').textContent = creditor;
+            document.getElementById('l-account-header').textContent = account;
+            document.getElementById('l-account-body').textContent = account;
+            document.getElementById('l-issue').textContent = issue;
+
+            if (description && description.length > 2) {
+                document.getElementById('l-desc').textContent = description;
+            }
         });
     </script>
 </body>
