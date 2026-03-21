@@ -1,36 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Your Info</title>
+  <meta charset="UTF-8">
+  <title>Your Info - ClearMyCredit</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
-      font-family: -apple-system, sans-serif;
-      background: #f5f7fb;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 20px;
+      color: #1f2937;
     }
 
     .container {
       max-width: 480px;
-      margin: 50px auto;
+      margin: 40px auto;
       background: white;
-      padding: 25px;
+      padding: 30px;
       border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
     }
 
-    input, button {
+    h2 {
+      margin-top: 0;
+      color: #111827;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    input, select, textarea {
       width: 100%;
-      padding: 14px;
-      margin-top: 10px;
+      padding: 12px;
+      margin-top: 6px;
       border-radius: 8px;
-      border: 1px solid #ddd;
+      border: 1px solid #d1d5db;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
 
     button {
-      background: #0070f3;
+      background: #2563eb;
       color: white;
       border: none;
       font-weight: bold;
+      font-size: 16px;
+      padding: 16px;
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 25px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #1d4ed8;
     }
   </style>
 </head>
@@ -38,34 +76,51 @@
 <body>
   <div class="container">
     <h2>Your Information</h2>
+    
+    <form id="disputeForm">
+      
+      <label for="name">Full Name</label>
+      <input type="text" id="name" required placeholder="John Doe">
 
-    <input id="name" placeholder="Full Name">
-    <input id="address" placeholder="Address">
-    <input id="creditor" placeholder="Bank / Company Name">
-    <input id="account" placeholder="Account Number">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" required placeholder="john@example.com">
 
-    <button onclick="generate()">Continue</button>
+      <label for="issueType">Credit Problem Type</label>
+      <select id="issueType" required>
+        <option value="" disabled selected>Select the main issue...</option>
+        <option value="Late payment reported incorrectly">Late payment reported incorrectly</option>
+        <option value="Account doesn't belong to me">Account doesn't belong to me</option>
+        <option value="Paid debt still appearing">Paid debt still appearing</option>
+        <option value="Duplicate account">Duplicate account</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="description">Description (Optional)</label>
+      <textarea id="description" rows="3" placeholder="Briefly describe the error..."></textarea>
+
+      <button type="submit">Continue</button>
+    </form>
   </div>
-<script>
-  function generate() {
-    const name = document.getElementById("name").value.trim();
-    const address = document.getElementById("address").value.trim();
-    const creditor = document.getElementById("creditor").value.trim();
-    const account = document.getElementById("account").value.trim();
 
-    if (!name || !address || !creditor || !account) {
-      alert("Please fill out all fields");
-      return;
-    }
+  <script>
+    document.getElementById('disputeForm').addEventListener('submit', function(event) {
+      // 1. Prevenir la recarga de la página
+      event.preventDefault(); 
 
-    localStorage.setItem("name", name);
-    localStorage.setItem("address", address);
-    localStorage.setItem("creditor", creditor);
-    localStorage.setItem("account", account);
+      // 2. Capturar todos los inputs relevantes
+      const userData = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        issueType: document.getElementById('issueType').value,
+        description: document.getElementById('description').value.trim()
+      };
 
-    window.location.href = "./result.html";
-  }
-</script>
-  
+      // 3. Guardar los datos en localStorage como un string JSON
+      localStorage.setItem('clearmycredit_user_data', JSON.stringify(userData));
+
+      // 4. Redirección correcta a la página de resultados
+      window.location.href = 'result.html';
+    });
+  </script>
 </body>
 </html>
