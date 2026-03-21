@@ -2,52 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Results | ClearMyCredit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClearMyCredit | Your Letter</title>
     <style>
-        :root { --primary: #2563eb; --bg: #f8fafc; }
-        body { font-family: sans-serif; background: var(--bg); padding: 20px; }
-        .container { max-width: 600px; margin: auto; }
-        .card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .btn { display: block; width: 100%; background: var(--primary); color: white; text-align: center; padding: 16px; border-radius: 12px; font-weight: 700; text-decoration: none; cursor: pointer; }
-        #letter-template { display: none; }
+        :root { --primary: #2563eb; --bg: #f8fafc; --surface: #ffffff; --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text-main); }
+        
+        /* UI Elements Styles */
+        .ui-container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .success-card { background: var(--surface); padding: 40px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); text-align: center; margin-bottom: 40px; }
+        .success-card h1 { font-size: 2rem; margin-bottom: 16px; }
+        .steps-box { background: var(--bg); border-radius: 12px; padding: 24px; text-align: left; margin: 24px 0; border: 1px solid var(--border); }
+        .steps-box h3 { margin-bottom: 16px; font-size: 1.125rem; }
+        .steps-box ol { padding-left: 20px; color: var(--text-muted); }
+        .steps-box li { margin-bottom: 8px; }
+        .btn { display: inline-block; background: var(--primary); color: white; padding: 16px 32px; border-radius: 10px; font-size: 1.125rem; font-weight: 700; border: none; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+        .btn:hover { background: #1d4ed8; }
+        
+        /* Letter Template Display (Screen View) */
+        .letter-preview-wrapper { background: white; max-width: 8.5in; margin: 0 auto 60px auto; padding: 1in; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 4px; }
+        
+        /* Letter Typography (Shared Screen & Print) */
+        #letter-content { font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.5; color: black; }
+        #letter-content p { margin-bottom: 12pt; }
+        .letter-header { margin-bottom: 30pt; }
+        .signature-block { margin-top: 40pt; }
+        .legal-footer { font-size: 10pt; color: #666; border-top: 1px solid #ccc; padding-top: 10pt; margin-top: 50pt; text-align: center; }
+
+        /* Print Specific Styles */
         @media print {
-            .ui-elements { display: none !important; }
-            #letter-template { display: block !important; font-family: "Times New Roman", serif; font-size: 12pt; }
+            body { background: white; }
+            .ui-container { display: none !important; }
+            .letter-preview-wrapper { box-shadow: none; margin: 0; padding: 0; border-radius: 0; max-width: 100%; }
+            @page { margin: 1in; }
         }
     </style>
 </head>
 <body>
-    <div class="container ui-elements">
-        <div class="card">
-            <h1 data-en="Your letter is ready" data-es="Tu carta está lista">Your letter is ready</h1>
-            <p data-en="Follow the instructions to mail your dispute." data-es="Sigue las instrucciones para enviar tu disputa.">Follow the instructions to mail your dispute.</p>
-            <button onclick="window.print()" class="btn" data-en="Download Letter (PDF)" data-es="Descargar Carta (PDF)">Download Letter (PDF)</button>
+
+    <div class="ui-container">
+        <div class="success-card">
+            <h1>✅ Your document is ready</h1>
+            <p style="color: var(--text-muted); font-size: 1.125rem;">Please review the document below before printing.</p>
+            
+            <div class="steps-box">
+                <h3>Next Steps:</h3>
+                <ol>
+                    <li><strong>Print</strong> the letter using the button below.</li>
+                    <li><strong>Sign</strong> the bottom of the printed letter in ink.</li>
+                    <li><strong>Attach</strong> a copy of your State ID and a recent utility bill to verify your identity.</li>
+                    <li><strong>Mail</strong> via Certified Mail with Return Receipt to the credit bureaus.</li>
+                </ol>
+            </div>
+
+            <button onclick="window.print()" class="btn">Print / Download PDF</button>
         </div>
     </div>
 
-    <div id="letter-template">
-        <p><strong id="l-name"></strong></p>
-        <p>Date: <span id="l-date"></span></p>
-        <p><strong>To: Credit Reporting Agency</strong></p>
-        <p><strong>Subject: Formal Dispute under FCRA - Account #<span id="l-acc"></span></strong></p>
-        <p>To Whom It May Concern,</p>
-        <p>I am formally disputing the following information with <strong><span id="l-cred"></span></strong>:</p>
-        <p>Issue: <span id="l-issue"></span></p>
-        <p>Please investigate and remove this inaccurate information within 30 days.</p>
-        <p>Sincerely,<br><br>___________________________<br><strong id="l-sign"></strong></p>
+    <div class="letter-preview-wrapper">
+        <div id="letter-content">
+            <div class="letter-header">
+                <p>
+                    <span id="l-name"></span><br>
+                    <span id="l-address"></span>
+                </p>
+                <p>Date: <span id="l-date"></span></p>
+                <p>
+                    <strong>To:</strong> Credit Reporting Agency<br>
+                    (Equifax / Experian / TransUnion)
+                </p>
+            </div>
+
+            <p><strong>Subject: Formal Dispute under the Fair Credit Reporting Act (15 U.S.C. § 1681i)</strong></p>
+            
+            <p>To Whom It May Concern,</p>
+            
+            <p>I am writing to formally dispute inaccurate information currently appearing on my credit report. Under the Fair Credit Reporting Act (FCRA), you are required to conduct a reasonable investigation into this matter within 30 days.</p>
+            
+            <p>The disputed item is associated with the following creditor:</p>
+            <p style="padding-left: 20px;">
+                <strong>Creditor Name:</strong> <span id="l-cred"></span><br>
+                <strong>Account Number:</strong> <span id="l-acc"></span>
+            </p>
+
+            <p><strong>Reason for Dispute:</strong><br>
+            <span id="l-issue"></span></p>
+
+            <p>I request that you investigate this item, verify its accuracy with the furnisher, and either correct or completely remove this unverified or inaccurate information from my credit file.</p>
+            
+            <p>Enclosed, please find copies of my identification documents to verify my identity.</p>
+
+            <p>Thank you for your prompt attention to this matter.</p>
+            
+            <div class="signature-block">
+                <p>Sincerely,</p>
+                <br><br>
+                <p>___________________________</p>
+                <p><strong id="l-sign-name"></strong></p>
+            </div>
+
+            <div class="legal-footer">
+                Notice: This letter is a template utilized for self-dispute. No specific credit results are guaranteed.
+            </div>
+        </div>
     </div>
 
     <script>
-        const lang = localStorage.getItem('lang') || 'en';
-        document.querySelectorAll('[data-' + lang + ']').forEach(el => el.textContent = el.getAttribute('data-' + lang));
+        // Populate the letter with data from localStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            const name = localStorage.getItem('cmc_name') || '[Your Name]';
+            const address = localStorage.getItem('cmc_address') || '[Your Address]';
+            const creditor = localStorage.getItem('cmc_creditor') || '[Creditor Name]';
+            const account = localStorage.getItem('cmc_account') || '[Account Number]';
+            const issue = localStorage.getItem('cmc_issue') || '[Dispute Reason]';
+            
+            const currentDate = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric' 
+            });
 
-        // Llenar datos de la carta
-        document.getElementById('l-name').textContent = localStorage.getItem('name');
-        document.getElementById('l-sign').textContent = localStorage.getItem('name');
-        document.getElementById('l-cred').textContent = localStorage.getItem('creditor');
-        document.getElementById('l-acc').textContent = localStorage.getItem('account');
-        document.getElementById('l-issue').textContent = localStorage.getItem('issue');
-        document.getElementById('l-date').textContent = new Date().toLocaleDateString('en-US');
+            document.getElementById('l-name').textContent = name;
+            document.getElementById('l-address').textContent = address;
+            document.getElementById('l-date').textContent = currentDate;
+            document.getElementById('l-cred').textContent = creditor;
+            document.getElementById('l-acc').textContent = account;
+            document.getElementById('l-issue').textContent = issue;
+            document.getElementById('l-sign-name').textContent = name;
+        });
     </script>
 </body>
 </html>
