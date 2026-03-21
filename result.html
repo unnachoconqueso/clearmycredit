@@ -1,134 +1,188 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>ClearMyCredit</title>
+  <meta charset="UTF-8">
+  <title>Your Action Plan - ClearMyCredit</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f5f7fb;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f3f4f6;
       margin: 0;
       padding: 20px;
+      color: #1f2937;
     }
 
     .container {
-      max-width: 700px;
-      margin: auto;
-    }
-
-    .card {
+      max-width: 600px;
+      margin: 40px auto;
       background: white;
-      padding: 25px;
+      padding: 30px;
       border-radius: 12px;
-      margin-top: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
     }
 
-    h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
+    h1, h2 {
+      color: #111827;
+      margin-top: 0;
     }
 
-    p {
-      color: #555;
+    /* Estado de Alerta Personalizada */
+    .alert {
+      background: #eff6ff;
+      border-left: 4px solid #2563eb;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+      color: #1e3a8a;
     }
 
-    .cta {
-      background: #0070f3;
-      color: white;
-      padding: 16px;
-      border: none;
-      border-radius: 10px;
-      width: 100%;
-      font-size: 18px;
-      margin-top: 20px;
-      font-weight: bold;
+    .alert p {
+      margin: 0 0 10px 0;
+    }
+    .alert p:last-child {
+      margin: 0;
     }
 
-    ul {
-      padding-left: 20px;
-    }
-
+    /* Steps UI */
     .steps {
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+      margin-bottom: 30px;
     }
 
     .step {
-      flex: 1;
-      min-width: 180px;
-      background: #fafafa;
-      padding: 15px;
-      border-radius: 10px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 18px;
+      border-radius: 8px;
     }
 
-    .footer-cta {
+    .step strong {
+      color: #2563eb;
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1.1em;
+    }
+
+    /* Botones */
+    .btn {
+      display: block;
+      width: 100%;
       text-align: center;
+      background: #2563eb;
+      color: white;
+      padding: 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      box-sizing: border-box;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-outline {
+      background: white;
+      color: #2563eb;
+      border: 2px solid #2563eb;
+    }
+
+    .btn-outline:hover {
+      background: #eff6ff;
+    }
+
+    /* Control de Vistas */
+    #errorState {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    #successState {
+      display: none;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-
-    <!-- HERO -->
-    <div class="card">
-      <h1>Fix Credit Report Errors in 60 Seconds</h1>
-      <p>Generate a legally formatted dispute letter based on FCRA.</p>
-
-      <button class="cta" onclick="goToForm()">Generate My Letter – $9</button>
+    
+    <div id="errorState">
+      <h2>Oops! Data missing.</h2>
+      <p style="color: #6b7280; margin-bottom: 25px;">No data found. Please complete the form first to generate your plan.</p>
+      <a href="form.html" class="btn btn-outline">Go back to form</a>
     </div>
 
-    <!-- PROBLEM -->
-    <div class="card">
-      <h2>Credit report errors are more common than you think</h2>
-      <ul>
-        <li>Late payments reported incorrectly</li>
-        <li>Accounts that don’t belong to you</li>
-        <li>Paid debts still appearing</li>
-        <li>Duplicate accounts</li>
-      </ul>
-    </div>
+    <div id="successState">
+      <h1>Your Dispute Plan</h1>
+      
+      <div class="alert">
+        <p>Hi <strong id="display-name"></strong>,</p>
+        <p>Based on your situation regarding <strong>"<span id="display-issue"></span>"</strong>, you may have a strong case to dispute this item under the FCRA.</p>
+      </div>
 
-    <!-- HOW IT WORKS -->
-    <div class="card">
-      <h2>How it works</h2>
-
+      <h2>Next Steps</h2>
       <div class="steps">
         <div class="step">
-          <strong>Step 1</strong>
-          <p>Enter your information</p>
+          <strong>Step 1: Review your credit report</strong>
+          Make sure all identifying information matches the error you are disputing.
         </div>
-
         <div class="step">
-          <strong>Step 2</strong>
-          <p>Select your dispute type</p>
+          <strong>Step 2: Submit dispute letters</strong>
+          Mail your legally formatted letters to Equifax, Experian, and TransUnion via certified mail.
         </div>
-
         <div class="step">
-          <strong>Step 3</strong>
-          <p>Download your ready-to-send letter</p>
+          <strong>Step 3: Follow up in 30 days</strong>
+          By law, credit bureaus have 30 days to investigate and respond to your dispute.
         </div>
       </div>
-    </div>
 
-    <!-- FINAL CTA -->
-    <div class="card footer-cta">
-      <h2>Start Now – Only $9</h2>
-      <p>Takes less than 1 minute</p>
-
-      <button class="cta" onclick="goToForm()">Generate My Letter</button>
+      <button class="btn" onclick="downloadPlan()">Download my dispute plan</button>
     </div>
 
   </div>
 
   <script>
-    function goToForm() {
-      window.location.href = "form.html";
+    document.addEventListener('DOMContentLoaded', () => {
+      // a. Leer datos de localStorage
+      const rawData = localStorage.getItem('clearmycredit_user_data');
+      
+      const errorState = document.getElementById('errorState');
+      const successState = document.getElementById('successState');
+
+      // b. Edge Case: Validar si existe la data
+      if (!rawData) {
+        errorState.style.display = 'block';
+      } else {
+        try {
+          const data = JSON.parse(rawData);
+          
+          // c. Mostrar contenido personalizado
+          document.getElementById('display-name').textContent = data.name || 'User';
+          document.getElementById('display-issue').textContent = data.issueType || 'this credit issue';
+
+          // Mostrar la vista de éxito
+          successState.style.display = 'block';
+        } catch (e) {
+          console.error("Error parsing user data from localStorage", e);
+          errorState.style.display = 'block';
+        }
+      }
+    });
+
+    function downloadPlan() {
+      // Placeholder para el feature futuro de descarga
+      alert('Downloading your personalized dispute plan... (Coming soon)');
     }
   </script>
-
 </body>
 </html>
