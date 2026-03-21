@@ -5,26 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClearMyCredit | Dispute Details</title>
     <style>
-        :root { --primary: #2563eb; --primary-hover: #1d4ed8; --bg: #f8fafc; --surface: #ffffff; --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0; --error: #ef4444; }
+        :root { 
+            --primary: #2563eb; 
+            --primary-hover: #1d4ed8; 
+            --bg: #f8fafc; 
+            --surface: #ffffff; 
+            --text-main: #0f172a; 
+            --text-muted: #64748b; 
+            --border: #e2e8f0; 
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text-main); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-        .card { background: var(--surface); padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01); width: 100%; max-width: 500px; border: 1px solid var(--border); }
-        .step { font-size: 0.875rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; display: block; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+        .card { 
+            background: var(--surface); 
+            padding: 40px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); 
+            width: 100%; 
+            max-width: 500px; 
+            border: 1px solid var(--border); 
+        }
+        .step { 
+            font-size: 0.875rem; 
+            color: var(--primary); 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em; 
+            margin-bottom: 8px; 
+            display: block; 
+        }
         h2 { margin: 0 0 24px 0; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; }
         .group { margin-bottom: 20px; }
         label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
-        input, select, textarea { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; color: var(--text-main); background-color: var(--bg); transition: border-color 0.2s, box-shadow 0.2s; outline: none; font-family: inherit; }
-        input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); background-color: var(--surface); }
+        input, select, textarea { 
+            width: 100%; 
+            padding: 12px 16px; 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            color: var(--text-main); 
+            background-color: var(--bg); 
+            transition: all 0.2s; 
+            outline: none; 
+            font-family: inherit; 
+        }
+        input:focus, select:focus, textarea:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); 
+            background-color: var(--surface); 
+        }
         .hidden { display: none; }
-        .notice { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 16px; border-radius: 8px; margin: 24px 0; font-size: 0.875rem; color: #166534; display: flex; gap: 12px; align-items: flex-start; }
+        .notice { 
+            background: #f0fdf4; 
+            border: 1px solid #bbf7d0; 
+            padding: 16px; 
+            border-radius: 8px; 
+            margin: 24px 0; 
+            font-size: 0.875rem; 
+            color: #166534; 
+            display: flex; 
+            gap: 12px; 
+            align-items: flex-start; 
+        }
         .notice svg { flex-shrink: 0; width: 20px; height: 20px; color: #15803d; }
-        .btn { width: 100%; background: var(--primary); color: white; border: none; padding: 16px; border-radius: 10px; font-size: 1.125rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .btn { 
+            width: 100%; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 18px; 
+            border-radius: 12px; 
+            font-size: 1.125rem; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: background 0.2s, transform 0.1s; 
+        }
         .btn:hover { background: var(--primary-hover); }
-        .back-link { display: inline-block; margin-bottom: 20px; color: var(--text-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; }
+        .btn:active { transform: scale(0.98); }
+        .back-link { 
+            display: inline-block; 
+            margin-bottom: 20px; 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-size: 0.875rem; 
+            font-weight: 500; 
+        }
         .back-link:hover { color: var(--text-main); }
     </style>
 </head>
 <body>
+
     <div class="card">
         <a href="index.html" class="back-link">&larr; Back</a>
         <span class="step">Step 1 of 2</span>
@@ -74,8 +153,8 @@
             </div>
 
             <div class="notice">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <div><strong>Notice:</strong> You are purchasing a professional dispute letter template for $9.</div>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div><strong>Note:</strong> You will be redirected to our secure payment partner to complete your $9 purchase.</div>
             </div>
 
             <button type="submit" class="btn">Proceed to Payment – $9</button>
@@ -87,6 +166,7 @@
         const otherIssueGroup = document.getElementById('other-issue-group');
         const otherIssueInput = document.getElementById('other-issue');
 
+        // Mostrar campo extra si se selecciona "Other"
         issueSelect.addEventListener('change', function() {
             if (this.value === 'Other') {
                 otherIssueGroup.classList.remove('hidden');
@@ -98,12 +178,14 @@
             }
         });
 
+        // Manejar el envío del formulario
         document.getElementById('disputeForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const selectedIssue = issueSelect.value;
             const finalIssue = selectedIssue === 'Other' ? otherIssueInput.value : selectedIssue;
 
+            // Guardar datos en localStorage para usarlos en result.html después del pago
             localStorage.setItem("cmc_name", document.getElementById('name').value);
             localStorage.setItem("cmc_address", document.getElementById('address').value);
             localStorage.setItem("cmc_email", document.getElementById('email').value);
@@ -111,9 +193,8 @@
             localStorage.setItem("cmc_account", document.getElementById('account').value);
             localStorage.setItem("cmc_issue", finalIssue);
             
-            // In a real app, this would route to a payment processor (Stripe)
-            // For this micro-SaaS flow, we proceed directly to the result template
-            window.location.href = "result.html";
+            // Redirigir directamente al Payment Link de Stripe
+            window.location.href = "https://buy.stripe.com/8x28wRgI90gveqhfjQbwk01";
         });
     </script>
 </body>
