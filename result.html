@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>ClearMyCredit | Your Letter</title>
+    <title>ClearMyCredit | Your FCRA Letter</title>
     <style>
         :root {
             --bg: #f8fafc;
@@ -13,77 +13,46 @@
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
-            --success: #10b981;
-            --warning-bg: #fffbeb;
-            --warning-border: #fde047;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg);
             color: var(--text-main);
-            line-height: 1.5;
-            min-height: 100vh;
             padding: 2rem 1rem;
         }
-
         .container {
             max-width: 850px;
             margin: 0 auto;
         }
-
-        /* Success Card */
         .success-card {
             background: var(--surface);
             border-radius: 24px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             border: 1px solid var(--border);
         }
-
-        .success-card h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .success-card p {
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        /* Letter Wrapper */
         .letter-wrapper {
             background: var(--surface);
             border-radius: 24px;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
             position: relative;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
-
         .letter-wrapper.is-locked {
             filter: blur(8px);
             pointer-events: none;
             user-select: none;
         }
-
-        /* Paywall Overlay */
         .paywall-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255,255,255,0.95);
             backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
@@ -91,35 +60,16 @@
             z-index: 10;
             border-radius: 24px;
         }
-
         .paywall-card {
-            background: var(--surface);
+            background: white;
             border-radius: 32px;
             padding: 2rem;
             text-align: center;
             max-width: 350px;
             margin: 1rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
             border: 1px solid var(--border);
         }
-
-        .paywall-card .lock-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .paywall-card h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .paywall-card p {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            margin-bottom: 1.5rem;
-        }
-
         .paywall-btn {
             background: var(--primary);
             color: white;
@@ -129,260 +79,222 @@
             font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
             width: 100%;
         }
-
-        .paywall-btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        /* Letter Content (Formal Document) */
         .letter-content {
-            padding: 2.5rem;
-            background: white;
-        }
-
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-                margin: 0;
-            }
-            .letter-wrapper {
-                box-shadow: none;
-                border-radius: 0;
-            }
-            .letter-wrapper.is-locked {
-                filter: none;
-                pointer-events: auto;
-            }
-            .paywall-overlay {
-                display: none;
-            }
-            .success-card {
-                display: none;
-            }
-            .letter-content {
-                padding: 0.5in;
-            }
-        }
-
-        /* Print styles for formal letter */
-        @media print {
-            .letter-content {
-                font-family: Georgia, 'Times New Roman', Times, serif;
-                font-size: 12pt;
-                line-height: 1.4;
-                color: black;
-            }
-            .letter-content p {
-                margin-bottom: 12pt;
-            }
-        }
-
-        /* Screen styles for letter preview */
-        .letter-content {
+            padding: 2rem;
             font-family: Georgia, 'Times New Roman', Times, serif;
-            font-size: 1rem;
             line-height: 1.5;
-            color: var(--text-main);
         }
-
         .letter-content p {
             margin-bottom: 1rem;
         }
-
-        .letter-content .letter-date {
-            margin-bottom: 1.5rem;
+        .signature-img {
+            max-width: 200px;
+            max-height: 80px;
+            margin-top: 1rem;
         }
-
-        .letter-content .sender-info {
-            margin-bottom: 1.5rem;
+        .instructions {
+            background: #eef3fa;
+            border-radius: 16px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-family: system-ui;
+            font-size: 0.875rem;
         }
-
-        .letter-content .recipient-info {
-            margin-bottom: 1.5rem;
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
         }
-
-        .letter-content .subject {
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .letter-content .signature {
-            margin-top: 2rem;
-        }
-
         .btn-print {
             background: var(--surface);
-            color: var(--primary);
             border: 1.5px solid var(--border);
             padding: 0.75rem 1.5rem;
             border-radius: 40px;
-            font-size: 0.875rem;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
-            margin-left: 0.75rem;
+            font-weight: 600;
         }
-
         .btn-print:hover {
             border-color: var(--primary);
-            background: var(--primary);
-            color: white;
+            color: var(--primary);
         }
-
-        .button-group {
-            display: flex;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 1rem;
+        @media print {
+            body { background: white; padding: 0; }
+            .success-card, .paywall-overlay, .instructions, .btn-group { display: none; }
+            .letter-wrapper { filter: none !important; pointer-events: auto; box-shadow: none; }
+            .letter-content { padding: 0.5in; }
         }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="success-card" id="successCard">
-        <h1 id="statusTitle">Processing Payment...</h1>
-        <p id="statusMessage">Please wait...</p>
-        <div class="button-group" id="buttonGroup" style="display: none;">
-            <button class="btn-print" id="printBtn">📄 Print / Save as PDF</button>
+        <h1 id="statusTitle">Complete Payment</h1>
+        <p id="statusMessage">Pay $9 to unlock your professionally formatted dispute letter.</p>
+        <div id="buttonGroup" style="display: none;">
+            <button class="btn-print" id="printBtn">🖨️ Print / Save as PDF</button>
         </div>
     </div>
 
     <div class="letter-wrapper" id="letterWrapper">
         <div id="paywallOverlay" class="paywall-overlay">
             <div class="paywall-card">
-                <div class="lock-icon">🔒</div>
-                <h3>Unlock Your Dispute Letter</h3>
-                <p>Complete your payment to access your professionally formatted FCRA-compliant dispute letter.</p>
+                <div style="font-size:3rem;">🔒</div>
+                <h3>Unlock Your FCRA Letter</h3>
+                <p>Complete payment to view your dispute letter and mailing instructions.</p>
                 <button class="paywall-btn" id="unlockBtn">Pay $9 →</button>
             </div>
         </div>
 
         <div class="letter-content" id="letterContent">
-            <div class="sender-info">
-                <strong id="senderName"></strong><br>
-                <span id="senderAddress"></span>
-            </div>
-
-            <div class="letter-date">
-                <span id="letterDate"></span>
-            </div>
-
-            <div class="recipient-info">
-                <strong id="creditorName"></strong>
-            </div>
-
-            <div class="subject">
-                Re: Account Number <span id="accountNumber"></span>
-            </div>
-
-            <p>Dear Sir or Madam,</p>
-
-            <p>
-                I am writing to dispute the following information in my credit report.
-                The item I am disputing is: <strong id="disputeIssue"></strong>.
-            </p>
-
-            <p>
-                This information is inaccurate and should be removed or corrected.
-                Please investigate this matter and update my credit file accordingly.
-            </p>
-
-            <div class="signature">
-                <p>Sincerely,</p>
-                <p><strong id="signatureName"></strong></p>
-            </div>
+            <!-- Dynamic content injected via JS -->
         </div>
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const setText = (id, value) => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = value || '[Not provided]';
-        };
+    // Expected success token
+    const VALID_TOKEN = 'cmc_verified_2025';
 
-        // Get data from localStorage
-        const name = localStorage.getItem('cmc_name') || '';
-        const address = localStorage.getItem('cmc_address') || '';
-        const creditor = localStorage.getItem('cmc_creditor') || '';
-        const account = localStorage.getItem('cmc_account') || '';
-        const issue = localStorage.getItem('cmc_issue') || '';
+    // Helper to set text
+    function setText(id, value) { document.getElementById(id).textContent = value; }
 
-        const currentDate = new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+    // Check payment status
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('session_id');
+    const isPaid = (token === VALID_TOKEN);
 
-        // Fill letter content
-        setText('senderName', name);
-        setText('senderAddress', address);
-        setText('letterDate', currentDate);
-        setText('creditorName', creditor);
-        setText('accountNumber', account);
-        setText('disputeIssue', issue);
-        setText('signatureName', name);
+    // Load data from localStorage
+    const name = localStorage.getItem('cmc_name') || '';
+    const address = localStorage.getItem('cmc_address') || '';
+    const creditor = localStorage.getItem('cmc_creditor') || '';
+    const account = localStorage.getItem('cmc_account') || '';
+    const issue = localStorage.getItem('cmc_issue') || '';
+    const signatureBase64 = localStorage.getItem('cmc_signature') || '';
 
-        // Check payment status from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const wrapper = document.getElementById('letterWrapper');
-        const overlay = document.getElementById('paywallOverlay');
-        const successCard = document.getElementById('successCard');
-        const statusTitle = document.getElementById('statusTitle');
-        const statusMessage = document.getElementById('statusMessage');
-        const buttonGroup = document.getElementById('buttonGroup');
+    // If no data in localStorage, redirect to form
+    if (!name && !address && !creditor && !account && !issue) {
+        window.location.href = 'form.html';
+    }
 
-        if (urlParams.get('status') === 'success') {
-            // Unlock the letter
-            wrapper.classList.remove('is-locked');
-            if (overlay) overlay.style.display = 'none';
-            
-            // Update success card
-            statusTitle.textContent = '✅ Payment Successful!';
-            statusMessage.textContent = 'Your FCRA-compliant dispute letter is ready. You can print or save it as PDF.';
-            buttonGroup.style.display = 'flex';
-            
-            // Add print functionality
-            const printBtn = document.getElementById('printBtn');
-            if (printBtn) {
-                printBtn.onclick = () => {
-                    window.print();
-                };
-            }
+    // Generate letter HTML
+    const currentDate = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+    function buildLetterContent(useRealData) {
+        const displayName = useRealData ? name : '[Your Name]';
+        const displayAddress = useRealData ? address : '[Your Address]';
+        const displayCreditor = useRealData ? creditor : '[Creditor Name]';
+        const displayAccount = useRealData ? account : '[Account Number]';
+        const displayIssue = useRealData ? issue : '[Dispute Reason]';
+        const displayDate = currentDate;
+
+        let signatureHtml = '';
+        if (useRealData && signatureBase64 && signatureBase64 !== 'data:image/png;base64,') {
+            signatureHtml = `<img src="${signatureBase64}" class="signature-img" alt="Your signature">`;
+        } else if (useRealData) {
+            signatureHtml = '<p><em>(No signature provided)</em></p>';
         } else {
-            // Locked state
-            wrapper.classList.add('is-locked');
-            statusTitle.textContent = 'Complete Payment';
-            statusMessage.textContent = 'Pay $9 to unlock your professionally formatted dispute letter.';
-            buttonGroup.style.display = 'none';
+            signatureHtml = '<p><em>[Signature]</em></p>';
         }
 
-        // Stripe redirect function
-        const unlockBtn = document.getElementById('unlockBtn');
-        if (unlockBtn) {
-            unlockBtn.onclick = () => {
-                // Stripe test link
-                window.location.href = 'https://buy.stripe.com/8x28wRgI90gveqhfjQbwk01';
-            };
-        }
-    });
+        return `
+            <div class="sender-info">
+                <strong>${displayName}</strong><br>
+                ${displayAddress}
+            </div>
+            <div class="letter-date">
+                ${displayDate}
+            </div>
+            <div class="recipient-info">
+                <strong>${displayCreditor}</strong>
+            </div>
+            <div class="subject">
+                Re: Account Number ${displayAccount}
+            </div>
+            <p>Dear Sir or Madam,</p>
+            <p>
+                I am writing to dispute the following information in my credit report.
+                The item I am disputing is: <strong>${displayIssue}</strong>.
+            </p>
+            <p>
+                Under Section 611 of the Fair Credit Reporting Act (15 U.S.C. § 1681i), I request that you
+                conduct a reasonable reinvestigation of this disputed information. Please provide me with
+                the method of verification used, including the name, address, and telephone number of any
+                furnisher of information contacted in connection with this reinvestigation.
+            </p>
+            <p>
+                This information is inaccurate and should be removed or corrected.
+                Please investigate this matter and update my credit file accordingly.
+            </p>
+            <div class="signature">
+                <p>Sincerely,</p>
+                <p><strong>${displayName}</strong></p>
+                ${signatureHtml}
+            </div>
+        `;
+    }
 
-    // Block print if locked (additional security)
+    const letterContentDiv = document.getElementById('letterContent');
+    const wrapper = document.getElementById('letterWrapper');
+    const overlay = document.getElementById('paywallOverlay');
+    const statusTitle = document.getElementById('statusTitle');
+    const statusMessage = document.getElementById('statusMessage');
+    const buttonGroup = document.getElementById('buttonGroup');
+
+    if (isPaid) {
+        // Unlocked: show real data, remove blur, show instructions, add print button
+        letterContentDiv.innerHTML = buildLetterContent(true);
+        wrapper.classList.remove('is-locked');
+        overlay.style.display = 'none';
+        statusTitle.textContent = '✅ Payment Successful!';
+        statusMessage.innerHTML = 'Your FCRA-compliant dispute letter is ready. Please follow the mailing instructions below.';
+        buttonGroup.style.display = 'flex';
+
+        // Add mailing instructions
+        const instructionsDiv = document.createElement('div');
+        instructionsDiv.className = 'instructions';
+        instructionsDiv.innerHTML = `
+            <strong>📬 Next Steps:</strong><br>
+            1. Print this letter.<br>
+            2. Attach a copy of your government-issued ID and proof of address (if required).<br>
+            3. Mail via Certified Mail with Return Receipt to the credit bureau(s):<br>
+            &nbsp;&nbsp;&nbsp;• Equifax: P.O. Box 740256, Atlanta, GA 30374<br>
+            &nbsp;&nbsp;&nbsp;• Experian: P.O. Box 4500, Allen, TX 75013<br>
+            &nbsp;&nbsp;&nbsp;• TransUnion: P.O. Box 2000, Chester, PA 19016<br>
+            Keep copies of everything for your records.
+        `;
+        letterContentDiv.appendChild(instructionsDiv);
+
+        // Print button
+        const printBtn = document.getElementById('printBtn');
+        printBtn.addEventListener('click', () => {
+            // Clear localStorage on print
+            localStorage.clear();
+            window.print();
+        });
+    } else {
+        // Locked: show placeholder data (lorem ipsum) with blur
+        letterContentDiv.innerHTML = buildLetterContent(false);
+        wrapper.classList.add('is-locked');
+        statusTitle.textContent = 'Complete Payment';
+        statusMessage.textContent = 'Pay $9 to unlock your professionally formatted dispute letter.';
+        buttonGroup.style.display = 'none';
+
+        // Pay button redirects to Stripe
+        document.getElementById('unlockBtn').addEventListener('click', () => {
+            window.location.href = 'https://buy.stripe.com/test_aFa9AV4ZK2vu9DRaPEbbG00';
+        });
+    }
+
+    // Block print if locked
     window.onbeforeprint = () => {
-        const wrapper = document.getElementById('letterWrapper');
-        if (wrapper && wrapper.classList.contains('is-locked')) {
-            alert('Please complete your purchase first to print the letter.');
+        if (wrapper.classList.contains('is-locked')) {
+            alert('Please complete your purchase first.');
             return false;
         }
     };
 </script>
-
 </body>
 </html>
