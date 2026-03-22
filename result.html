@@ -1,57 +1,186 @@
-<script>
-        // Llenar la carta con los datos guardados
-        window.addEventListener('DOMContentLoaded', () => {
-            const name = localStorage.getItem('cmc_name') || '[Your Name]';
-            const address = localStorage.getItem('cmc_address') || '[Your Address]';
-            const creditor = localStorage.getItem('cmc_creditor') || '[Creditor Name]';
-            const account = localStorage.getItem('cmc_account') || '[Account Number]';
-            const issue = localStorage.getItem('cmc_issue') || '[Dispute Reason]';
-            
-            const currentDate = new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', month: 'long', day: 'numeric' 
-            });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClearMyCredit | Your Letter</title>
 
-            document.getElementById('l-name').textContent = name;
-            document.getElementById('l-address').textContent = address;
-            document.getElementById('l-date').textContent = currentDate;
-            document.getElementById('l-cred').textContent = creditor;
-            document.getElementById('l-acc').textContent = account;
-            document.getElementById('l-issue').textContent = issue;
-            document.getElementById('l-sign-name').textContent = name;
-
-            // --- NUEVA LÓGICA DE STRIPE ---
-            // Verificar si el usuario acaba de pagar (revisando la URL)
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            if (urlParams.get('status') === 'success') {
-                // El pago fue exitoso, quitamos el candado
-                document.getElementById('paywall').style.display = 'none';
-                document.getElementById('letter-wrapper').classList.remove('is-locked');
-                
-                // Actualizar el mensaje de arriba
-                document.querySelector('.success-card h1').textContent = "✅ Payment Successful!";
-                document.querySelector('.success-card p').innerHTML = "Your letter is unlocked. <strong>Press Ctrl+P (or Cmd+P) to save as PDF.</strong>";
-                
-                // Mostrar el botón real para imprimir/descargar PDF
-                const printBtn = document.createElement('button');
-                printBtn.className = 'btn';
-                printBtn.style.marginTop = '20px';
-                printBtn.textContent = 'Print / Save as PDF';
-                printBtn.onclick = () => window.print();
-                document.querySelector('.success-card').appendChild(printBtn);
-            }
-        });
-
-        // Función que redirige al usuario a tu checkout de Stripe
-        function unlockLetter() {
-            window.location.href = "https://buy.stripe.com/8x28wRgI90gveqhfjQbwk01";
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+            padding: 20px;
         }
 
-        // Bloquear impresión si no han pagado
-        window.onbeforeprint = () => {
-            if (document.getElementById('letter-wrapper').classList.contains('is-locked')) {
-                alert("Please complete your purchase to enable printing.");
-                return false;
-            }
-        };
-    </script>
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .success-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #letter-wrapper {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .is-locked {
+            opacity: 0.5;
+        }
+
+        #paywall {
+            background: #fff3cd;
+            padding: 15px;
+            border: 1px solid #ffeeba;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="success-card">
+        <h1>Processing Payment...</h1>
+        <p>Please wait...</p>
+    </div>
+
+    <div id="letter-wrapper" class="is-locked">
+
+        <div id="paywall">
+            🔒 Please complete your payment to unlock the letter.
+            <br><br>
+            <button class="btn" onclick="unlockLetter()">Pay $9</button>
+        </div>
+
+        <div id="letter">
+
+            <p id="l-date"></p>
+
+            <p><strong id="l-name"></strong></p>
+            <p id="l-address"></p>
+
+            <br>
+
+            <p><strong id="l-cred"></strong></p>
+
+            <br>
+
+            <p>Re: Account Number <span id="l-acc"></span></p>
+
+            <br>
+
+            <p>Dear Sir or Madam,</p>
+
+            <p>
+                I am writing to dispute the following information in my credit report.
+                The item I am disputing is: <strong id="l-issue"></strong>.
+            </p>
+
+            <p>
+                This information is inaccurate and should be removed or corrected.
+                Please investigate this matter and update my credit file accordingly.
+            </p>
+
+            <br>
+
+            <p>Sincerely,</p>
+            <p id="l-sign-name"></p>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    };
+
+    // Obtener datos
+    const name = localStorage.getItem('cmc_name') || '[Your Name]';
+    const address = localStorage.getItem('cmc_address') || '[Your Address]';
+    const creditor = localStorage.getItem('cmc_creditor') || '[Creditor Name]';
+    const account = localStorage.getItem('cmc_account') || '[Account Number]';
+    const issue = localStorage.getItem('cmc_issue') || '[Dispute Reason]';
+
+    const currentDate = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    // Llenar carta
+    setText('l-name', name);
+    setText('l-address', address);
+    setText('l-date', currentDate);
+    setText('l-cred', creditor);
+    setText('l-acc', account);
+    setText('l-issue', issue);
+    setText('l-sign-name', name);
+
+    // Detectar pago
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.get('status') === 'success') {
+        document.getElementById('paywall').style.display = 'none';
+        document.getElementById('letter-wrapper').classList.remove('is-locked');
+
+        document.querySelector('.success-card h1').textContent = "✅ Payment Successful!";
+        document.querySelector('.success-card p').innerHTML = "Your letter is ready. Press Ctrl+P (or Cmd+P) to save as PDF.";
+
+        const printBtn = document.createElement('button');
+        printBtn.className = 'btn';
+        printBtn.style.marginTop = '15px';
+        printBtn.textContent = 'Print / Save as PDF';
+        printBtn.onclick = () => window.print();
+
+        document.querySelector('.success-card').appendChild(printBtn);
+    }
+});
+
+// Stripe redirect
+function unlockLetter() {
+    window.location.href = "https://buy.stripe.com/8x28wRgI90gveqhfjQbwk01";
+}
+
+// Bloquear impresión si no pagan
+window.onbeforeprint = () => {
+    if (document.getElementById('letter-wrapper').classList.contains('is-locked')) {
+        alert("Please complete your purchase first.");
+        return false;
+    }
+};
+</script>
+
+</body>
+</html>
