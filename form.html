@@ -1,90 +1,89 @@
-<!-- form.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>ClearMyCredit | Information Form</title>
+    <title>ClearMyCredit | Information & Signature</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --error: #ef4444;
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: #f4f7fc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
             padding: 2rem 1rem;
-            color: #1a2c3e;
         }
-
         .container {
             max-width: 780px;
             margin: 0 auto;
-            background: white;
+            background: var(--surface);
             border-radius: 32px;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
-            overflow: hidden;
             padding: 2rem 1.5rem 2.5rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
         }
-
         h1 {
             font-size: 1.9rem;
             font-weight: 600;
-            letter-spacing: -0.3px;
             margin-bottom: 0.5rem;
             color: #0b2b3b;
         }
-
         .subhead {
             font-size: 1rem;
-            color: #4a627a;
-            border-left: 4px solid #2c7da0;
+            color: var(--text-muted);
+            border-left: 4px solid var(--primary);
             padding-left: 1rem;
             margin-bottom: 2rem;
         }
-
         .form-group {
             margin-bottom: 1.5rem;
         }
-
         label {
             display: block;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: #0f3b4f;
+            color: var(--text-main);
         }
-
         input, select, textarea {
             width: 100%;
             padding: 0.85rem 1rem;
             font-size: 1rem;
-            border: 1.5px solid #e0e9f0;
+            border: 1.5px solid var(--border);
             border-radius: 20px;
-            background: #ffffff;
             transition: 0.2s;
             font-family: inherit;
         }
-
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #2c7da0;
-            box-shadow: 0 0 0 3px rgba(44,125,160,0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
         }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
+        input:invalid:not(:placeholder-shown) {
+            border-color: var(--error);
         }
-
+        fieldset {
+            border: none;
+            margin-bottom: 1.5rem;
+            padding: 0;
+        }
+        legend {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
         .radio-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: 0.5rem;
+            gap: 1rem;
         }
-
         .radio-group label {
             display: inline-flex;
             align-items: center;
@@ -92,248 +91,341 @@
             font-weight: normal;
             cursor: pointer;
         }
-
         input[type="radio"] {
             width: auto;
             transform: scale(1.1);
-            margin-right: 0.25rem;
         }
-
         .other-reason {
             margin-top: 1rem;
             display: none;
         }
-
         .other-reason.show {
             display: block;
         }
-
-        .btn-submit {
-            background: #2c7da0;
-            color: white;
+        .signature-area {
+            margin: 1.5rem 0;
+        }
+        canvas {
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            background: white;
+            width: 100%;
+            height: 200px;
+            touch-action: none;
+            cursor: crosshair;
+        }
+        .btn-clear {
+            background: #f1f5f9;
             border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            cursor: pointer;
+        }
+        .legal-check {
+            margin: 1.5rem 0;
+        }
+        .legal-check label {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        .legal-check input {
+            width: auto;
+            margin-top: 0.2rem;
+        }
+        .btn-submit {
+            background: var(--primary);
+            color: white;
             width: 100%;
             padding: 1rem;
             font-size: 1.2rem;
             font-weight: 600;
+            border: none;
             border-radius: 60px;
             cursor: pointer;
             transition: 0.2s;
             margin-top: 1rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
-
         .btn-submit:hover {
-            background: #1f5e7a;
+            background: var(--primary-hover);
             transform: scale(0.98);
         }
-
         .error-message {
-            color: #c7362b;
+            color: var(--error);
             font-size: 0.85rem;
             margin-top: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
         }
-
-        hr {
-            margin: 2rem 0 1rem;
-            border: 0;
-            height: 1px;
-            background: #e2edf2;
-        }
-
         .info-note {
             background: #eef3fa;
             padding: 1rem;
             border-radius: 24px;
             font-size: 0.85rem;
             text-align: center;
-            color: #2c5a74;
+            margin-top: 1.5rem;
         }
-
         @media (max-width: 550px) {
-            .container {
-                padding: 1.5rem;
-            }
-            h1 {
-                font-size: 1.6rem;
-            }
+            .container { padding: 1.5rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>✍️ ClearMyCredit</h1>
-    <div class="subhead">Generate your FCRA-compliant dispute letter — one‑time $9</div>
+    <div class="subhead" data-en="Enter your details and sign below" data-es="Ingrese sus datos y firme a continuación">
+        Enter your details and sign below
+    </div>
 
-    <form id="disputeForm">
+    <form id="disputeForm" novalidate>
         <div class="form-group">
-            <label>Full name *</label>
-            <input type="text" id="fullName" placeholder="John A. Doe" autocomplete="name">
+            <label for="fullName" data-en="Full name *" data-es="Nombre completo *">Full name *</label>
+            <input type="text" id="fullName" required placeholder="John A. Doe" autocomplete="name">
         </div>
 
         <div class="form-group">
-            <label>Street address (for letter header) *</label>
-            <input type="text" id="address" placeholder="123 Main St, Apt 4B, City, State ZIP" autocomplete="address-line1">
+            <label for="address" data-en="Street address *" data-es="Dirección *">Street address *</label>
+            <input type="text" id="address" required placeholder="123 Main St, Apt 4B, City, State ZIP" autocomplete="address-line1">
         </div>
 
         <div class="form-group">
-            <label>Email address *</label>
-            <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+            <label for="email" data-en="Email address *" data-es="Correo electrónico *">Email address *</label>
+            <input type="email" id="email" required placeholder="you@example.com" autocomplete="email">
         </div>
 
         <div class="form-group">
-            <label>Creditor / Bank name *</label>
-            <input type="text" id="creditor" placeholder="e.g., Chase Bank, Portfolio Recovery Associates">
+            <label for="creditor" data-en="Creditor / Bank name *" data-es="Acreedor / Banco *">Creditor / Bank name *</label>
+            <input type="text" id="creditor" required placeholder="e.g., Chase Bank, Portfolio Recovery Associates">
         </div>
 
         <div class="form-group">
-            <label>Account number (last 4 or full) *</label>
-            <input type="text" id="accountNumber" placeholder="XXXXXXXX1234">
+            <label for="accountNumber" data-en="Account number (last 4 or full) *" data-es="Número de cuenta (últimos 4 o completo) *">Account number *</label>
+            <input type="text" id="accountNumber" required placeholder="XXXXXXXX1234">
         </div>
 
-        <div class="form-group">
-            <label>Dispute reason *</label>
+        <fieldset>
+            <legend data-en="Dispute reason *" data-es="Motivo de la disputa *">Dispute reason *</legend>
             <div class="radio-group">
-                <label><input type="radio" name="disputeReason" value="Not my account"> Not my account</label>
+                <label><input type="radio" name="disputeReason" value="Not my account" required> Not my account</label>
                 <label><input type="radio" name="disputeReason" value="Wrong amount / balance"> Wrong amount / balance</label>
                 <label><input type="radio" name="disputeReason" value="Already paid / settled"> Already paid / settled</label>
                 <label><input type="radio" name="disputeReason" value="Outdated information"> Outdated information</label>
                 <label><input type="radio" name="disputeReason" value="other"> Other (describe below)</label>
             </div>
             <div id="otherReasonContainer" class="other-reason">
-                <textarea id="otherReasonText" rows="2" placeholder="Please describe the specific error or reason for dispute..."></textarea>
+                <textarea id="otherReasonText" rows="2" placeholder="Please describe the specific error..."></textarea>
             </div>
+        </fieldset>
+
+        <div class="signature-area">
+            <label data-en="Your signature (draw with mouse or finger)" data-es="Su firma (dibuje con el mouse o dedo)">Your signature</label>
+            <canvas id="signaturePad" width="600" height="200" style="width:100%; height:200px; touch-action:none;"></canvas>
+            <button type="button" id="clearSignatureBtn" class="btn-clear" data-en="Clear Signature" data-es="Borrar firma">Clear Signature</button>
         </div>
 
-        <div class="form-group">
-            <label>Language preference</label>
-            <div class="radio-group">
-                <label><input type="radio" name="lang" value="en" checked> English</label>
-                <label><input type="radio" name="lang" value="es"> Español</label>
-            </div>
+        <div class="legal-check">
+            <label>
+                <input type="checkbox" id="legalConsent" required>
+                <span data-en="I understand that ClearMyCredit is a self-help tool, not a credit repair agency, and provides no legal advice." 
+                      data-es="Entiendo que ClearMyCredit es una herramienta de autoayuda, no una agencia de reparación de crédito, y no brinda asesoramiento legal.">
+                    I understand that ClearMyCredit is a self-help tool, not a credit repair agency, and provides no legal advice.
+                </span>
+            </label>
         </div>
 
-        <button type="submit" class="btn-submit">Continue to secure payment →</button>
-        <div class="info-note">
+        <button type="submit" class="btn-submit" data-en="Continue to secure payment →" data-es="Continuar al pago seguro →">Continue to secure payment →</button>
+        <div class="info-note" data-en="🔒 $9 one-time. After payment you’ll get an instant professional dispute letter ready to print & mail." data-es="🔒 $9 único. Después del pago recibirá al instante una carta profesional lista para imprimir y enviar.">
             🔒 $9 one-time. After payment you’ll get an instant professional dispute letter ready to print & mail.
         </div>
     </form>
 </div>
 
 <script>
-    (function() {
-        const form = document.getElementById('disputeForm');
-        const otherRadio = document.querySelector('input[value="other"]');
-        const otherContainer = document.getElementById('otherReasonContainer');
-        const otherTextarea = document.getElementById('otherReasonText');
-
-        // Toggle "other" reason textarea
-        function toggleOtherReason() {
-            if (otherRadio && otherRadio.checked) {
-                otherContainer.classList.add('show');
-                otherTextarea.setAttribute('required', 'required');
-            } else {
-                otherContainer.classList.remove('show');
-                otherTextarea.removeAttribute('required');
-            }
-        }
-        const radios = document.querySelectorAll('input[name="disputeReason"]');
-        radios.forEach(radio => radio.addEventListener('change', toggleOtherReason));
-        toggleOtherReason(); // initial
-
-        // Validation helper
-        function validateField(value, fieldName) {
-            if (!value || value.trim() === '') {
-                return `${fieldName} is required.`;
-            }
-            return null;
-        }
-
-        function validateEmail(email) {
-            const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                return "Please enter a valid email address (e.g., name@domain.com).";
-            }
-            return null;
-        }
-
-        // Submit handler: save to localStorage, then redirect to Stripe test link
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            // Gather values
-            const fullName = document.getElementById('fullName').value.trim();
-            const address = document.getElementById('address').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const creditor = document.getElementById('creditor').value.trim();
-            const account = document.getElementById('accountNumber').value.trim();
-
-            // Determine dispute issue
-            let selectedReason = null;
-            for (let radio of radios) {
-                if (radio.checked) {
-                    if (radio.value === 'other') {
-                        selectedReason = otherTextarea.value.trim();
-                        if (!selectedReason) {
-                            alert("Please describe the dispute reason in the text field.");
-                            otherTextarea.focus();
-                            return;
-                        }
-                    } else {
-                        selectedReason = radio.value;
-                    }
-                    break;
+    // Language handling
+    const translatableElements = document.querySelectorAll('[data-en]');
+    function setLanguage(lang) {
+        translatableElements.forEach(el => {
+            const text = el.getAttribute(`data-${lang}`);
+            if (text) {
+                if (el.tagName === 'INPUT' && el.type !== 'checkbox' && el.type !== 'radio') {
+                    el.placeholder = text;
+                } else if (el.tagName === 'TEXTAREA') {
+                    el.placeholder = text;
+                } else if (el.tagName === 'BUTTON' && el.classList.contains('btn-clear')) {
+                    el.textContent = text;
+                } else if (el.tagName === 'BUTTON' && el.classList.contains('btn-submit')) {
+                    el.textContent = text;
+                } else {
+                    el.textContent = text;
                 }
             }
-
-            // Get language
-            let lang = 'en';
-            const langRadios = document.querySelectorAll('input[name="lang"]');
-            for (let r of langRadios) {
-                if (r.checked) {
-                    lang = r.value;
-                    break;
-                }
-            }
-
-            // Validation errors array
-            let errors = [];
-            errors.push(validateField(fullName, "Full name"));
-            errors.push(validateField(address, "Street address"));
-            errors.push(validateField(email, "Email address"));
-            errors.push(validateField(creditor, "Creditor name"));
-            errors.push(validateField(account, "Account number"));
-            errors.push(validateField(selectedReason, "Dispute reason"));
-
-            const emailErr = validateEmail(email);
-            if (emailErr) errors.push(emailErr);
-
-            const finalErrors = errors.filter(err => err !== null);
-            if (finalErrors.length > 0) {
-                alert("⚠️ Please fix the following:\n- " + finalErrors.join("\n- "));
-                return;
-            }
-
-            // Save to localStorage exactly as PRD spec
-            localStorage.setItem('cmc_name', fullName);
-            localStorage.setItem('cmc_address', address);
-            localStorage.setItem('cmc_creditor', creditor);
-            localStorage.setItem('cmc_account', account);
-            localStorage.setItem('cmc_issue', selectedReason);
-            localStorage.setItem('lang', lang);
-            // optional: store email for reference if needed later
-            localStorage.setItem('cmc_email', email);
-
-            // NEW STRIPE TEST LINK (provided by PRD)
-            const stripeTestLink = 'https://buy.stripe.com/test_aFa9AV4ZK2vu9DRaPEbbG00';
-
-            // Redirect to Stripe checkout (test mode)
-            window.location.href = stripeTestLink;
         });
-    })();
+        localStorage.setItem('lang', lang);
+    }
+    const savedLang = localStorage.getItem('lang') || 'en';
+    setLanguage(savedLang);
+
+    // Other reason toggle
+    const otherRadio = document.querySelector('input[value="other"]');
+    const otherContainer = document.getElementById('otherReasonContainer');
+    const otherTextarea = document.getElementById('otherReasonText');
+    function toggleOtherReason() {
+        if (otherRadio && otherRadio.checked) {
+            otherContainer.classList.add('show');
+            otherTextarea.setAttribute('required', 'required');
+        } else {
+            otherContainer.classList.remove('show');
+            otherTextarea.removeAttribute('required');
+        }
+    }
+    document.querySelectorAll('input[name="disputeReason"]').forEach(radio => radio.addEventListener('change', toggleOtherReason));
+    toggleOtherReason();
+
+    // Signature Pad
+    const canvas = document.getElementById('signaturePad');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.clientWidth * ratio;
+        canvas.height = canvas.clientHeight * ratio;
+        ctx.scale(ratio, ratio);
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function getCoords(e) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        let clientX, clientY;
+        if (e.touches) {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+        const x = (clientX - rect.left) * (canvas.width / rect.width);
+        const y = (clientY - rect.top) * (canvas.height / rect.height);
+        return { x, y };
+    }
+
+    function startDrawing(e) {
+        drawing = true;
+        const { x, y } = getCoords(e);
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        e.preventDefault();
+    }
+
+    function draw(e) {
+        if (!drawing) return;
+        const { x, y } = getCoords(e);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        e.preventDefault();
+    }
+
+    function stopDrawing() {
+        drawing = false;
+        ctx.beginPath();
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDrawing);
+
+    document.getElementById('clearSignatureBtn').addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
+    // Form submission
+    const form = document.getElementById('disputeForm');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Gather values
+        const fullName = document.getElementById('fullName').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const creditor = document.getElementById('creditor').value.trim();
+        const account = document.getElementById('accountNumber').value.trim();
+
+        let selectedReason = null;
+        const radios = document.querySelectorAll('input[name="disputeReason"]');
+        for (let radio of radios) {
+            if (radio.checked) {
+                if (radio.value === 'other') {
+                    selectedReason = otherTextarea.value.trim();
+                    if (!selectedReason) {
+                        alert("Please describe the dispute reason.");
+                        otherTextarea.focus();
+                        return;
+                    }
+                } else {
+                    selectedReason = radio.value;
+                }
+                break;
+            }
+        }
+        if (!selectedReason) {
+            alert("Please select a dispute reason.");
+            return;
+        }
+
+        const legalConsent = document.getElementById('legalConsent').checked;
+        if (!legalConsent) {
+            alert("You must agree to the legal disclaimer to continue.");
+            return;
+        }
+
+        // Validate required fields
+        if (!fullName || !address || !email || !creditor || !account) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+        const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        // Save to localStorage
+        localStorage.setItem('cmc_name', fullName);
+        localStorage.setItem('cmc_address', address);
+        localStorage.setItem('cmc_creditor', creditor);
+        localStorage.setItem('cmc_account', account);
+        localStorage.setItem('cmc_issue', selectedReason);
+        localStorage.setItem('cmc_email', email);
+
+        // Save signature as Base64 (if any)
+        const signatureData = canvas.toDataURL();
+        localStorage.setItem('cmc_signature', signatureData);
+
+        // Language (from global)
+        const currentLang = localStorage.getItem('lang') || 'en';
+        localStorage.setItem('lang', currentLang);
+
+        // Redirect to Stripe test link (ensure return URL is set to result.html?session_id=cmc_verified_2025)
+        const stripeLink = 'https://buy.stripe.com/test_aFa9AV4ZK2vu9DRaPEbbG00';
+        window.location.href = stripeLink;
+    });
 </script>
 </body>
 </html>
