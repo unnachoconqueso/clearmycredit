@@ -2,105 +2,290 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ClearMyCredit | Your Letter</title>
-
     <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning-bg: #fffbeb;
+            --warning-border: #fde047;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f8fafc;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1rem;
         }
 
         .container {
-            max-width: 700px;
-            margin: auto;
+            max-width: 850px;
+            margin: 0 auto;
         }
 
+        /* Success Card */
         .success-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
             text-align: center;
-            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
         }
 
-        .btn {
-            background: #2563eb;
+        .success-card h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-card p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        /* Letter Wrapper */
+        .letter-wrapper {
+            background: var(--surface);
+            border-radius: 24px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .letter-wrapper.is-locked {
+            filter: blur(8px);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Paywall Overlay */
+        .paywall-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 24px;
+        }
+
+        .paywall-card {
+            background: var(--surface);
+            border-radius: 32px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 350px;
+            margin: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border);
+        }
+
+        .paywall-card .lock-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .paywall-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .paywall-card p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .paywall-btn {
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 0.875rem 1.75rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
-            font-weight: bold;
+            transition: all 0.2s;
+            width: 100%;
         }
 
-        #letter-wrapper {
+        .paywall-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Letter Content (Formal Document) */
+        .letter-content {
+            padding: 2.5rem;
             background: white;
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
         }
 
-        .is-locked {
-            opacity: 0.5;
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            .letter-wrapper {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            .letter-wrapper.is-locked {
+                filter: none;
+                pointer-events: auto;
+            }
+            .paywall-overlay {
+                display: none;
+            }
+            .success-card {
+                display: none;
+            }
+            .letter-content {
+                padding: 0.5in;
+            }
         }
 
-        #paywall {
-            background: #fff3cd;
-            padding: 15px;
-            border: 1px solid #ffeeba;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            text-align: center;
+        /* Print styles for formal letter */
+        @media print {
+            .letter-content {
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-size: 12pt;
+                line-height: 1.4;
+                color: black;
+            }
+            .letter-content p {
+                margin-bottom: 12pt;
+            }
         }
 
-        p {
-            margin-bottom: 12px;
-            line-height: 1.6;
+        /* Screen styles for letter preview */
+        .letter-content {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        .letter-content p {
+            margin-bottom: 1rem;
+        }
+
+        .letter-content .letter-date {
+            margin-bottom: 1.5rem;
+        }
+
+        .letter-content .sender-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .letter-content .recipient-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .letter-content .subject {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .letter-content .signature {
+            margin-top: 2rem;
+        }
+
+        .btn-print {
+            background: var(--surface);
+            color: var(--primary);
+            border: 1.5px solid var(--border);
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-left: 0.75rem;
+        }
+
+        .btn-print:hover {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
         }
     </style>
 </head>
-
 <body>
 
 <div class="container">
-
-    <div class="success-card">
-        <h1>Processing Payment...</h1>
-        <p>Please wait...</p>
+    <div class="success-card" id="successCard">
+        <h1 id="statusTitle">Processing Payment...</h1>
+        <p id="statusMessage">Please wait...</p>
+        <div class="button-group" id="buttonGroup" style="display: none;">
+            <button class="btn-print" id="printBtn">📄 Print / Save as PDF</button>
+        </div>
     </div>
 
-    <div id="letter-wrapper" class="is-locked">
-
-        <div id="paywall">
-            🔒 Please complete your payment to unlock the letter.
-            <br><br>
-            <button class="btn" onclick="unlockLetter()">Pay $9</button>
+    <div class="letter-wrapper" id="letterWrapper">
+        <div id="paywallOverlay" class="paywall-overlay">
+            <div class="paywall-card">
+                <div class="lock-icon">🔒</div>
+                <h3>Unlock Your Dispute Letter</h3>
+                <p>Complete your payment to access your professionally formatted FCRA-compliant dispute letter.</p>
+                <button class="paywall-btn" id="unlockBtn">Pay $9 →</button>
+            </div>
         </div>
 
-        <div id="letter">
+        <div class="letter-content" id="letterContent">
+            <div class="sender-info">
+                <strong id="senderName"></strong><br>
+                <span id="senderAddress"></span>
+            </div>
 
-            <p id="l-date"></p>
+            <div class="letter-date">
+                <span id="letterDate"></span>
+            </div>
 
-            <p><strong id="l-name"></strong></p>
-            <p id="l-address"></p>
+            <div class="recipient-info">
+                <strong id="creditorName"></strong>
+            </div>
 
-            <br>
-
-            <p><strong id="l-cred"></strong></p>
-
-            <br>
-
-            <p>Re: Account Number <span id="l-acc"></span></p>
-
-            <br>
+            <div class="subject">
+                Re: Account Number <span id="accountNumber"></span>
+            </div>
 
             <p>Dear Sir or Madam,</p>
 
             <p>
                 I am writing to dispute the following information in my credit report.
-                The item I am disputing is: <strong id="l-issue"></strong>.
+                The item I am disputing is: <strong id="disputeIssue"></strong>.
             </p>
 
             <p>
@@ -108,78 +293,95 @@
                 Please investigate this matter and update my credit file accordingly.
             </p>
 
-            <br>
-
-            <p>Sincerely,</p>
-            <p id="l-sign-name"></p>
-
+            <div class="signature">
+                <p>Sincerely,</p>
+                <p><strong id="signatureName"></strong></p>
+            </div>
         </div>
     </div>
-
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
+        const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value || '[Not provided]';
+        };
 
-    const setText = (id, value) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = value;
-    };
+        // Get data from localStorage
+        const name = localStorage.getItem('cmc_name') || '';
+        const address = localStorage.getItem('cmc_address') || '';
+        const creditor = localStorage.getItem('cmc_creditor') || '';
+        const account = localStorage.getItem('cmc_account') || '';
+        const issue = localStorage.getItem('cmc_issue') || '';
 
-    // Obtener datos
-    const name = localStorage.getItem('cmc_name') || '[Your Name]';
-    const address = localStorage.getItem('cmc_address') || '[Your Address]';
-    const creditor = localStorage.getItem('cmc_creditor') || '[Creditor Name]';
-    const account = localStorage.getItem('cmc_account') || '[Account Number]';
-    const issue = localStorage.getItem('cmc_issue') || '[Dispute Reason]';
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
 
-    const currentDate = new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+        // Fill letter content
+        setText('senderName', name);
+        setText('senderAddress', address);
+        setText('letterDate', currentDate);
+        setText('creditorName', creditor);
+        setText('accountNumber', account);
+        setText('disputeIssue', issue);
+        setText('signatureName', name);
+
+        // Check payment status from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const wrapper = document.getElementById('letterWrapper');
+        const overlay = document.getElementById('paywallOverlay');
+        const successCard = document.getElementById('successCard');
+        const statusTitle = document.getElementById('statusTitle');
+        const statusMessage = document.getElementById('statusMessage');
+        const buttonGroup = document.getElementById('buttonGroup');
+
+        if (urlParams.get('status') === 'success') {
+            // Unlock the letter
+            wrapper.classList.remove('is-locked');
+            if (overlay) overlay.style.display = 'none';
+            
+            // Update success card
+            statusTitle.textContent = '✅ Payment Successful!';
+            statusMessage.textContent = 'Your FCRA-compliant dispute letter is ready. You can print or save it as PDF.';
+            buttonGroup.style.display = 'flex';
+            
+            // Add print functionality
+            const printBtn = document.getElementById('printBtn');
+            if (printBtn) {
+                printBtn.onclick = () => {
+                    window.print();
+                };
+            }
+        } else {
+            // Locked state
+            wrapper.classList.add('is-locked');
+            statusTitle.textContent = 'Complete Payment';
+            statusMessage.textContent = 'Pay $9 to unlock your professionally formatted dispute letter.';
+            buttonGroup.style.display = 'none';
+        }
+
+        // Stripe redirect function
+        const unlockBtn = document.getElementById('unlockBtn');
+        if (unlockBtn) {
+            unlockBtn.onclick = () => {
+                // Stripe test link
+                window.location.href = 'https://buy.stripe.com/8x28wRgI90gveqhfjQbwk01';
+            };
+        }
     });
 
-    // Llenar carta
-    setText('l-name', name);
-    setText('l-address', address);
-    setText('l-date', currentDate);
-    setText('l-cred', creditor);
-    setText('l-acc', account);
-    setText('l-issue', issue);
-    setText('l-sign-name', name);
-
-    // Detectar pago
-    const urlParams = new URLSearchParams(window.location.search);
-
-    if (urlParams.get('status') === 'success') {
-        document.getElementById('paywall').style.display = 'none';
-        document.getElementById('letter-wrapper').classList.remove('is-locked');
-
-        document.querySelector('.success-card h1').textContent = "✅ Payment Successful!";
-        document.querySelector('.success-card p').innerHTML = "Your letter is ready. Press Ctrl+P (or Cmd+P) to save as PDF.";
-
-        const printBtn = document.createElement('button');
-        printBtn.className = 'btn';
-        printBtn.style.marginTop = '15px';
-        printBtn.textContent = 'Print / Save as PDF';
-        printBtn.onclick = () => window.print();
-
-        document.querySelector('.success-card').appendChild(printBtn);
-    }
-});
-
-// Stripe redirect
-function unlockLetter() {
-    window.location.href = "https://buy.stripe.com/8x28wRgI90gveqhfjQbwk01";
-}
-
-// Bloquear impresión si no pagan
-window.onbeforeprint = () => {
-    if (document.getElementById('letter-wrapper').classList.contains('is-locked')) {
-        alert("Please complete your purchase first.");
-        return false;
-    }
-};
+    // Block print if locked (additional security)
+    window.onbeforeprint = () => {
+        const wrapper = document.getElementById('letterWrapper');
+        if (wrapper && wrapper.classList.contains('is-locked')) {
+            alert('Please complete your purchase first to print the letter.');
+            return false;
+        }
+    };
 </script>
 
 </body>
