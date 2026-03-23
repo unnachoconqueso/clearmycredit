@@ -162,81 +162,109 @@
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('session_id');
     const statusSuccess = urlParams.get('status') === 'success';
-    
-    // Accept either the secure token OR the legacy status=success parameter
     const isPaid = (token === VALID_TOKEN) || statusSuccess;
 
     // Load data from localStorage
-    const name = localStorage.getItem('cmc_name') || '';
+    const fullName = localStorage.getItem('cmc_full_name') || '';
     const address = localStorage.getItem('cmc_address') || '';
+    const city = localStorage.getItem('cmc_city') || '';
+    const state = localStorage.getItem('cmc_state') || '';
+    const zip = localStorage.getItem('cmc_zip') || '';
+    const dob = localStorage.getItem('cmc_date_of_birth') || '';
+    const ssnLast4 = localStorage.getItem('cmc_ssn_last4') || '';
     const creditor = localStorage.getItem('cmc_creditor') || '';
     const account = localStorage.getItem('cmc_account') || '';
-    const issue = localStorage.getItem('cmc_issue') || '';
+    const disputeType = localStorage.getItem('cmc_dispute_type') || '';
+    const explanation = localStorage.getItem('cmc_explanation') || '';
+    const reportedAmount = localStorage.getItem('cmc_reported_amount');
+    const correctAmount = localStorage.getItem('cmc_correct_amount');
+    const evidenceAvailable = localStorage.getItem('cmc_evidence_available') === 'true';
+    const evidenceDescription = localStorage.getItem('cmc_evidence_description') || '';
     const signatureBase64 = localStorage.getItem('cmc_signature') || '';
 
-    // If no data in localStorage, redirect to form
-    if (!name && !address && !creditor && !account && !issue) {
+    const fullAddress = `${address}, ${city}, ${state} ${zip}`;
+    const formattedDob = dob ? new Date(dob).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) : '';
+
+    // If no data, redirect to form
+    if (!fullName && !address && !creditor && !account) {
         window.location.href = 'form.html';
     }
 
-    // Helper to build the letter HTML
     const currentDate = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
 
-    function buildLetterContent(useRealData) {
-        const displayName = useRealData ? name : '[Your Name]';
-        const displayAddress = useRealData ? address : '[Your Address]';
-        const displayCreditor = useRealData ? creditor : '[Creditor Name]';
-        const displayAccount = useRealData ? account : '[Account Number]';
-        const displayIssue = useRealData ? issue : '[Dispute Reason]';
-        const displayDate = currentDate;
+    // Helper to format dispute type for text
+    function formatDisputeType(type) {
+        const map = {
+            'incorrect_balance': 'incorrect balance',
+            'not_mine': 'account that does not belong to me',
+            'paid_but_reported': 'account that was paid but still appears as unpaid',
+            'duplicate': 'duplicate account',
+            'fraud': 'fraudulent account'
+        };
+        return map[type] || type;
+    }
 
-        let signatureHtml = '';
-        if (useRealData && signatureBase64 && signatureBase64 !== 'data:image/png;base64,') {
-            signatureHtml = `<img src="${signatureBase64}" class="signature-img" alt="Your signature">`;
-        } else if (useRealData) {
-            signatureHtml = '<p><em>(No signature provided)</em></p>';
-        } else {
-            signatureHtml = '<p><em>[Signature]</em></p>';
-        }
-
-        return `
+    // Build personalized letter
+    function buildPersonalizedLetter() {
+        let letter = `
             <div class="sender-info">
-                <strong>${escapeHtml(displayName)}</strong><br>
-                ${escapeHtml(displayAddress)}
+                <strong>${escapeHtml(fullName)}</strong><br>
+                ${escapeHtml(fullAddress)}
             </div>
             <div class="letter-date">
-                ${escapeHtml(displayDate)}
+                ${escapeHtml(currentDate)}
             </div>
             <div class="recipient-info">
-                <strong>${escapeHtml(displayCreditor)}</strong>
+                <strong>${escapeHtml(creditor)}</strong>
             </div>
             <div class="subject">
-                Re: Account Number ${escapeHtml(displayAccount)}
+                Re: Account Number ${escapeHtml(account)}
             </div>
             <p>Dear Sir or Madam,</p>
             <p>
-                I am writing to dispute the following information in my credit report.
-                The item I am disputing is: <strong>${escapeHtml(displayIssue)}</strong>.
+                I am writing to dispute information that appears on my credit report. My full name is ${escapeHtml(fullName)}, 
+                date of birth ${escapeHtml(formattedDob)}, and the last four digits of my Social Security number are ${escapeHtml(ssnLast4)}.
             </p>
             <p>
-                Under Section 611 of the Fair Credit Reporting Act (15 U.S.C. § 1681i), I request that you
-                conduct a reasonable reinvestigation of this disputed information. Please provide me with
-                the method of verification used, including the name, address, and telephone number of any
-                furnisher of information contacted in connection with this reinvestigation.
+                The account I am disputing is listed as ${escapeHtml(formatDisputeType(disputeType))}. 
+                ${escapeHtml(explanation)}
+            </p>
+        `;
+
+        // Amount comparison
+        if (reportedAmount && correctAmount && disputeType === 'incorrect_balance') {
+            letter += `<p>The reported balance is $${escapeHtml(reportedAmount)}, but the correct balance should be $${escapeHtml(correctAmount)}. This discrepancy is material and must be corrected.</p>`;
+        }
+
+        // Evidence
+        if (evidenceAvailable && evidenceDescription) {
+            letter += `<p>I have attached supporting documentation to substantiate my dispute, specifically: ${escapeHtml(evidenceDescription)}.</p>`;
+        }
+
+        // Legal language
+        letter += `
+            <p>
+                Under Section 611 of the Fair Credit Reporting Act (15 U.S.C. § 1681i), I request that you conduct a reasonable reinvestigation of this disputed information. 
+                If you are unable to verify the accuracy of the item, you are required by law to delete it from my credit file.
             </p>
             <p>
-                This information is inaccurate and should be removed or corrected.
-                Please investigate this matter and update my credit file accordingly.
+                Please provide me with a written confirmation of the results of your reinvestigation, including the method of verification used and the name, address, and telephone number of any furnisher contacted.
             </p>
             <div class="signature">
                 <p>Sincerely,</p>
-                <p><strong>${escapeHtml(displayName)}</strong></p>
-                ${signatureHtml}
-            </div>
+                <p><strong>${escapeHtml(fullName)}</strong></p>
         `;
+
+        if (signatureBase64 && signatureBase64 !== 'data:image/png;base64,') {
+            letter += `<img src="${signatureBase64}" class="signature-img" alt="Your signature">`;
+        } else {
+            letter += `<p><em>(Signature on file)</em></p>`;
+        }
+
+        letter += `</div>`;
+        return letter;
     }
 
-    // Simple escape function to prevent XSS
     function escapeHtml(str) {
         if (!str) return '';
         return str
@@ -255,8 +283,8 @@
     const buttonGroup = document.getElementById('buttonGroup');
 
     if (isPaid) {
-        // Unlocked: show real data, remove blur, show instructions, add print button
-        letterContentDiv.innerHTML = buildLetterContent(true);
+        // Unlocked: show real personalized letter
+        letterContentDiv.innerHTML = buildPersonalizedLetter();
         wrapper.classList.remove('is-locked');
         overlay.style.display = 'none';
         statusTitle.textContent = '✅ Payment Successful!';
@@ -285,14 +313,25 @@
             window.print();
         });
     } else {
-        // Locked: show placeholder data with blur
-        letterContentDiv.innerHTML = buildLetterContent(false);
+        // Locked: show placeholder (generic but still formatted)
+        letterContentDiv.innerHTML = `
+            <div class="sender-info">
+                <strong>[Your Name]</strong><br>
+                [Your Address]
+            </div>
+            <div class="letter-date">${escapeHtml(currentDate)}</div>
+            <div class="recipient-info"><strong>[Creditor Name]</strong></div>
+            <div class="subject">Re: Account Number [Account Number]</div>
+            <p>Dear Sir or Madam,</p>
+            <p>I am writing to dispute information on my credit report. [Your explanation will appear here after payment].</p>
+            <p>Under the Fair Credit Reporting Act, I request a reinvestigation.</p>
+            <div class="signature"><p>Sincerely,</p><p><strong>[Your Name]</strong></p></div>
+        `;
         wrapper.classList.add('is-locked');
         statusTitle.textContent = 'Complete Payment';
         statusMessage.textContent = 'Pay $9 to unlock your professionally formatted dispute letter.';
         buttonGroup.style.display = 'none';
 
-        // Pay button redirects to Stripe
         document.getElementById('unlockBtn').addEventListener('click', () => {
             window.location.href = 'https://buy.stripe.com/test_aFa9AV4ZK2vu9DRaPEbbG00';
         });
