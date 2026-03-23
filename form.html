@@ -43,6 +43,15 @@
             padding-left: 1rem;
             margin-bottom: 2rem;
         }
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .form-row .form-group {
+            flex: 1;
+            min-width: 120px;
+        }
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -68,39 +77,6 @@
         }
         input:invalid:not(:placeholder-shown) {
             border-color: var(--error);
-        }
-        fieldset {
-            border: none;
-            margin-bottom: 1.5rem;
-            padding: 0;
-        }
-        legend {
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text-main);
-        }
-        .radio-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .radio-group label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: normal;
-            cursor: pointer;
-        }
-        input[type="radio"] {
-            width: auto;
-            transform: scale(1.1);
-        }
-        .other-reason {
-            margin-top: 1rem;
-            display: none;
-        }
-        .other-reason.show {
-            display: block;
         }
         .signature-area {
             margin: 1.5rem 0;
@@ -154,11 +130,6 @@
             background: var(--primary-hover);
             transform: scale(0.98);
         }
-        .error-message {
-            color: var(--error);
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
         .info-note {
             background: #eef3fa;
             padding: 1rem;
@@ -166,6 +137,12 @@
             font-size: 0.85rem;
             text-align: center;
             margin-top: 1.5rem;
+        }
+        .conditional-field {
+            display: none;
+        }
+        .conditional-field.show {
+            display: block;
         }
         @media (max-width: 550px) {
             .container { padding: 1.5rem; }
@@ -180,6 +157,7 @@
     </div>
 
     <form id="disputeForm" novalidate>
+        <!-- Identity -->
         <div class="form-group">
             <label for="fullName" data-en="Full name *" data-es="Nombre completo *">Full name *</label>
             <input type="text" id="fullName" required placeholder="John A. Doe" autocomplete="name">
@@ -187,7 +165,33 @@
 
         <div class="form-group">
             <label for="address" data-en="Street address *" data-es="Dirección *">Street address *</label>
-            <input type="text" id="address" required placeholder="123 Main St, Apt 4B, City, State ZIP" autocomplete="address-line1">
+            <input type="text" id="address" required placeholder="123 Main St" autocomplete="address-line1">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="city" data-en="City *" data-es="Ciudad *">City *</label>
+                <input type="text" id="city" required placeholder="Springfield">
+            </div>
+            <div class="form-group">
+                <label for="state" data-en="State *" data-es="Estado *">State *</label>
+                <input type="text" id="state" required placeholder="IL" maxlength="2">
+            </div>
+            <div class="form-group">
+                <label for="zip" data-en="ZIP *" data-es="Código postal *">ZIP *</label>
+                <input type="text" id="zip" required placeholder="62701">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="dob" data-en="Date of birth *" data-es="Fecha de nacimiento *">Date of birth *</label>
+                <input type="date" id="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="ssnLast4" data-en="SSN last 4 digits *" data-es="Últimos 4 dígitos del SSN *">SSN last 4 *</label>
+                <input type="text" id="ssnLast4" required maxlength="4" pattern="\d{4}" placeholder="1234">
+            </div>
         </div>
 
         <div class="form-group">
@@ -195,29 +199,59 @@
             <input type="email" id="email" required placeholder="you@example.com" autocomplete="email">
         </div>
 
+        <!-- Creditor -->
         <div class="form-group">
             <label for="creditor" data-en="Creditor / Bank name *" data-es="Acreedor / Banco *">Creditor / Bank name *</label>
-            <input type="text" id="creditor" required placeholder="e.g., Chase Bank, Portfolio Recovery Associates">
+            <input type="text" id="creditor" required placeholder="e.g., Chase Bank">
         </div>
 
         <div class="form-group">
-            <label for="accountNumber" data-en="Account number (last 4 or full) *" data-es="Número de cuenta (últimos 4 o completo) *">Account number *</label>
+            <label for="accountNumber" data-en="Account number *" data-es="Número de cuenta *">Account number *</label>
             <input type="text" id="accountNumber" required placeholder="XXXXXXXX1234">
         </div>
 
-        <fieldset>
-            <legend data-en="Dispute reason *" data-es="Motivo de la disputa *">Dispute reason *</legend>
-            <div class="radio-group">
-                <label><input type="radio" name="disputeReason" value="Not my account" required> Not my account</label>
-                <label><input type="radio" name="disputeReason" value="Wrong amount / balance"> Wrong amount / balance</label>
-                <label><input type="radio" name="disputeReason" value="Already paid / settled"> Already paid / settled</label>
-                <label><input type="radio" name="disputeReason" value="Outdated information"> Outdated information</label>
-                <label><input type="radio" name="disputeReason" value="other"> Other (describe below)</label>
+        <!-- Dispute details -->
+        <div class="form-group">
+            <label for="disputeType" data-en="Type of dispute *" data-es="Tipo de disputa *">Type of dispute *</label>
+            <select id="disputeType" required>
+                <option value="" disabled selected>Select one</option>
+                <option value="incorrect_balance">Incorrect balance / amount</option>
+                <option value="not_mine">Account not mine</option>
+                <option value="paid_but_reported">Paid but still reported</option>
+                <option value="duplicate">Duplicate account</option>
+                <option value="fraud">Fraud / identity theft</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="explanation" data-en="Explain what is wrong *" data-es="Explique cuál es el error *">Explain what is wrong *</label>
+            <textarea id="explanation" rows="3" required placeholder="Be specific: what is inaccurate, why, and any details..."></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="reportedAmount" data-en="Reported amount (if applicable)" data-es="Monto reportado (si aplica)">Reported amount ($)</label>
+                <input type="number" id="reportedAmount" step="0.01" placeholder="0.00">
             </div>
-            <div id="otherReasonContainer" class="other-reason">
-                <textarea id="otherReasonText" rows="2" placeholder="Please describe the specific error..."></textarea>
+            <div class="form-group">
+                <label for="correctAmount" data-en="Correct amount (if applicable)" data-es="Monto correcto (si aplica)">Correct amount ($)</label>
+                <input type="number" id="correctAmount" step="0.01" placeholder="0.00">
             </div>
-        </fieldset>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="evidenceAvailable"> 
+                <span data-en="I have evidence to support my dispute" data-es="Tengo evidencia para respaldar mi disputa">I have evidence to support my dispute</span>
+            </label>
+        </div>
+
+        <div id="evidenceGroup" class="conditional-field">
+            <div class="form-group">
+                <label for="evidenceDesc" data-en="Describe your evidence (e.g., payment confirmation, identity documents)" data-es="Describa su evidencia (ej. comprobante de pago, documentos de identidad)">Describe your evidence *</label>
+                <textarea id="evidenceDesc" rows="2" placeholder="e.g., Payment confirmation from bank, copy of ID..."></textarea>
+            </div>
+        </div>
 
         <div class="signature-area">
             <label data-en="Your signature (draw with mouse or finger)" data-es="Su firma (dibuje con el mouse o dedo)">Your signature</label>
@@ -267,21 +301,21 @@
     const savedLang = localStorage.getItem('lang') || 'en';
     setLanguage(savedLang);
 
-    // Other reason toggle
-    const otherRadio = document.querySelector('input[value="other"]');
-    const otherContainer = document.getElementById('otherReasonContainer');
-    const otherTextarea = document.getElementById('otherReasonText');
-    function toggleOtherReason() {
-        if (otherRadio && otherRadio.checked) {
-            otherContainer.classList.add('show');
-            otherTextarea.setAttribute('required', 'required');
+    // Evidence conditional field
+    const evidenceCheckbox = document.getElementById('evidenceAvailable');
+    const evidenceGroup = document.getElementById('evidenceGroup');
+    const evidenceDesc = document.getElementById('evidenceDesc');
+    function toggleEvidence() {
+        if (evidenceCheckbox.checked) {
+            evidenceGroup.classList.add('show');
+            evidenceDesc.setAttribute('required', 'required');
         } else {
-            otherContainer.classList.remove('show');
-            otherTextarea.removeAttribute('required');
+            evidenceGroup.classList.remove('show');
+            evidenceDesc.removeAttribute('required');
         }
     }
-    document.querySelectorAll('input[name="disputeReason"]').forEach(radio => radio.addEventListener('change', toggleOtherReason));
-    toggleOtherReason();
+    evidenceCheckbox.addEventListener('change', toggleEvidence);
+    toggleEvidence();
 
     // Signature Pad
     const canvas = document.getElementById('signaturePad');
@@ -297,15 +331,13 @@
         ctx.lineWidth = 2;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
-        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
     function getCoords(e) {
         const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
         let clientX, clientY;
         if (e.touches) {
             clientX = e.touches[0].clientX;
@@ -360,44 +392,31 @@
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // Gather values
+        // Gather all fields
         const fullName = document.getElementById('fullName').value.trim();
         const address = document.getElementById('address').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const state = document.getElementById('state').value.trim();
+        const zip = document.getElementById('zip').value.trim();
+        const dob = document.getElementById('dob').value;
+        const ssnLast4 = document.getElementById('ssnLast4').value.trim();
         const email = document.getElementById('email').value.trim();
         const creditor = document.getElementById('creditor').value.trim();
         const account = document.getElementById('accountNumber').value.trim();
+        const disputeType = document.getElementById('disputeType').value;
+        const explanation = document.getElementById('explanation').value.trim();
+        const reportedAmount = document.getElementById('reportedAmount').value;
+        const correctAmount = document.getElementById('correctAmount').value;
+        const evidenceAvailable = evidenceCheckbox.checked;
+        const evidenceDescription = evidenceDesc.value.trim();
 
-        let selectedReason = null;
-        const radios = document.querySelectorAll('input[name="disputeReason"]');
-        for (let radio of radios) {
-            if (radio.checked) {
-                if (radio.value === 'other') {
-                    selectedReason = otherTextarea.value.trim();
-                    if (!selectedReason) {
-                        alert("Please describe the dispute reason.");
-                        otherTextarea.focus();
-                        return;
-                    }
-                } else {
-                    selectedReason = radio.value;
-                }
-                break;
-            }
-        }
-        if (!selectedReason) {
-            alert("Please select a dispute reason.");
-            return;
-        }
-
-        const legalConsent = document.getElementById('legalConsent').checked;
-        if (!legalConsent) {
-            alert("You must agree to the legal disclaimer to continue.");
-            return;
-        }
-
-        // Validate required fields
-        if (!fullName || !address || !email || !creditor || !account) {
+        // Basic validations
+        if (!fullName || !address || !city || !state || !zip || !dob || !ssnLast4 || !email || !creditor || !account || !disputeType || !explanation) {
             alert("Please fill in all required fields.");
+            return;
+        }
+        if (!/^\d{4}$/.test(ssnLast4)) {
+            alert("SSN last 4 must be exactly 4 digits.");
             return;
         }
         const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
@@ -405,24 +424,41 @@
             alert("Please enter a valid email address.");
             return;
         }
+        if (evidenceAvailable && !evidenceDescription) {
+            alert("Please describe your evidence.");
+            return;
+        }
+        const legalConsent = document.getElementById('legalConsent').checked;
+        if (!legalConsent) {
+            alert("You must agree to the legal disclaimer to continue.");
+            return;
+        }
 
         // Save to localStorage
-        localStorage.setItem('cmc_name', fullName);
+        localStorage.setItem('cmc_full_name', fullName);
         localStorage.setItem('cmc_address', address);
+        localStorage.setItem('cmc_city', city);
+        localStorage.setItem('cmc_state', state);
+        localStorage.setItem('cmc_zip', zip);
+        localStorage.setItem('cmc_date_of_birth', dob);
+        localStorage.setItem('cmc_ssn_last4', ssnLast4);
+        localStorage.setItem('cmc_email', email);
         localStorage.setItem('cmc_creditor', creditor);
         localStorage.setItem('cmc_account', account);
-        localStorage.setItem('cmc_issue', selectedReason);
-        localStorage.setItem('cmc_email', email);
-
-        // Save signature as Base64 (if any)
+        localStorage.setItem('cmc_dispute_type', disputeType);
+        localStorage.setItem('cmc_explanation', explanation);
+        if (reportedAmount) localStorage.setItem('cmc_reported_amount', reportedAmount);
+        if (correctAmount) localStorage.setItem('cmc_correct_amount', correctAmount);
+        localStorage.setItem('cmc_evidence_available', evidenceAvailable ? 'true' : 'false');
+        if (evidenceDescription) localStorage.setItem('cmc_evidence_description', evidenceDescription);
+        
         const signatureData = canvas.toDataURL();
         localStorage.setItem('cmc_signature', signatureData);
 
-        // Language (from global)
         const currentLang = localStorage.getItem('lang') || 'en';
         localStorage.setItem('lang', currentLang);
 
-        // Redirect to Stripe test link (ensure return URL is set to result.html?session_id=cmc_verified_2025)
+        // Redirect to Stripe test link (ensure return URL is set to result.html?status=success or session_id)
         const stripeLink = 'https://buy.stripe.com/test_aFa9AV4ZK2vu9DRaPEbbG00';
         window.location.href = stripeLink;
     });
