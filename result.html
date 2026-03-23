@@ -155,16 +155,16 @@
 </div>
 
 <script>
-    // Expected success token
+    // Expected token for secure validation
     const VALID_TOKEN = 'cmc_verified_2025';
 
-    // Helper to set text
-    function setText(id, value) { document.getElementById(id).textContent = value; }
-
-    // Check payment status
+    // Get URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('session_id');
-    const isPaid = (token === VALID_TOKEN);
+    const statusSuccess = urlParams.get('status') === 'success';
+    
+    // Accept either the secure token OR the legacy status=success parameter
+    const isPaid = (token === VALID_TOKEN) || statusSuccess;
 
     // Load data from localStorage
     const name = localStorage.getItem('cmc_name') || '';
@@ -179,7 +179,7 @@
         window.location.href = 'form.html';
     }
 
-    // Generate letter HTML
+    // Helper to build the letter HTML
     const currentDate = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
 
     function buildLetterContent(useRealData) {
@@ -201,22 +201,22 @@
 
         return `
             <div class="sender-info">
-                <strong>${displayName}</strong><br>
-                ${displayAddress}
+                <strong>${escapeHtml(displayName)}</strong><br>
+                ${escapeHtml(displayAddress)}
             </div>
             <div class="letter-date">
-                ${displayDate}
+                ${escapeHtml(displayDate)}
             </div>
             <div class="recipient-info">
-                <strong>${displayCreditor}</strong>
+                <strong>${escapeHtml(displayCreditor)}</strong>
             </div>
             <div class="subject">
-                Re: Account Number ${displayAccount}
+                Re: Account Number ${escapeHtml(displayAccount)}
             </div>
             <p>Dear Sir or Madam,</p>
             <p>
                 I am writing to dispute the following information in my credit report.
-                The item I am disputing is: <strong>${displayIssue}</strong>.
+                The item I am disputing is: <strong>${escapeHtml(displayIssue)}</strong>.
             </p>
             <p>
                 Under Section 611 of the Fair Credit Reporting Act (15 U.S.C. § 1681i), I request that you
@@ -230,10 +230,21 @@
             </p>
             <div class="signature">
                 <p>Sincerely,</p>
-                <p><strong>${displayName}</strong></p>
+                <p><strong>${escapeHtml(displayName)}</strong></p>
                 ${signatureHtml}
             </div>
         `;
+    }
+
+    // Simple escape function to prevent XSS
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
     }
 
     const letterContentDiv = document.getElementById('letterContent');
@@ -267,15 +278,14 @@
         `;
         letterContentDiv.appendChild(instructionsDiv);
 
-        // Print button
+        // Print button: clear localStorage and print
         const printBtn = document.getElementById('printBtn');
         printBtn.addEventListener('click', () => {
-            // Clear localStorage on print
             localStorage.clear();
             window.print();
         });
     } else {
-        // Locked: show placeholder data (lorem ipsum) with blur
+        // Locked: show placeholder data with blur
         letterContentDiv.innerHTML = buildLetterContent(false);
         wrapper.classList.add('is-locked');
         statusTitle.textContent = 'Complete Payment';
