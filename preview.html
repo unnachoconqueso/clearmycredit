@@ -1,59 +1,58 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vista Previa de tu Carta | ClearMyCredit</title>
+  <title>Preview Your Letter | ClearMyCredit</title>
   <style>
-    body { font-family: system-ui, sans-serif; background: #f5f9ff; padding: 2rem 1rem; color: #0b1c2e; }
+    body { font-family: system-ui, sans-serif; background: #f5f9ff; padding: 2rem; color: #0b1c2e; }
     .container { max-width: 800px; margin: 0 auto; }
-    .header-box { text-align: center; margin-bottom: 2rem; }
-    .letter-container { background: white; padding: 3rem; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; font-family: 'Courier New', monospace; line-height: 1.2; border: 1px solid #ddd; }
-    .blur-mask { position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(transparent, white 50%); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; border-radius: 0 0 8px 8px; }
-    .payment-modal { background: #1a4cff; color: white; padding: 2rem; border-radius: 1.5rem; text-align: center; margin-top: -50px; position: relative; z-index: 10; box-shadow: 0 15px 40px rgba(26,76,255,0.3); }
-    .stripe-btn { background: white; color: #1a4cff; padding: 1.2rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 800; display: inline-block; margin-top: 1.5rem; font-size: 1.1rem; }
-    .trust-badge { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.9; }
+    .letter-paper { 
+      background: white; padding: 40px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      font-family: 'Courier New', monospace; position: relative; overflow: hidden;
+    }
+    .blur-overlay {
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 60%;
+      background: linear-gradient(transparent, white 50%); backdrop-filter: blur(4px);
+      display: flex; align-items: flex-end; justify-content: center; padding-bottom: 40px;
+    }
+    .pay-card {
+      background: #1a4cff; color: white; padding: 2rem; border-radius: 20px; 
+      text-align: center; margin-top: -40px; position: relative; z-index: 10;
+    }
+    .btn-pay { background: white; color: #1a4cff; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 1rem; }
   </style>
 </head>
 <body>
 <div class="container">
-  <div class="header-box">
-    <h2>Tu carta legal ha sido generada</h2>
-    <p>Revisa la información antes de descargar el PDF oficial.</p>
+  <div class="letter-paper">
+    <div id="letterBody"></div>
+    <div class="blur-overlay"></div>
   </div>
 
-  <div class="letter-container" id="previewArea">
-    <div id="letterContent">
-      </div>
-    <div class="blur-mask"></div>
-  </div>
-
-  <div class="payment-modal">
-    <h3>Descarga tu carta completa por solo $19.00</h3>
-    <p>Obtén el formato legal PDF listo para imprimir y enviar a los burós.</p>
-    <a href="TU_LINK_DE_PAGO_DE_STRIPE" class="stripe-btn">Pagar y Descargar Ahora →</a>
-    <div class="trust-badge">
-      🔒 Pago Seguro via Stripe | ⚖️ Cumplimiento FCRA
-    </div>
+  <div class="pay-card">
+    <h3>Your letter is ready to download</h3>
+    <p>Unlock the full FCRA-compliant PDF for just $19.00</p>
+    <a href="TU_LINK_DE_STRIPE" class="btn-pay">Pay & Download PDF →</a>
   </div>
 </div>
 
 <script>
-  const data = JSON.parse(localStorage.getItem('cmc_current_dispute'));
-  if (data) {
-    document.getElementById('letterContent').innerHTML = `
-      <p>${new Date().toLocaleDateString()}</p><br>
-      <p><strong>From:</strong> ${data.fullName}</p>
-      <p>${data.address}</p><br>
-      <p><strong>To:</strong> Dispute Department</p>
-      <p>${data.creditor}</p><br>
-      <p><strong>RE: FORMAL DISPUTE OF INACCURATE ACCOUNT INFORMATION</strong></p><br>
-      <p>To whom it may concern,</p><br>
-      <p>I am writing to formally dispute the following item on my credit report: ${data.creditor}. Account Number: ${data.accountNumber || 'NOT PROVIDED'}.</p><br>
-      <p><strong>Reason for Dispute:</strong> ${data.reason}</p><br>
-      <p>${data.explanation}</p><br>
-      <p style="color:#ccc">[EL CONTENIDO LEGAL RESTANTE ESTÁ BLOQUEADO]</p>
-      <p style="color:#ccc">[INSTRUCCIONES DE ENVÍO CERTIFICADO BLOQUEADAS]</p>
+  const data = JSON.parse(localStorage.getItem('disputeData'));
+  if(data) {
+    document.getElementById('letterBody').innerHTML = `
+      <p>${new Date().toLocaleDateString()}</p>
+      <br>
+      <p><strong>From:</strong> ${data.name}</p>
+      <p>${data.addr}</p>
+      <br>
+      <p><strong>To:</strong> Dispute Department - ${data.cred}</p>
+      <br>
+      <p>Dear Sir/Madam,</p>
+      <p>I am formally disputing account #${data.acc || 'XXXX'}.</p>
+      <p>${data.exp}</p>
+      <p style="color:#aaa">[Legal section blocked...]</p>
+      <p style="color:#aaa">[FCRA citations blocked...]</p>
     `;
   }
 </script>
