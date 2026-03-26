@@ -3,56 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy | ClearMyCredit</title>
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <title>Privacy Policy - ClearMyCredit</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       background: #f5f9ff;
-      padding: 2rem 1rem;
-      line-height: 1.5;
       color: #0b1c2e;
+      line-height: 1.6;
+      padding: 2rem 1rem;
     }
     .container {
       max-width: 800px;
       margin: 0 auto;
       background: white;
-      padding: 2rem;
+      padding: 3rem;
       border-radius: 2rem;
       box-shadow: 0 12px 30px rgba(0,0,0,0.05);
     }
-    h1 { font-size: 1.8rem; margin-bottom: 1rem; }
-    h2 { font-size: 1.2rem; margin: 1.5rem 0 0.5rem; }
-    p, li { margin-bottom: 0.75rem; color: #2c3e50; }
-    a { color: #1a4cff; text-decoration: none; }
-    .back-link { display: inline-block; margin-top: 2rem; }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #0f2b3d;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin: 2rem 0 1rem;
+      color: #1e4c8a;
+    }
+    p { margin-bottom: 1rem; }
+    ul { margin: 1rem 0 1rem 2rem; }
+    li { margin-bottom: 0.5rem; }
+    .last-updated {
+      color: #5d6f83;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+    a { color: #1a4cff; }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 2rem;
+      color: #1a4cff;
+      text-decoration: none;
+    }
+    .back-link:hover { text-decoration: underline; }
+    @media (max-width: 640px) {
+      .container { padding: 2rem 1.5rem; }
+      h1 { font-size: 1.5rem; }
+    }
   </style>
+<base target="_blank">
 </head>
 <body>
-<div class="container">
-  <h1>Privacy Policy</h1>
-  <p><strong>Effective date:</strong> March 25, 2026</p>
-  <p>ClearMyCredit ("we," "our," or "us") provides a self‑help tool to generate credit dispute letters. This Privacy Policy explains how we handle your information.</p>
-
-  <h2>Information We Collect</h2>
-  <p>We do not collect or store any personal information on our servers. All data you enter (name, address, creditor details, etc.) is stored locally in your browser's <strong>localStorage</strong>. This data never leaves your device and is not transmitted to us or any third party.</p>
-  <p>We use Stripe for payment processing. Stripe may collect billing information as described in <a href="https://stripe.com/privacy" target="_blank">Stripe's Privacy Policy</a>. We do not receive or store your payment card details.</p>
-
-  <h2>How We Use Information</h2>
-  <p>Because we do not collect personal data, we do not use it for any purpose. The tool uses your inputs solely to generate a letter on your device.</p>
-
-  <h2>Third‑Party Services</h2>
-  <p>Our website links to Stripe for payment. Stripe may use cookies or collect data as described in their privacy policy. We do not control Stripe’s data practices.</p>
-
-  <h2>Data Security</h2>
-  <p>We take reasonable measures to protect the tool from unauthorized access, but because all data remains on your device, you are responsible for the security of your own browser and device.</p>
-
-  <h2>Children’s Privacy</h2>
-  <p>Our service is not directed to individuals under 18. We do not knowingly collect information from minors.</p>
-
-  <h2>Changes to This Policy</h2>
-  <p>We may update this policy occasionally. Continued use of the tool constitutes acceptance of any changes.</p>
-
-  <a href="index.html" class="back-link">← Back to ClearMyCredit</a>
-</div>
+  <div class="container">
+    <a href="index.html" class="back-link">← Back to Home</a>
+    
+    <h1>Privacy Policy</h1>
+    <p class="last-updated">Last Updated: March 26, 2026</p>
+    
+    <p><strong>ClearMyCredit</strong> ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
+    
+    <h2>1. Information We Collect</h2>
+    <p>We collect the following types of information:</p>
+    <ul>
+      <li><strong>Personal Information:</strong> Name, address, city, state, ZIP code that you enter in our dispute letter form.</li>
+      <li><strong>Dispute Information:</strong> Creditor names, account numbers, dispute reasons, and explanations you provide.</li>
+      <li><strong>Payment Information:</strong> We do not collect or store your payment information. All payments are processed securely through Stripe.</li>
+      <li><strong>Technical Information:</strong> Browser type, IP address, and device information (collected automatically).</li>
+    </ul>
+    
+    <h2>2. How We Store Your Data</h2>
+    <p><strong>Important:</strong> Your personal and dispute information is stored <strong>locally in your browser</strong> using localStorage technology. This means:</p>
+    <ul>
+      <li>Your data never leaves your device</li>
+      <li>We do not have access to your information</li>
+      <li>Your data is automatically deleted after 24 hours of inactivity</li>
+      <li>You can clear your data at any time by clearing your browser's local storage</li>
+    </ul>
+    
+    <h2>3. How We Use Your Information</h2>
+    <p>We use your information solely to:</p>
+    <ul>
+      <li>Generate your credit dispute letter</li>
+      <li>Process your payment through Stripe</li>
+      <li>Improve our website and services</li>
+    </ul>
+    
+    <h2>4. Information Sharing</h2>
+    <p>We do not sell, trade, or rent your personal information to third parties. We only share information with:</p>
+    <ul>
+      <li><strong>Stripe:</strong> For payment processing only</li>
+      <li><strong>Legal Requirements:</strong> When required by law or to protect our rights</li>
+    </ul>
+    
+    <h2>5. Data Security</h2>
+    <p>We implement appropriate security measures including:</p>
+    <ul>
+      <li>HTTPS encryption for all data transmission</li>
+      <li>Content Security Policy (CSP) headers</li>
+      <li>Regular security audits</li>
+    </ul>
+    
+    <h2>6. Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+      <li>Access your data (stored locally in your browser)</li>
+      <li>Delete your data (clear browser localStorage)</li>
+      <li>Opt-out of any future communications</li>
+    </ul>
+    
+    <h2>7. Cookies</h2>
+    <p>We use minimal cookies for session management. You can disable cookies in your browser settings, though this may affect functionality.</p>
+    
+    <h2>8. Third-Party Services</h2>
+    <p>We use Stripe for payment processing. Please review <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe's Privacy Policy</a> for information on how they handle your data.</p>
+    
+    <h2>9. Children's Privacy</h2>
+    <p>Our services are not intended for individuals under 18 years of age. We do not knowingly collect personal information from children.</p>
+    
+    <h2>10. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page.</p>
+    
+    <h2>11. Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+    <p><strong>Email:</strong> privacy@clearmycredit.com</p>
+    
+    <p style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e2edf7; font-size: 0.9rem; color: #5d6f83;">
+      By using ClearMyCredit, you agree to the terms of this Privacy Policy.
+    </p>
+  </div>
 </body>
 </html>
