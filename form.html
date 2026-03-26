@@ -3,22 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  
-  <!-- Security Headers -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:;">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="/clearmycredit/favicon.ico">
-  
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>ClearMyCredit | Your Information</title>
-  <meta name="description" content="Enter your information to generate your FCRA-compliant credit dispute letter.">
-  <meta name="robots" content="noindex, follow">
-  
   <style>
-    /* ... (mantén el mismo CSS que ya tienes) ... */
+    /* mantén tu CSS original aquí */
     .spinner {
       display: inline-block;
       width: 16px;
@@ -31,84 +22,71 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .error-message { display: none; color: #dc2626; font-size: 0.75rem; margin-top: 0.25rem; }
+    .error-message.visible { display: block; }
+    input:invalid, select:invalid { border-color: #dc2626; }
   </style>
 </head>
 <body>
 <div class="form-container">
   <h2>✍️ Your dispute letter</h2>
-  
-  <div class="privacy-notice" role="note">
+  <div class="privacy-notice">
     <strong>🔒 Your privacy is protected</strong><br>
-    Your information is stored locally on your device and never sent to our servers. 
-    It will be automatically deleted after 24 hours of inactivity.
+    Your information is stored locally on your device and never sent to our servers.
   </div>
-
-  <div class="progress-section" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Form progress">
+  <div class="progress-section">
     <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
     <div class="step-indicator">
       <span id="stepLabel">Step 1 of 4</span>
       <span class="time-note">⏱️ ~2 minutes total</span>
     </div>
   </div>
-
   <form id="wizardForm" novalidate>
-    <!-- STEP 1 - Personal info -->
-    <div class="step active-step" id="step1" role="tabpanel" aria-labelledby="step1-label">
-      <h3 id="step1-label" class="visually-hidden" style="position: absolute; left: -10000px;">Personal Information</h3>
+    <!-- STEP 1 -->
+    <div class="step active-step" id="step1">
       <div class="form-group">
         <label class="required-star" for="fullName">Full legal name</label>
-        <input type="text" id="fullName" name="fullName" placeholder="John A. Doe" required 
-               autocomplete="name" maxlength="100" pattern="[A-Za-z\s\.\-']+">
+        <input type="text" id="fullName" name="fullName" placeholder="John A. Doe" required autocomplete="name" maxlength="100">
         <span class="error-message" id="fullName-error">Please enter your full legal name</span>
       </div>
       <div class="form-group">
         <label class="required-star" for="address">Street address</label>
-        <input type="text" id="address" name="address" placeholder="123 Main Street" required 
-               autocomplete="street-address" maxlength="200">
+        <input type="text" id="address" name="address" placeholder="123 Main Street" required autocomplete="street-address">
         <span class="error-message" id="address-error">Please enter your street address</span>
       </div>
       <div class="form-group">
         <label class="required-star" for="city">City</label>
-        <input type="text" id="city" name="city" placeholder="Los Angeles" required 
-               autocomplete="address-level2" maxlength="100" pattern="[A-Za-z\s\.\-']+">
+        <input type="text" id="city" name="city" placeholder="Los Angeles" required autocomplete="address-level2">
         <span class="error-message" id="city-error">Please enter your city</span>
       </div>
       <div class="form-row" style="display: flex; gap: 1rem; flex-wrap: wrap;">
         <div style="flex:1">
           <label class="required-star" for="state">State</label>
-          <input type="text" id="state" name="state" placeholder="CA" maxlength="2" required 
-                 autocomplete="address-level1" pattern="[A-Za-z]{2}" style="text-transform: uppercase;">
+          <input type="text" id="state" name="state" placeholder="CA" maxlength="2" required autocomplete="address-level1" style="text-transform: uppercase;">
           <span class="error-message" id="state-error">Enter 2-letter state code</span>
         </div>
         <div style="flex:1">
           <label class="required-star" for="zip">ZIP</label>
-          <input type="text" id="zip" name="zip" placeholder="90210" required 
-                 autocomplete="postal-code" pattern="\d{5}(-\d{4})?" maxlength="10">
+          <input type="text" id="zip" name="zip" placeholder="90210" required autocomplete="postal-code" pattern="\d{5}(-\d{4})?">
           <span class="error-message" id="zip-error">Enter a valid ZIP code</span>
         </div>
       </div>
     </div>
-
-    <!-- STEP 2 - Account info -->
-    <div class="step" id="step2" role="tabpanel" aria-labelledby="step2-label">
-      <h3 id="step2-label" class="visually-hidden" style="position: absolute; left: -10000px;">Account Information</h3>
+    <!-- STEP 2 -->
+    <div class="step" id="step2">
       <div class="form-group">
         <label class="required-star" for="creditor">Creditor / bank name</label>
-        <input type="text" id="creditor" name="creditor" placeholder="e.g., Chase Bank, LVNV Funding" required 
-               maxlength="150" autocomplete="organization">
+        <input type="text" id="creditor" name="creditor" placeholder="e.g., Chase Bank" required autocomplete="organization">
         <span class="error-message" id="creditor-error">Please enter the creditor or bank name</span>
       </div>
       <div class="form-group">
         <label for="accountNumber">Account number (optional)</label>
-        <input type="text" id="accountNumber" name="accountNumber" placeholder="XXXXXXXX1234" 
-               maxlength="50" autocomplete="off" inputmode="numeric">
+        <input type="text" id="accountNumber" name="accountNumber" placeholder="XXXXXXXX1234" maxlength="50" autocomplete="off" inputmode="numeric">
         <small>Helps to identify the account. Only enter the last 4 digits for security.</small>
       </div>
     </div>
-
-    <!-- STEP 3 - Dispute reason -->
-    <div class="step" id="step3" role="tabpanel" aria-labelledby="step3-label">
-      <h3 id="step3-label" class="visually-hidden" style="position: absolute; left: -10000px;">Dispute Reason</h3>
+    <!-- STEP 3 -->
+    <div class="step" id="step3">
       <div class="form-group">
         <label class="required-star" for="disputeReason">Reason for dispute</label>
         <select id="disputeReason" name="disputeReason" required>
@@ -121,44 +99,30 @@
         <span class="error-message" id="disputeReason-error">Please select a dispute reason</span>
       </div>
     </div>
-
-    <!-- STEP 4 - Additional details -->
-    <div class="step" id="step4" role="tabpanel" aria-labelledby="step4-label">
-      <h3 id="step4-label" class="visually-hidden" style="position: absolute; left: -10000px;">Additional Details</h3>
+    <!-- STEP 4 -->
+    <div class="step" id="step4">
       <div class="form-group">
         <label for="explanation">Explain what is inaccurate (optional but recommended)</label>
-        <textarea id="explanation" name="explanation" rows="4" 
-                  placeholder="Describe why this item is wrong, e.g., 'I paid this debt in full on June 2023 and have a confirmation letter'" 
-                  maxlength="1000"></textarea>
+        <textarea id="explanation" name="explanation" rows="4" maxlength="1000"></textarea>
         <small>Be specific — helps your dispute. Maximum 1000 characters.</small>
       </div>
     </div>
-
     <div class="button-group">
-      <button type="button" id="prevBtn" class="secondary" style="display: none;" aria-label="Go to previous step">← Back</button>
-      <button type="button" id="nextBtn" aria-label="Continue to next step">Continue →</button>
+      <button type="button" id="prevBtn" class="secondary" style="display: none;">← Back</button>
+      <button type="button" id="nextBtn">Continue →</button>
     </div>
   </form>
-
-  <footer style="margin-top: 2rem; text-align: center; font-size: 0.75rem; color: #5d6f83;">
+  <footer style="margin-top: 2rem; text-align: center; font-size: 0.75rem;">
     <nav>
       <a href="privacy.html">Privacy</a> • 
       <a href="terms.html">Terms</a> • 
       <a href="disclaimer.html">Disclaimer</a> •
-      <a href="cookies.html">Cookies</a> •
-      <a href="trust.html">Trust</a>
+      <a href="cookies.html">Cookies</a>
     </nav>
   </footer>
 </div>
-
 <script>
-  // Configuration
-  window.CMC_CONFIG = {
-    BASE_URL: window.location.origin,
-    NEXT_PAGE: 'preview.html',
-    SESSION_TIMEOUT: 24 * 60 * 60 * 1000, // 24 hours
-    MAX_INPUT_LENGTH: 1000
-  };
+  window.CMC_CONFIG = { BASE_URL: window.location.origin, NEXT_PAGE: 'preview.html', SESSION_TIMEOUT: 24 * 60 * 60 * 1000 };
 
   let currentStep = 1;
   const totalSteps = 4;
@@ -172,44 +136,137 @@
   const nextBtn = document.getElementById('nextBtn');
   const progressFill = document.getElementById('progressFill');
   const stepLabelSpan = document.getElementById('stepLabel');
-  const progressBar = document.querySelector('.progress-section');
 
-  // Sanitization
-  function sanitizeInput(str) {
-    if (!str || typeof str !== 'string') return '';
-    return str.replace(/[<>\"']/g, '').trim();
-  }
-
-  // Real-time validation helpers
-  function addRealtimeValidation(fieldId, validator) {
-    const field = document.getElementById(fieldId);
-    const errorEl = document.getElementById(fieldId + '-error');
-    if (!field) return;
-    field.addEventListener('input', () => {
-      const isValid = validator(field.value);
-      if (errorEl) errorEl.classList.toggle('visible', !isValid);
-    });
-  }
-
+  // ----- VALIDATION FUNCTIONS -----
   function validateName(val) { return val && val.trim().length >= 2 && /^[A-Za-z\s\.\-']+$/.test(val); }
   function validateAddress(val) { return val && val.trim().length >= 5; }
   function validateCity(val) { return val && val.trim().length >= 2 && /^[A-Za-z\s\.\-']+$/.test(val); }
   function validateState(val) { return /^[A-Z]{2}$/.test(val.toUpperCase()); }
   function validateZip(val) { return /^\d{5}(-\d{4})?$/.test(val); }
   function validateCreditor(val) { return val && val.trim().length >= 2; }
+  function validateDisputeReason(val) { return val && val !== ''; }
 
-  // Add real-time validations
+  // Real-time validation
+  function addRealtimeValidation(fieldId, validator) {
+    const field = document.getElementById(fieldId);
+    const errorEl = document.getElementById(fieldId + '-error');
+    if (!field || !errorEl) return;
+    field.addEventListener('input', () => {
+      const isValid = validator(field.value);
+      errorEl.classList.toggle('visible', !isValid);
+    });
+    field.addEventListener('blur', () => {
+      const isValid = validator(field.value);
+      errorEl.classList.toggle('visible', !isValid);
+    });
+  }
   addRealtimeValidation('fullName', validateName);
   addRealtimeValidation('address', validateAddress);
   addRealtimeValidation('city', validateCity);
   addRealtimeValidation('state', (v) => validateState(v));
   addRealtimeValidation('zip', validateZip);
   addRealtimeValidation('creditor', validateCreditor);
+  const reasonSelect = document.getElementById('disputeReason');
+  if (reasonSelect) {
+    const reasonError = document.getElementById('disputeReason-error');
+    reasonSelect.addEventListener('change', () => {
+      const isValid = validateDisputeReason(reasonSelect.value);
+      if (reasonError) reasonError.classList.toggle('visible', !isValid);
+    });
+  }
 
-  // Rest of existing functions: updateProgressAndUI, validateStep, saveFormData, loadStoredData, etc.
-  // (keep the same logic you had, but ensure they reference the new validators if needed)
-  // ... (I'll include the full remaining script as it was but with the added real-time validation above)
-  // For brevity, I'll provide the complete script below, but you can integrate the real-time addition into your existing code.
+  function validateStep(step) {
+    switch(step) {
+      case 1:
+        return validateName(document.getElementById('fullName').value) &&
+               validateAddress(document.getElementById('address').value) &&
+               validateCity(document.getElementById('city').value) &&
+               validateState(document.getElementById('state').value) &&
+               validateZip(document.getElementById('zip').value);
+      case 2:
+        return validateCreditor(document.getElementById('creditor').value);
+      case 3:
+        return validateDisputeReason(document.getElementById('disputeReason').value);
+      case 4:
+        return true; // optional field
+      default:
+        return false;
+    }
+  }
+
+  function updateProgressAndUI() {
+    const percent = (currentStep / totalSteps) * 100;
+    progressFill.style.width = percent + '%';
+    stepLabelSpan.textContent = `Step ${currentStep} of ${totalSteps}`;
+    for (let i = 1; i <= totalSteps; i++) {
+      if (stepElements[i]) {
+        stepElements[i].classList.toggle('active-step', i === currentStep);
+      }
+    }
+    prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-block';
+    nextBtn.textContent = currentStep === totalSteps ? 'Review Letter →' : 'Continue →';
+  }
+
+  function saveFormData() {
+    const data = {
+      fullName: document.getElementById('fullName').value.trim(),
+      address: document.getElementById('address').value.trim(),
+      city: document.getElementById('city').value.trim(),
+      state: document.getElementById('state').value.trim().toUpperCase(),
+      zip: document.getElementById('zip').value.trim(),
+      creditor: document.getElementById('creditor').value.trim(),
+      accountNumber: document.getElementById('accountNumber').value.trim(),
+      disputeReason: document.getElementById('disputeReason').value,
+      explanation: document.getElementById('explanation').value.trim()
+    };
+    localStorage.setItem('cmc_dispute_data', JSON.stringify(data));
+    const expires = Date.now() + CMC_CONFIG.SESSION_TIMEOUT;
+    localStorage.setItem('cmc_session_expires', expires.toString());
+  }
+
+  function loadStoredData() {
+    const stored = localStorage.getItem('cmc_dispute_data');
+    if (stored) {
+      try {
+        const data = JSON.parse(stored);
+        Object.keys(data).forEach(key => {
+          const field = document.getElementById(key);
+          if (field) field.value = data[key] || '';
+        });
+      } catch(e) {}
+    }
+  }
+
+  function goToNext() {
+    if (!validateStep(currentStep)) {
+      alert('Please fill all required fields correctly.');
+      return;
+    }
+    if (currentStep < totalSteps) {
+      currentStep++;
+      updateProgressAndUI();
+    } else {
+      saveFormData();
+      window.location.href = CMC_CONFIG.NEXT_PAGE;
+    }
+  }
+
+  function goToPrev() {
+    if (currentStep > 1) {
+      currentStep--;
+      updateProgressAndUI();
+    }
+  }
+
+  function init() {
+    loadStoredData();
+    updateProgressAndUI();
+    nextBtn.addEventListener('click', goToNext);
+    prevBtn.addEventListener('click', goToPrev);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 </script>
 </body>
 </html>
