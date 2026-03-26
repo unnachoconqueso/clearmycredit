@@ -6,166 +6,119 @@
   <title>ClearMyCredit | Fix your credit report</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background: #f5f9ff;
       color: #0b1c2e;
-      line-height: 1.5;
+      line-height: 1.4;
     }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-    }
-
-    /* Hero Section - El estilo que tenías antes */
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
     .hero {
       background: white;
-      border-radius: 2.5rem;
-      padding: 4rem 2rem;
+      border-radius: 2rem;
+      padding: 3rem 2rem;
       text-align: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.03);
-      margin-bottom: 3rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
     }
-
     .badge {
       display: inline-block;
       background: #e6f0ff;
       color: #1a4cff;
-      font-size: 0.8rem;
-      font-weight: 700;
-      padding: 0.4rem 1.2rem;
-      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
       margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
-
     h1 {
-      font-size: 3rem;
+      font-size: 2.8rem;
       font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-      color: #0b1c2e;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
     }
-
     .hero p {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       color: #4a627a;
       max-width: 600px;
-      margin: 0 auto 2.5rem;
+      margin: 0 auto 2rem;
     }
-
     .cta-button {
       background: #1a4cff;
       color: white;
-      padding: 1.2rem 2.5rem;
-      border-radius: 50px;
+      padding: 1rem 2.5rem;
       font-size: 1.1rem;
       font-weight: 700;
+      border-radius: 60px;
       text-decoration: none;
       display: inline-block;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 10px 20px rgba(26, 76, 255, 0.2);
+      box-shadow: 0 8px 20px rgba(26,76,255,0.25);
+      transition: 0.2s;
     }
-
-    .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 15px 25px rgba(26, 76, 255, 0.3);
-    }
-
-    /* Grid de Beneficios */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    .cta-button:hover { transform: translateY(-2px); background: #0f3ad0; }
+    
+    .trust-badges {
+      display: flex;
+      justify-content: center;
       gap: 2rem;
-      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #eef2f8;
     }
-
-    .feature-card {
-      background: white;
-      padding: 2rem;
-      border-radius: 2rem;
-      border: 1px solid #eef2f8;
-      transition: 0.3s;
-    }
-
-    .feature-card:hover {
-      border-color: #1a4cff;
-    }
-
-    .icon-box {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    .feature-card h3 {
-      font-size: 1.25rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .feature-card p {
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       color: #5d6f83;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
+      font-weight: 500;
     }
+    .trust-item svg { width: 18px; height: 18px; color: #10b981; }
 
     footer {
       text-align: center;
-      padding: 2rem;
-      color: #8a99a8;
-      font-size: 0.85rem;
+      margin-top: 4rem;
+      padding: 2rem 0;
       border-top: 1px solid #e2edf7;
+      font-size: 0.75rem;
+      color: #5d6f83;
     }
-
-    footer a {
-      color: #1a4cff;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-
-    @media (max-width: 768px) {
-      h1 { font-size: 2.2rem; }
-    }
+    footer a { color: #1a4cff; text-decoration: none; margin: 0 0.5rem; }
   </style>
 </head>
 <body>
 
 <div class="container">
   <div class="hero">
-    <span class="badge">SaaS de disputa legal FCRA</span>
-    <h1>Genera tu carta de disputa en segundos.</h1>
-    <p>Nuestra herramienta utiliza los estándares de la Fair Credit Reporting Act para ayudarte a corregir errores en tu reporte de crédito de forma fácil y profesional.</p>
-    <a href="form.html" class="cta-button">Empezar ahora →</a>
-  </div>
+    <div class="badge">SaaS de Disputa Legal FCRA</div>
+    <h1>Fix your credit report with confidence.</h1>
+    <p>Genera cartas de disputa profesionales en segundos. Sin abogados, sin procesos lentos, solo resultados.</p>
+    <a href="form.html" class="cta-button">Get Started →</a>
 
-  <div class="features">
-    <div class="feature-card">
-      <span class="icon-box">🔒</span>
-      <h3>Privacidad Local</h3>
-      <p>Tus datos no se guardan en la nube. Todo el proceso ocurre en tu navegador para tu máxima seguridad.</p>
-    </div>
-    <div class="feature-card">
-      <span class="icon-box">⚖️</span>
-      <h3>Basado en la Ley</h3>
-      <p>Cartas redactadas profesionalmente bajo la Sección 611 de la FCRA para asegurar validez ante los burós.</p>
-    </div>
-    <div class="feature-card">
-      <span class="icon-box">⚡</span>
-      <h3>Rápido y Fácil</h3>
-      <p>No pierdas tiempo con plantillas genéricas. Generamos un documento específico para tu caso en menos de 2 minutos.</p>
+    <div class="trust-badges">
+      <div class="trust-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <span>Real disputes accepted</span>
+      </div>
+      <div class="trust-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>Takes less than 2 min</span>
+      </div>
+      <div class="trust-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M6 14h6m-6-4h12M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"></path></svg>
+        <span>No credit card to start</span>
+      </div>
     </div>
   </div>
 
   <footer>
-    <p>© 2026 ClearMyCredit. Todos los derechos reservados.</p>
-    <div style="margin-top: 10px;">
-      <a href="privacy.html">Privacidad</a> | 
-      <a href="terms.html">Términos</a> | 
-      <a href="disclaimer.html">Descargo Legal</a>
+    <p>© 2026 ClearMyCredit. Not a law firm.</p>
+    <div style="margin-top: 1rem;">
+      <a href="privacy.html">Privacy</a> • 
+      <a href="terms.html">Terms</a> • 
+      <a href="disclaimer.html">Disclaimer</a>
     </div>
   </footer>
 </div>
