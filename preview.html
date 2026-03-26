@@ -122,16 +122,32 @@
       margin-bottom: 1rem;
     }
 
-    .footer-note {
+    .instructions {
+      background: #f8fafc;
+      border: 1px solid #e2edf7;
+      border-radius: 20px;
+      padding: 1.2rem;
       margin-top: 1.5rem;
-      font-size: 0.7rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .instructions h4 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: #0b2b3b;
+    }
+
+    .footer-note {
+      margin-top: 1rem;
+      font-size: 0.75rem;
       text-align: center;
       color: #5a6e85;
     }
 
     @media print {
       body { background: white; padding: 0; }
-      .paywall-overlay, .download-actions, .footer-note, .success-badge { display: none; }
+      .paywall-overlay, .download-actions, .instructions, .footer-note, .success-badge { display: none; }
       .letter-card { box-shadow: none; }
       .letter-paper { padding: 0.3in; }
     }
@@ -157,8 +173,20 @@
       <button id="downloadPdfBtn" class="btn">📄 Download as PDF</button>
       <button id="copyTextBtn" class="btn btn-outline">📋 Copy text</button>
     </div>
+    <div class="instructions" id="instructionsBlock">
+      <h4>📬 Next steps – How to send your dispute</h4>
+      <p><strong>1. Print this letter</strong> (use the PDF download or browser print).</p>
+      <p><strong>2. Attach supporting documents:</strong> Include a copy of your government-issued ID, proof of address (e.g., utility bill), and any evidence you mentioned (payment confirmations, etc.).</p>
+      <p><strong>3. Mail via Certified Mail with Return Receipt Requested</strong> to the credit bureau(s):</p>
+      <ul style="margin: 0.5rem 0 0.5rem 1.5rem;">
+        <li><strong>Equifax:</strong> P.O. Box 740256, Atlanta, GA 30374</li>
+        <li><strong>Experian:</strong> P.O. Box 4500, Allen, TX 75013</li>
+        <li><strong>TransUnion:</strong> P.O. Box 2000, Chester, PA 19016</li>
+      </ul>
+      <p><strong>4. Keep copies</strong> of everything for your records. The credit bureau must investigate within 30 days.</p>
+    </div>
     <div class="footer-note">
-      ✅ Print & mail via Certified Mail to the credit bureaus. Keep copies for your records.
+      ✅ Need help? <a href="disclaimer.html" style="color:#1a4cff;">Read our disclaimer</a> — we are not a law firm, but this letter follows FCRA standards.
     </div>
   </div>
 </div>
@@ -219,7 +247,6 @@
       <p>Please provide me with written confirmation of the results of your reinvestigation, including the method of verification and the contact information of any furnisher involved.</p>
       <p>Sincerely,</p>
       <p><strong>${fullName}</strong></p>
-      <p style="font-size: 0.8rem; margin-top: 1rem;"><em>This letter was prepared using ClearMyCredit self‑help tool.</em></p>
     `;
   }
 
