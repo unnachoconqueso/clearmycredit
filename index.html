@@ -5,18 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>ClearMyCredit | Fix your credit report</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background: #f5f9ff;
       color: #0b1c2e;
       line-height: 1.4;
     }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 2rem 1.5rem;
     }
+
     .hero {
       background: white;
       border-radius: 2rem;
@@ -25,6 +32,7 @@
       box-shadow: 0 12px 30px rgba(0,0,0,0.05);
       margin-bottom: 2rem;
     }
+
     .badge {
       display: inline-block;
       background: #e6f0ff;
@@ -35,116 +43,130 @@
       border-radius: 40px;
       margin-bottom: 1.5rem;
     }
+
     h1 {
       font-size: 2.8rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1.2;
       margin-bottom: 1rem;
+      background: linear-gradient(135deg, #0f2b3d, #1e4c8a);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
     }
-    .hero p {
+
+    .subhead {
       font-size: 1.2rem;
       color: #4a627a;
       max-width: 600px;
       margin: 0 auto 2rem;
     }
-    .cta-button {
-      background: #1a4cff;
-      color: white;
-      padding: 1rem 2.5rem;
-      font-size: 1.1rem;
-      font-weight: 700;
-      border-radius: 60px;
-      text-decoration: none;
-      display: inline-block;
-      box-shadow: 0 8px 20px rgba(26,76,255,0.25);
-      transition: 0.2s;
-    }
-    .cta-button:hover {
-      transform: translateY(-2px);
-      background: #0f3ad0;
-    }
+
     .trust-badges {
       display: flex;
       justify-content: center;
       gap: 2rem;
       flex-wrap: wrap;
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid #eef2f8;
+      margin: 2rem 0;
     }
+
     .trust-item {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      color: #5d6f83;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 500;
+      color: #2c4c6e;
     }
+
     .trust-item svg {
-      width: 18px;
-      height: 18px;
-      color: #10b981;
-      stroke: currentColor;
-      fill: none;
+      width: 20px;
+      height: 20px;
+      stroke: #1a4cff;
+      stroke-width: 2;
     }
-    footer {
-      text-align: center;
+
+    .cta-button {
+      background: #1a4cff;
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 60px;
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(26,76,255,0.25);
+      transition: 0.2s;
+    }
+
+    .cta-button:hover {
+      background: #0f3ad0;
+      transform: translateY(-2px);
+    }
+
+    .footer {
       margin-top: 4rem;
-      padding: 2rem 0;
+      padding-top: 2rem;
       border-top: 1px solid #e2edf7;
+      text-align: center;
       font-size: 0.75rem;
       color: #5d6f83;
     }
-    footer a {
+
+    .footer a {
       color: #1a4cff;
       text-decoration: none;
       margin: 0 0.5rem;
     }
+
+    .disclaimer {
+      max-width: 700px;
+      margin: 1rem auto 0;
+      font-size: 0.7rem;
+    }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 2rem; }
+      .hero { padding: 2rem 1rem; }
+    }
   </style>
 </head>
 <body>
-
 <div class="container">
   <div class="hero">
-    <div class="badge">SaaS de Disputa Legal FCRA</div>
-    <h1>Fix your credit report with confidence.</h1>
-    <p>Genera cartas de disputa profesionales en segundos. Sin abogados, sin procesos lentos, solo resultados.</p>
-    <a href="form.html" class="cta-button">Get Started →</a>
-
+    <div class="badge">⚡ FCRA‑compliant tool</div>
+    <h1>Generate a professional credit dispute letter in 30 seconds</h1>
+    <p class="subhead">No lawyers. No templates. Done for you. Used by consumers to dispute inaccurate credit items.</p>
+    
     <div class="trust-badges">
       <div class="trust-item">
-        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
         <span>Real disputes accepted</span>
       </div>
       <div class="trust-item">
-        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline points="12 6 12 12 16 14"></polyline>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         <span>Takes less than 2 min</span>
       </div>
       <div class="trust-item">
-        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-          <line x1="1" y1="10" x2="23" y2="10"></line>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M6 14h6m-6-4h12M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"></path></svg>
         <span>No credit card to start</span>
       </div>
     </div>
+
+    <a href="form.html" class="cta-button">Start Free →</a>
   </div>
 
-  <footer>
-    <p>© 2026 ClearMyCredit. Not a law firm.</p>
-    <div style="margin-top: 1rem;">
-      <a href="privacy.html">Privacy</a> • 
-      <a href="terms.html">Terms</a> • 
-      <a href="disclaimer.html">Disclaimer</a>
+  <footer class="footer">
+    <div>
+      <a href="#">Privacy Policy</a> • <a href="#">Terms</a> • <a href="#">Disclaimer</a>
+    </div>
+    <div class="disclaimer">
+      <strong>We are not a law firm.</strong> ClearMyCredit is a self‑help tool and does not provide legal advice. No specific credit score outcome is guaranteed. Your data is encrypted and never sold.
     </div>
   </footer>
 </div>
-
 </body>
 </html>
