@@ -9,7 +9,87 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>Payment Complete - ClearMyCredit</title>
   <style>
-    /* mantén tu CSS original */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e6f0fa 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 2rem;
+      padding: 2rem;
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
+    }
+    .check {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #0f172a;
+    }
+    p {
+      color: #334155;
+      margin-bottom: 1.5rem;
+    }
+    .btn {
+      display: inline-block;
+      background: #0f172a;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .loading-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 1rem 0;
+    }
+    .loading-dots span {
+      width: 8px;
+      height: 8px;
+      background: #0f172a;
+      border-radius: 50%;
+      animation: pulse 1.2s infinite;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    .security-note {
+      background: #f1f5f9;
+      padding: 1rem;
+      border-radius: 16px;
+      font-size: 0.8rem;
+      margin-top: 1rem;
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.7rem;
+      color: #5d6f83;
+    }
+    footer a {
+      color: #1a4cff;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
@@ -24,6 +104,14 @@
     Your payment was processed securely by Stripe. No card details were stored.
   </div>
 </div>
+<footer>
+  <nav>
+    <a href="privacy.html">Privacy</a> • 
+    <a href="terms.html">Terms</a> • 
+    <a href="disclaimer.html">Disclaimer</a> •
+    <a href="cookies.html">Cookies</a>
+  </nav>
+</footer>
 <script>
   window.CMC_CONFIG = { REDIRECT_DELAY: 2000 };
   function redirectToPreview() { window.location.href = 'preview.html?payment=success'; }
@@ -42,13 +130,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 </script>
-<footer style="text-align: center; font-size: 0.75rem; margin-top: 1.5rem;">
-  <nav>
-    <a href="privacy.html">Privacy</a> • 
-    <a href="terms.html">Terms</a> • 
-    <a href="disclaimer.html">Disclaimer</a> •
-    <a href="cookies.html">Cookies</a>
-  </nav>
-</footer>
 </body>
 </html>
