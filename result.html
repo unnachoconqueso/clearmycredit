@@ -3,8 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment complete - ClearMyCredit</title>
+  
+  <!-- Security Headers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:;">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  
+  <!-- SEO -->
+  <title>Payment Complete - ClearMyCredit</title>
+  <meta name="description" content="Your payment was successful. Your dispute letter is now ready.">
+  <meta name="robots" content="noindex, nofollow">
+  
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       background: #f5f9ff;
@@ -15,46 +32,194 @@
       margin: 0;
       padding: 1rem;
     }
+
     .card {
       background: white;
       max-width: 450px;
-      padding: 2rem;
+      padding: 2.5rem;
       border-radius: 2rem;
       text-align: center;
       box-shadow: 0 20px 30px rgba(0,0,0,0.05);
     }
+
     .check {
-      font-size: 3rem;
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+      animation: checkBounce 0.5s ease-out;
     }
+
+    @keyframes checkBounce {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
     h2 {
       margin: 1rem 0 0.5rem;
+      color: #0b1c2e;
+      font-size: 1.5rem;
     }
+
+    p {
+      color: #4a627a;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
     .btn {
       background: #1a4cff;
       color: white;
       border: none;
-      padding: 0.8rem 1.8rem;
+      padding: 1rem 2rem;
       border-radius: 40px;
       font-weight: 600;
-      margin-top: 1.5rem;
+      font-size: 1rem;
       cursor: pointer;
       display: inline-block;
       text-decoration: none;
+      transition: 0.2s;
+      box-shadow: 0 8px 20px rgba(26,76,255,0.25);
+    }
+
+    .btn:hover {
+      background: #0f3ad0;
+      transform: translateY(-2px);
+    }
+
+    .btn:focus {
+      outline: 3px solid rgba(26,76,255,0.3);
+      outline-offset: 2px;
+    }
+
+    .loading-dots {
+      display: inline-block;
+      margin-top: 1rem;
+    }
+
+    .loading-dots span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #1a4cff;
+      border-radius: 50%;
+      margin: 0 3px;
+      animation: dotPulse 1.4s infinite ease-in-out both;
+    }
+
+    .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes dotPulse {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
+
+    .security-note {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e2edf7;
+      font-size: 0.75rem;
+      color: #5d6f83;
+    }
+
+    .security-note strong {
+      color: #0b1c2e;
     }
   </style>
+<base target="_blank">
 </head>
 <body>
-<div class="card">
-  <div class="check">✅</div>
-  <h2>Payment successful!</h2>
-  <p>Your dispute letter is now unlocked. You'll be redirected to download it.</p>
+<div class="card" role="main" aria-labelledby="success-heading">
+  <div class="check" aria-hidden="true">✅</div>
+  <h2 id="success-heading">Payment successful!</h2>
+  <p>Your dispute letter is now unlocked. You'll be redirected to download it in a moment.</p>
+  
   <a href="preview.html?payment=success" class="btn" id="redirectBtn">View my letter →</a>
+  
+  <div class="loading-dots" aria-label="Redirecting">
+    <span></span><span></span><span></span>
+  </div>
+  
+  <div class="security-note">
+    <strong>🔒 Secure transaction</strong><br>
+    Your payment was processed securely by Stripe. No card details were stored.
+  </div>
 </div>
+
 <script>
-  localStorage.setItem('cmc_letter_paid', 'true');
-  setTimeout(() => {
-    window.location.href = 'preview.html?payment=success';
-  }, 1200);
+  // Configuration
+  window.CMC_CONFIG = {
+    BASE_URL: window.location.origin,
+    REDIRECT_DELAY: 2000, // 2 seconds
+    SUCCESS_URL: './preview.html?payment=success'
+  };
+
+  (function() {
+    'use strict';
+
+    // Validate payment success from URL or referrer
+    function validatePaymentSuccess() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paymentStatus = urlParams.get('payment');
+      const sessionId = urlParams.get('session_id');
+      
+      // Mark as paid if we have payment params or if coming from Stripe
+      if (paymentStatus === 'success' || sessionId) {
+        try {
+          localStorage.setItem('cmc_letter_paid', 'true');
+          
+          // Update session expiration
+          const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
+          localStorage.setItem('cmc_session_expires', (Date.now() + SESSION_TIMEOUT).toString());
+          
+          return true;
+        } catch (e) {
+          console.error('Failed to save payment status:', e);
+        }
+      }
+      
+      return false;
+    }
+
+    // Perform redirect
+    function redirectToPreview() {
+      const redirectUrl = CMC_CONFIG.BASE_URL + '/' + CMC_CONFIG.SUCCESS_URL;
+      window.location.href = redirectUrl;
+    }
+
+    // Initialize
+    function init() {
+      // Always mark as paid on this page (assumes user reached here after successful payment)
+      try {
+        localStorage.setItem('cmc_letter_paid', 'true');
+        
+        // Update session expiration
+        const SESSION_TIMEOUT = 24 * 60 * 60 * 1000;
+        localStorage.setItem('cmc_session_expires', (Date.now() + SESSION_TIMEOUT).toString());
+      } catch (e) {
+        console.error('Failed to save payment status:', e);
+      }
+
+      // Auto-redirect after delay
+      setTimeout(redirectToPreview, CMC_CONFIG.REDIRECT_DELAY);
+
+      // Update button click handler
+      const redirectBtn = document.getElementById('redirectBtn');
+      if (redirectBtn) {
+        redirectBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          redirectToPreview();
+        });
+      }
+    }
+
+    // Run initialization
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
 </script>
 </body>
 </html>
