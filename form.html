@@ -3,7 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>ClearMyCredit | Your information</title>
+  
+  <!-- Security Headers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:;">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  
+  <!-- SEO -->
+  <title>ClearMyCredit | Your Information</title>
+  <meta name="description" content="Enter your information to generate your FCRA-compliant credit dispute letter.">
+  <meta name="robots" content="noindex, follow">
+  
   <style>
     * {
       margin: 0;
@@ -112,6 +123,10 @@
       box-shadow: 0 0 0 3px rgba(26,76,255,0.1);
     }
 
+    input:invalid:not(:placeholder-shown) {
+      border-color: #e53e3e;
+    }
+
     .button-group {
       display: flex;
       justify-content: space-between;
@@ -144,14 +159,49 @@
       background: #e2e9f5;
     }
 
+    button:focus {
+      outline: 3px solid rgba(26,76,255,0.3);
+      outline-offset: 2px;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .required-star:after {
       content: " *";
       color: #e53e3e;
     }
 
+    .error-message {
+      color: #e53e3e;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      display: none;
+    }
+
+    .error-message.visible {
+      display: block;
+    }
+
     small {
       color: #7c8ea0;
       font-size: 0.7rem;
+    }
+
+    .privacy-notice {
+      background: #f8fafc;
+      border: 1px solid #e2edf7;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      color: #5d6f83;
+    }
+
+    .privacy-notice strong {
+      color: #0b1c2e;
     }
 
     @media (max-width: 550px) {
@@ -162,7 +212,14 @@
 <body>
 <div class="form-container">
   <h2>✍️ Your dispute letter</h2>
-  <div class="progress-section">
+  
+  <div class="privacy-notice" role="note">
+    <strong>🔒 Your privacy is protected</strong><br>
+    Your information is stored locally on your device and never sent to our servers. 
+    It will be automatically deleted after 24 hours of inactivity.
+  </div>
+
+  <div class="progress-section" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Form progress">
     <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
     <div class="step-indicator">
       <span id="stepLabel">Step 1 of 4</span>
@@ -170,71 +227,105 @@
     </div>
   </div>
 
-  <form id="wizardForm">
+  <form id="wizardForm" novalidate>
     <!-- STEP 1 - Personal info -->
-    <div class="step active-step" id="step1">
+    <div class="step active-step" id="step1" role="tabpanel" aria-labelledby="step1-label">
+      <h3 id="step1-label" class="visually-hidden" style="position: absolute; left: -10000px;">Personal Information</h3>
       <div class="form-group">
-        <label class="required-star">Full legal name</label>
-        <input type="text" id="fullName" placeholder="John A. Doe" required>
+        <label class="required-star" for="fullName">Full legal name</label>
+        <input type="text" id="fullName" name="fullName" placeholder="John A. Doe" required 
+               autocomplete="name" maxlength="100" pattern="[A-Za-z\s\.\-']+">
+        <span class="error-message" id="fullName-error">Please enter your full legal name</span>
       </div>
       <div class="form-group">
-        <label class="required-star">Street address</label>
-        <input type="text" id="address" placeholder="123 Main Street" required>
+        <label class="required-star" for="address">Street address</label>
+        <input type="text" id="address" name="address" placeholder="123 Main Street" required 
+               autocomplete="street-address" maxlength="200">
+        <span class="error-message" id="address-error">Please enter your street address</span>
       </div>
       <div class="form-group">
-        <label class="required-star">City</label>
-        <input type="text" id="city" placeholder="Los Angeles" required>
+        <label class="required-star" for="city">City</label>
+        <input type="text" id="city" name="city" placeholder="Los Angeles" required 
+               autocomplete="address-level2" maxlength="100" pattern="[A-Za-z\s\.\-']+">
+        <span class="error-message" id="city-error">Please enter your city</span>
       </div>
       <div class="form-row" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        <div style="flex:1"><label class="required-star">State</label><input type="text" id="state" placeholder="CA" maxlength="2" required></div>
-        <div style="flex:1"><label class="required-star">ZIP</label><input type="text" id="zip" placeholder="90210" required></div>
+        <div style="flex:1">
+          <label class="required-star" for="state">State</label>
+          <input type="text" id="state" name="state" placeholder="CA" maxlength="2" required 
+                 autocomplete="address-level1" pattern="[A-Za-z]{2}" style="text-transform: uppercase;">
+          <span class="error-message" id="state-error">Enter 2-letter state code</span>
+        </div>
+        <div style="flex:1">
+          <label class="required-star" for="zip">ZIP</label>
+          <input type="text" id="zip" name="zip" placeholder="90210" required 
+                 autocomplete="postal-code" pattern="\d{5}(-\d{4})?" maxlength="10">
+          <span class="error-message" id="zip-error">Enter a valid ZIP code</span>
+        </div>
       </div>
     </div>
 
     <!-- STEP 2 - Account info -->
-    <div class="step" id="step2">
+    <div class="step" id="step2" role="tabpanel" aria-labelledby="step2-label">
+      <h3 id="step2-label" class="visually-hidden" style="position: absolute; left: -10000px;">Account Information</h3>
       <div class="form-group">
-        <label class="required-star">Creditor / bank name</label>
-        <input type="text" id="creditor" placeholder="e.g., Chase Bank, LVNV Funding" required>
+        <label class="required-star" for="creditor">Creditor / bank name</label>
+        <input type="text" id="creditor" name="creditor" placeholder="e.g., Chase Bank, LVNV Funding" required 
+               maxlength="150" autocomplete="organization">
+        <span class="error-message" id="creditor-error">Please enter the creditor or bank name</span>
       </div>
       <div class="form-group">
-        <label>Account number (optional)</label>
-        <input type="text" id="accountNumber" placeholder="XXXXXXXX1234">
-        <small>Helps to identify the account</small>
+        <label for="accountNumber">Account number (optional)</label>
+        <input type="text" id="accountNumber" name="accountNumber" placeholder="XXXXXXXX1234" 
+               maxlength="50" autocomplete="off" inputmode="numeric">
+        <small>Helps to identify the account. Only enter the last 4 digits for security.</small>
       </div>
     </div>
 
     <!-- STEP 3 - Dispute reason -->
-    <div class="step" id="step3">
+    <div class="step" id="step3" role="tabpanel" aria-labelledby="step3-label">
+      <h3 id="step3-label" class="visually-hidden" style="position: absolute; left: -10000px;">Dispute Reason</h3>
       <div class="form-group">
-        <label class="required-star">Reason for dispute</label>
-        <select id="disputeReason" required>
+        <label class="required-star" for="disputeReason">Reason for dispute</label>
+        <select id="disputeReason" name="disputeReason" required>
           <option value="" disabled selected>Select one</option>
           <option value="not_mine">Account does not belong to me</option>
           <option value="incorrect_balance">Incorrect balance or amount</option>
           <option value="paid_but_not_updated">Paid but still appears as unpaid</option>
           <option value="other">Other / explanation needed</option>
         </select>
+        <span class="error-message" id="disputeReason-error">Please select a dispute reason</span>
       </div>
     </div>
 
     <!-- STEP 4 - Additional details -->
-    <div class="step" id="step4">
+    <div class="step" id="step4" role="tabpanel" aria-labelledby="step4-label">
+      <h3 id="step4-label" class="visually-hidden" style="position: absolute; left: -10000px;">Additional Details</h3>
       <div class="form-group">
-        <label>Explain what is inaccurate (optional but recommended)</label>
-        <textarea id="explanation" rows="4" placeholder="Describe why this item is wrong, e.g., 'I paid this debt in full on June 2023 and have a confirmation letter'"></textarea>
-        <small>Be specific — helps your dispute</small>
+        <label for="explanation">Explain what is inaccurate (optional but recommended)</label>
+        <textarea id="explanation" name="explanation" rows="4" 
+                  placeholder="Describe why this item is wrong, e.g., 'I paid this debt in full on June 2023 and have a confirmation letter'" 
+                  maxlength="1000"></textarea>
+        <small>Be specific — helps your dispute. Maximum 1000 characters.</small>
       </div>
     </div>
 
     <div class="button-group">
-      <button type="button" id="prevBtn" class="secondary" style="display: none;">← Back</button>
-      <button type="button" id="nextBtn">Continue →</button>
+      <button type="button" id="prevBtn" class="secondary" style="display: none;" aria-label="Go to previous step">← Back</button>
+      <button type="button" id="nextBtn" aria-label="Continue to next step">Continue →</button>
     </div>
   </form>
 </div>
 
 <script>
+  // Configuration
+  window.CMC_CONFIG = {
+    BASE_URL: window.location.origin,
+    NEXT_PAGE: 'preview.html',
+    SESSION_TIMEOUT: 24 * 60 * 60 * 1000, // 24 hours
+    MAX_INPUT_LENGTH: 1000
+  };
+
   let currentStep = 1;
   const totalSteps = 4;
   const stepElements = {
@@ -247,72 +338,140 @@
   const nextBtn = document.getElementById('nextBtn');
   const progressFill = document.getElementById('progressFill');
   const stepLabelSpan = document.getElementById('stepLabel');
+  const progressBar = document.querySelector('.progress-section');
+
+  // Input sanitization function
+  function sanitizeInput(str) {
+    if (!str || typeof str !== 'string') return '';
+    // Remove potentially dangerous characters but allow common name/address characters
+    return str.replace(/[<>\"']/g, '').trim();
+  }
 
   function updateProgressAndUI() {
     const percent = ((currentStep - 1) / totalSteps) * 100;
     progressFill.style.width = `${percent}%`;
+    progressBar.setAttribute('aria-valuenow', percent);
     stepLabelSpan.innerText = `Step ${currentStep} of ${totalSteps}`;
 
     for (let i = 1; i <= totalSteps; i++) {
-      if (i === currentStep) stepElements[i].classList.add('active-step');
-      else stepElements[i].classList.remove('active-step');
+      if (i === currentStep) {
+        stepElements[i].classList.add('active-step');
+        stepElements[i].setAttribute('aria-hidden', 'false');
+      } else {
+        stepElements[i].classList.remove('active-step');
+        stepElements[i].setAttribute('aria-hidden', 'true');
+      }
     }
     prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-flex';
     if (currentStep === totalSteps) {
       nextBtn.innerText = 'Generate letter & preview →';
+      nextBtn.setAttribute('aria-label', 'Generate and preview your dispute letter');
     } else {
       nextBtn.innerText = 'Continue →';
+      nextBtn.setAttribute('aria-label', 'Continue to next step');
     }
   }
 
+  function showFieldError(fieldId, show) {
+    const errorEl = document.getElementById(fieldId + '-error');
+    if (errorEl) {
+      errorEl.classList.toggle('visible', show);
+    }
+  }
+
+  function clearAllErrors() {
+    document.querySelectorAll('.error-message').forEach(el => el.classList.remove('visible'));
+  }
+
   function validateStep(step) {
+    clearAllErrors();
+    let isValid = true;
+
     if (step === 1) {
       const name = document.getElementById('fullName').value.trim();
       const addr = document.getElementById('address').value.trim();
       const city = document.getElementById('city').value.trim();
-      const state = document.getElementById('state').value.trim();
+      const state = document.getElementById('state').value.trim().toUpperCase();
       const zip = document.getElementById('zip').value.trim();
-      if (!name || !addr || !city || !state || !zip) {
-        alert('Please fill all personal details (Name, Address, City, State, ZIP)');
-        return false;
+
+      if (!name || name.length < 2) {
+        showFieldError('fullName', true);
+        isValid = false;
+      }
+      if (!addr || addr.length < 5) {
+        showFieldError('address', true);
+        isValid = false;
+      }
+      if (!city || city.length < 2) {
+        showFieldError('city', true);
+        isValid = false;
+      }
+      if (!state || !/^[A-Z]{2}$/.test(state)) {
+        showFieldError('state', true);
+        isValid = false;
+      }
+      if (!zip || !/^\d{5}(-\d{4})?$/.test(zip)) {
+        showFieldError('zip', true);
+        isValid = false;
       }
     }
+
     if (step === 2) {
       const creditor = document.getElementById('creditor').value.trim();
-      if (!creditor) {
-        alert('Please enter the creditor / bank name');
-        return false;
+      if (!creditor || creditor.length < 2) {
+        showFieldError('creditor', true);
+        isValid = false;
       }
     }
+
     if (step === 3) {
       const reason = document.getElementById('disputeReason').value;
       if (!reason) {
-        alert('Please select a dispute reason');
-        return false;
+        showFieldError('disputeReason', true);
+        isValid = false;
       }
     }
-    return true;
+
+    return isValid;
   }
 
   function saveFormData() {
     const formData = {
-      fullName: document.getElementById('fullName').value.trim(),
-      address: document.getElementById('address').value.trim(),
-      city: document.getElementById('city').value.trim(),
-      state: document.getElementById('state').value.trim(),
-      zip: document.getElementById('zip').value.trim(),
-      creditor: document.getElementById('creditor').value.trim(),
-      accountNumber: document.getElementById('accountNumber').value.trim(),
+      fullName: sanitizeInput(document.getElementById('fullName').value),
+      address: sanitizeInput(document.getElementById('address').value),
+      city: sanitizeInput(document.getElementById('city').value),
+      state: sanitizeInput(document.getElementById('state').value).toUpperCase(),
+      zip: sanitizeInput(document.getElementById('zip').value),
+      creditor: sanitizeInput(document.getElementById('creditor').value),
+      accountNumber: sanitizeInput(document.getElementById('accountNumber').value),
       disputeReason: document.getElementById('disputeReason').value,
-      explanation: document.getElementById('explanation').value.trim()
+      explanation: sanitizeInput(document.getElementById('explanation').value),
+      timestamp: Date.now()
     };
-    localStorage.setItem('cmc_dispute_data', JSON.stringify(formData));
+    
+    try {
+      localStorage.setItem('cmc_dispute_data', JSON.stringify(formData));
+      // Set session expiration
+      localStorage.setItem('cmc_session_expires', (Date.now() + CMC_CONFIG.SESSION_TIMEOUT).toString());
+    } catch (e) {
+      console.error('Failed to save form data:', e);
+      alert('Unable to save your progress. Please check your browser storage settings.');
+    }
   }
 
   function loadStoredData() {
-    const stored = localStorage.getItem('cmc_dispute_data');
-    if (stored) {
-      try {
+    try {
+      const stored = localStorage.getItem('cmc_dispute_data');
+      const sessionExpires = localStorage.getItem('cmc_session_expires');
+      
+      // Check if session has expired
+      if (sessionExpires && Date.now() > parseInt(sessionExpires)) {
+        localStorage.removeItem('cmc_dispute_data');
+        localStorage.removeItem('cmc_session_expires');
+        return;
+      }
+      
+      if (stored) {
         const data = JSON.parse(stored);
         if (data.fullName) document.getElementById('fullName').value = data.fullName;
         if (data.address) document.getElementById('address').value = data.address;
@@ -323,7 +482,18 @@
         if (data.accountNumber) document.getElementById('accountNumber').value = data.accountNumber;
         if (data.disputeReason) document.getElementById('disputeReason').value = data.disputeReason;
         if (data.explanation) document.getElementById('explanation').value = data.explanation;
-      } catch(e) {}
+      }
+    } catch (e) {
+      console.error('Failed to load stored data:', e);
+    }
+  }
+
+  function checkSessionValidity() {
+    const sessionExpires = localStorage.getItem('cmc_session_expires');
+    if (sessionExpires && Date.now() > parseInt(sessionExpires)) {
+      localStorage.removeItem('cmc_dispute_data');
+      localStorage.removeItem('cmc_session_expires');
+      localStorage.removeItem('cmc_letter_paid');
     }
   }
 
@@ -332,7 +502,7 @@
     saveFormData();
 
     if (currentStep === totalSteps) {
-      window.location.href = 'preview.html';
+      window.location.href = CMC_CONFIG.NEXT_PAGE;
     } else {
       currentStep++;
       updateProgressAndUI();
@@ -346,6 +516,14 @@
     }
   });
 
+  // Auto-save on input change
+  document.querySelectorAll('input, select, textarea').forEach(input => {
+    input.addEventListener('change', saveFormData);
+    input.addEventListener('blur', saveFormData);
+  });
+
+  // Initialize
+  checkSessionValidity();
   loadStoredData();
   updateProgressAndUI();
 </script>
