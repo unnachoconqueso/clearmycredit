@@ -3,48 +3,214 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: https:;">
+  
+  <!-- Security Headers (Meta equivalents) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline'; frame-src https://buy.stripe.com; connect-src 'self'; img-src 'self' data: https:;">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  
+  <!-- SEO Meta Tags -->
   <title>ClearMyCredit | Generate Professional Credit Dispute Letters in 30 Seconds</title>
-  <meta name="description" content="Generate FCRA-compliant credit dispute letters instantly. No lawyers needed.">
+  <meta name="description" content="Generate FCRA-compliant credit dispute letters instantly. No lawyers needed. Fix inaccurate credit report items quickly and easily.">
+  <meta name="keywords" content="credit dispute, FCRA, credit report, dispute letter, credit repair, fix credit">
+  <meta name="author" content="ClearMyCredit">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Favicon (ruta relativa) -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="ClearMyCredit | Fix Your Credit Report">
+  <meta property="og:description" content="Generate professional credit dispute letters in 30 seconds. FCRA-compliant tool.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" id="og-url" content="https://clearmycredit.com">
+  <meta property="og:image" content="https://clearmycredit.com/og-image.jpg">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://buy.stripe.com">
+  
   <style>
-    /* mantén tu CSS original aquí */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e6f0fa 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(2px);
+      border-radius: 3rem;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+    .hero {
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: #eef2ff;
+      color: #1e3a8a;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.5px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: #0f172a;
+      margin-bottom: 1rem;
+    }
+    .subhead {
+      font-size: 1.2rem;
+      color: #334155;
+      max-width: 550px;
+      margin: 0 auto 2rem auto;
+    }
+    .trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: #1e293b;
+      background: #f8fafc;
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .trust-item svg {
+      width: 18px;
+      height: 18px;
+      color: #10b981;
+    }
+    .cta-button {
+      display: inline-block;
+      background: #0f172a;
+      color: white;
+      font-weight: 600;
+      padding: 1rem 2rem;
+      border-radius: 60px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .cta-button:hover {
+      background: #1e293b;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+    .footer {
+      background: #f1f5f9;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #475569;
+      border-top: 1px solid #e2e8f0;
+    }
+    .footer nav {
+      margin-bottom: 0.75rem;
+    }
+    .footer a {
+      color: #1e3a8a;
+      text-decoration: none;
+      margin: 0 0.3rem;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    .disclaimer {
+      font-size: 0.7rem;
+      max-width: 90%;
+      margin: 0 auto;
+    }
+    @media (max-width: 640px) {
+      .hero { padding: 2rem 1.5rem; }
+      h1 { font-size: 1.8rem; }
+      .subhead { font-size: 1rem; }
+      .trust-badges { gap: 0.8rem; }
+    }
   </style>
 </head>
 <body>
 <div class="container">
-  <main class="hero">
+  <main class="hero" role="main" aria-labelledby="main-heading">
     <div class="badge">⚡ FCRA‑compliant tool</div>
-    <h1>Generate a professional credit dispute letter in 30 seconds</h1>
+    <h1 id="main-heading">Generate a professional credit dispute letter in 30 seconds</h1>
     <p class="subhead">No lawyers. No templates. Done for you. Used by consumers to dispute inaccurate credit items.</p>
-    <div class="trust-badges">
-      <div class="trust-item"><span>Real disputes accepted</span></div>
-      <div class="trust-item"><span>Takes less than 2 min</span></div>
-      <div class="trust-item"><span>No credit card to start</span></div>
+    
+    <div class="trust-badges" role="list" aria-label="Trust indicators">
+      <div class="trust-item" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <span>Real disputes accepted</span>
+      </div>
+      <div class="trust-item" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>Takes less than 2 min</span>
+      </div>
+      <div class="trust-item" role="listitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M6 14h6m-6-4h12M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"></path></svg>
+        <span>No credit card to start</span>
+      </div>
     </div>
-    <a href="form.html" class="cta-button" id="startBtn">Start Free →</a>
+
+    <a href="form.html" class="cta-button" id="startBtn" aria-label="Start generating your dispute letter">Start Free →</a>
   </main>
-  <footer class="footer">
-    <nav>
+
+  <footer class="footer" role="contentinfo">
+    <nav aria-label="Legal links">
       <a href="privacy.html">Privacy Policy</a> • 
       <a href="terms.html">Terms of Use</a> • 
       <a href="disclaimer.html">Disclaimer</a> •
       <a href="cookies.html">Cookie Policy</a>
+      <!-- trust.html eliminado -->
     </nav>
     <div class="disclaimer">
-      <strong>We are not a law firm.</strong> ClearMyCredit is a self‑help tool and does not provide legal advice.
+      <strong>We are not a law firm.</strong> ClearMyCredit is a self‑help tool and does not provide legal advice. No specific credit score outcome is guaranteed. Your data is encrypted and never sold.
     </div>
   </footer>
 </div>
+
 <script>
-  window.CMC_CONFIG = { BASE_URL: window.location.origin, ENV: 'production' };
+  // Configuration - Update BASE_URL for your production domain
+  window.CMC_CONFIG = {
+    BASE_URL: window.location.origin,
+    ENV: 'production',
+    VERSION: '1.0.0'
+  };
+
+  // Update OG URL dynamically
+  document.getElementById('og-url').content = window.location.href;
+
+  // Security: Clear any stale data on homepage visit
   (function() {
     const lastVisit = sessionStorage.getItem('cmc_last_visit');
     const now = Date.now();
     const ONE_HOUR = 60 * 60 * 1000;
+    
     if (!lastVisit || (now - parseInt(lastVisit)) > ONE_HOUR) {
       localStorage.removeItem('cmc_dispute_data');
       localStorage.removeItem('cmc_letter_paid');
