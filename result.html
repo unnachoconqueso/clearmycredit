@@ -48,12 +48,11 @@
   <div class="check">✅</div>
   <h2>Payment successful!</h2>
   <p>Your dispute letter is now unlocked. You'll be redirected to download it.</p>
-  <a href="preview.html?payment=success" class="btn" id="redirectBtn">View my letter →</a>
+  <a href="preview.html?status=success" class="btn" id="redirectBtn">View my letter →</a>
 </div>
 <script>
-  localStorage.setItem('cmc_letter_paid', 'true');
   setTimeout(() => {
-    window.location.href = 'preview.html?payment=success';
+    window.location.href = 'preview.html?status=success';
   }, 1200);
 </script>
 </body>
