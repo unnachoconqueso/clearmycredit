@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ClearMyCredit</title>
   <script>
-    // Redirige a la página principal preservando la ruta solicitada
-    var path = window.location.pathname;
-    var search = window.location.search;
-    // Ajusta la ruta base según el nombre de tu repositorio
-    var base = '/clearmycredit/';
-    var newPath = base + path.slice(1) + search;
-    window.location.replace(newPath);
+    // Redirect to the main index.html without adding any repo prefix
+    window.location.replace('index.html');
   </script>
 </head>
 <body>
