@@ -201,7 +201,9 @@
       }
 
       // Auto-redirect after delay
-      setTimeout(redirectToPreview, CMC_CONFIG.REDIRECT_DELAY);
+     setTimeout(function() {
+  window.location.href = 'preview.html?payment=success';
+}, 2000);
 
       // Update button click handler
       const redirectBtn = document.getElementById('redirectBtn');
