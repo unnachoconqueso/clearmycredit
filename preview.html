@@ -2,59 +2,282 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Preview Your Letter | ClearMyCredit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ClearMyCredit | Your dispute letter</title>
   <style>
-    body { font-family: system-ui, sans-serif; background: #f5f9ff; padding: 2rem; color: #0b1c2e; }
-    .container { max-width: 800px; margin: 0 auto; }
-    .letter-paper { 
-      background: white; padding: 40px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      font-family: 'Courier New', monospace; position: relative; overflow: hidden;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .blur-overlay {
-      position: absolute; bottom: 0; left: 0; width: 100%; height: 60%;
-      background: linear-gradient(transparent, white 50%); backdrop-filter: blur(4px);
-      display: flex; align-items: flex-end; justify-content: center; padding-bottom: 40px;
+
+    body {
+      background: #eef2f8;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      padding: 2rem 1rem;
     }
-    .pay-card {
-      background: #1a4cff; color: white; padding: 2rem; border-radius: 20px; 
-      text-align: center; margin-top: -40px; position: relative; z-index: 10;
+
+    .preview-container {
+      max-width: 900px;
+      margin: 0 auto;
     }
-    .btn-pay { background: white; color: #1a4cff; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 1rem; }
+
+    .letter-card {
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      position: relative;
+      transition: 0.2s;
+    }
+
+    .letter-paper {
+      padding: 2.5rem;
+      font-family: 'Georgia', 'Times New Roman', Times, serif;
+      line-height: 1.5;
+      background: white;
+      color: #1e2a3a;
+    }
+
+    .letter-paper p {
+      margin-bottom: 1rem;
+    }
+
+    .sender-info, .recipient-info, .letter-date, .subject {
+      margin-bottom: 1.2rem;
+    }
+
+    .subject {
+      font-weight: 600;
+    }
+
+    .paywall-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,240,0.92);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+    }
+
+    .paywall-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 36px;
+      max-width: 320px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .paywall-btn {
+      background: #1a4cff;
+      color: white;
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .download-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin: 1.5rem 0 1rem;
+    }
+
+    .btn {
+      background: #1a4cff;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.6rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-outline {
+      background: white;
+      border: 1.5px solid #1a4cff;
+      color: #1a4cff;
+    }
+
+    .success-badge {
+      background: #e0f7e8;
+      color: #1f7840;
+      padding: 0.4rem 1rem;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .footer-note {
+      margin-top: 1.5rem;
+      font-size: 0.7rem;
+      text-align: center;
+      color: #5a6e85;
+    }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .paywall-overlay, .download-actions, .footer-note, .success-badge { display: none; }
+      .letter-card { box-shadow: none; }
+      .letter-paper { padding: 0.3in; }
+    }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="letter-paper">
-    <div id="letterBody"></div>
-    <div class="blur-overlay"></div>
+<div class="preview-container">
+  <div class="letter-card" id="letterCard">
+    <div class="letter-paper" id="letterContent"></div>
+    <div id="paywallOverlay" class="paywall-overlay">
+      <div class="paywall-card">
+        <div style="font-size: 2.5rem;">🔒</div>
+        <h3>Unlock your professional letter</h3>
+        <p style="margin: 0.5rem 0;">Download & print your FCRA‑compliant dispute letter</p>
+        <div style="font-size: 1.6rem; font-weight: 800;">$5</div>
+        <p style="font-size: 0.75rem;">One-time · instant access</p>
+        <button id="unlockPayBtn" class="paywall-btn">Pay with Stripe →</button>
+      </div>
+    </div>
   </div>
-
-  <div class="pay-card">
-    <h3>Your letter is ready to download</h3>
-    <p>Unlock the full FCRA-compliant PDF for just $19.00</p>
-    <a href="TU_LINK_DE_STRIPE" class="btn-pay">Pay & Download PDF →</a>
+  <div id="downloadArea" style="display: none; text-align: center; margin-top: 1.5rem;">
+    <div class="download-actions">
+      <button id="downloadPdfBtn" class="btn">📄 Download as PDF</button>
+      <button id="copyTextBtn" class="btn btn-outline">📋 Copy text</button>
+    </div>
+    <div class="footer-note">
+      ✅ Print & mail via Certified Mail to the credit bureaus. Keep copies for your records.
+    </div>
   </div>
 </div>
 
 <script>
-  const data = JSON.parse(localStorage.getItem('disputeData'));
-  if(data) {
-    document.getElementById('letterBody').innerHTML = `
-      <p>${new Date().toLocaleDateString()}</p>
-      <br>
-      <p><strong>From:</strong> ${data.name}</p>
-      <p>${data.addr}</p>
-      <br>
-      <p><strong>To:</strong> Dispute Department - ${data.cred}</p>
-      <br>
-      <p>Dear Sir/Madam,</p>
-      <p>I am formally disputing account #${data.acc || 'XXXX'}.</p>
-      <p>${data.exp}</p>
-      <p style="color:#aaa">[Legal section blocked...]</p>
-      <p style="color:#aaa">[FCRA citations blocked...]</p>
+  // ---------- LOAD DATA ----------
+  let disputeData = {};
+  try {
+    const raw = localStorage.getItem('cmc_dispute_data');
+    if (raw) disputeData = JSON.parse(raw);
+  } catch(e) {}
+
+  // fallback redirect if no data
+  if (!disputeData.fullName || !disputeData.creditor) {
+    window.location.href = 'form.html';
+  }
+
+  function getDisputeReasonText(reasonKey) {
+    const map = {
+      'not_mine': 'this account does not belong to me',
+      'incorrect_balance': 'the reported balance is inaccurate',
+      'paid_but_not_updated': 'this account was paid but still appears as unpaid',
+      'other': 'the information reported is inaccurate'
+    };
+    return map[reasonKey] || 'the information reported is inaccurate';
+  }
+
+  function buildLetterHTML() {
+    const fullName = escapeHtml(disputeData.fullName || '');
+    const address = escapeHtml(disputeData.address || '');
+    const city = escapeHtml(disputeData.city || '');
+    const state = escapeHtml(disputeData.state || '');
+    const zip = escapeHtml(disputeData.zip || '');
+    const creditor = escapeHtml(disputeData.creditor || 'Creditor');
+    const account = escapeHtml(disputeData.accountNumber || '');
+    const reasonKey = disputeData.disputeReason || 'other';
+    const reasonText = getDisputeReasonText(reasonKey);
+    let explanationText = disputeData.explanation ? escapeHtml(disputeData.explanation) : 'I have reviewed my credit report and identified this item as inaccurate.';
+
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const addressLine = `${address}, ${city}, ${state} ${zip}`;
+
+    return `
+      <div class="sender-info">
+        <strong>${fullName}</strong><br>
+        ${addressLine}
+      </div>
+      <div class="letter-date">${today}</div>
+      <div class="recipient-info">
+        <strong>${creditor}</strong><br>
+        Credit Reporting Agency Dispute
+      </div>
+      <div class="subject">Re: Account Number ${account || '[account number omitted]'}</div>
+      <p>Dear Sir or Madam,</p>
+      <p>I am writing to dispute information appearing on my credit report under your company’s name. My full name is ${fullName}, and my address is ${addressLine}.</p>
+      <p>The account in question (${account ? '#'+account : 'reference account'}) is reported as <strong>${reasonText}</strong>. ${explanationText}</p>
+      <p>Under the Fair Credit Reporting Act (15 U.S.C. § 1681i), I request that you conduct a reasonable reinvestigation of this disputed information. If you are unable to verify the accuracy or completeness of this item, you are required by law to delete it from my credit file.</p>
+      <p>Please provide me with written confirmation of the results of your reinvestigation, including the method of verification and the contact information of any furnisher involved.</p>
+      <p>Sincerely,</p>
+      <p><strong>${fullName}</strong></p>
+      <p style="font-size: 0.8rem; margin-top: 1rem;"><em>This letter was prepared using ClearMyCredit self‑help tool.</em></p>
     `;
   }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  const letterContainer = document.getElementById('letterContent');
+  const overlay = document.getElementById('paywallOverlay');
+  const downloadArea = document.getElementById('downloadArea');
+  let isUnlocked = false;
+
+  function checkPaymentSuccess() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    const statusSuccess = urlParams.get('status') === 'success';
+    const localPaid = localStorage.getItem('cmc_letter_paid') === 'true';
+    if (sessionId || statusSuccess || localPaid) {
+      localStorage.setItem('cmc_letter_paid', 'true');
+      unlockLetter();
+    }
+  }
+
+  function unlockLetter() {
+    if (isUnlocked) return;
+    isUnlocked = true;
+    if (overlay) overlay.style.display = 'none';
+    downloadArea.style.display = 'block';
+    localStorage.setItem('cmc_letter_paid', 'true');
+  }
+
+  // Stripe test link – replace with your own Stripe Checkout link
+  const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/test_aFa9AV4ZK2vu9DRaPEbbG00'; 
+
+  document.getElementById('unlockPayBtn')?.addEventListener('click', () => {
+    localStorage.setItem('cmc_return_to_preview', 'true');
+    window.location.href = STRIPE_PAYMENT_LINK;
+  });
+
+  document.getElementById('downloadPdfBtn')?.addEventListener('click', () => {
+    window.print();
+  });
+
+  document.getElementById('copyTextBtn')?.addEventListener('click', () => {
+    const textContent = document.getElementById('letterContent').innerText;
+    navigator.clipboard.writeText(textContent).then(() => {
+      alert('Letter text copied to clipboard!');
+    }).catch(() => alert('Could not copy'));
+  });
+
+  letterContainer.innerHTML = buildLetterHTML();
+  checkPaymentSuccess();
 </script>
 </body>
 </html>
