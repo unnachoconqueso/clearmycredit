@@ -28,7 +28,6 @@
       box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
       overflow: hidden;
       position: relative;
-      transition: 0.2s;
     }
 
     .letter-paper {
@@ -65,7 +64,6 @@
       z-index: 20;
       flex-direction: column;
       text-align: center;
-      gap: 1rem;
     }
 
     .paywall-card {
@@ -93,7 +91,7 @@
       display: flex;
       gap: 1rem;
       justify-content: center;
-      margin: 1.5rem 0 1rem;
+      margin: 1.5rem 0 0.5rem;
     }
 
     .btn {
@@ -112,42 +110,16 @@
       color: #1a4cff;
     }
 
-    .success-badge {
-      background: #e0f7e8;
-      color: #1f7840;
-      padding: 0.4rem 1rem;
-      border-radius: 60px;
-      font-size: 0.8rem;
-      display: inline-block;
-      margin-bottom: 1rem;
-    }
-
-    .instructions {
-      background: #f8fafc;
-      border: 1px solid #e2edf7;
-      border-radius: 20px;
-      padding: 1.2rem;
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-
-    .instructions h4 {
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-      color: #0b2b3b;
-    }
-
-    .footer-note {
-      margin-top: 1rem;
-      font-size: 0.75rem;
+    .simple-note {
       text-align: center;
+      font-size: 0.8rem;
       color: #5a6e85;
+      margin-top: 1rem;
     }
 
     @media print {
       body { background: white; padding: 0; }
-      .paywall-overlay, .download-actions, .instructions, .footer-note, .success-badge { display: none; }
+      .paywall-overlay, .download-actions, .simple-note { display: none; }
       .letter-card { box-shadow: none; }
       .letter-paper { padding: 0.3in; }
     }
@@ -173,33 +145,19 @@
       <button id="downloadPdfBtn" class="btn">📄 Download as PDF</button>
       <button id="copyTextBtn" class="btn btn-outline">📋 Copy text</button>
     </div>
-    <div class="instructions" id="instructionsBlock">
-      <h4>📬 Next steps – How to send your dispute</h4>
-      <p><strong>1. Print this letter</strong> (use the PDF download or browser print).</p>
-      <p><strong>2. Attach supporting documents:</strong> Include a copy of your government-issued ID, proof of address (e.g., utility bill), and any evidence you mentioned (payment confirmations, etc.).</p>
-      <p><strong>3. Mail via Certified Mail with Return Receipt Requested</strong> to the credit bureau(s):</p>
-      <ul style="margin: 0.5rem 0 0.5rem 1.5rem;">
-        <li><strong>Equifax:</strong> P.O. Box 740256, Atlanta, GA 30374</li>
-        <li><strong>Experian:</strong> P.O. Box 4500, Allen, TX 75013</li>
-        <li><strong>TransUnion:</strong> P.O. Box 2000, Chester, PA 19016</li>
-      </ul>
-      <p><strong>4. Keep copies</strong> of everything for your records. The credit bureau must investigate within 30 days.</p>
-    </div>
-    <div class="footer-note">
-      ✅ Need help? <a href="disclaimer.html" style="color:#1a4cff;">Read our disclaimer</a> — we are not a law firm, but this letter follows FCRA standards.
+    <div class="simple-note">
+      ✅ Print and mail to the credit bureaus. Keep a copy for your records.
     </div>
   </div>
 </div>
 
 <script>
-  // ---------- LOAD DATA ----------
   let disputeData = {};
   try {
     const raw = localStorage.getItem('cmc_dispute_data');
     if (raw) disputeData = JSON.parse(raw);
   } catch(e) {}
 
-  // fallback redirect if no data
   if (!disputeData.fullName || !disputeData.creditor) {
     window.location.href = 'form.html';
   }
@@ -284,7 +242,6 @@
     localStorage.setItem('cmc_letter_paid', 'true');
   }
 
-  // Stripe test link – replace with your own Stripe Checkout link
   const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/test_aFa9AV4ZK2vu9DRaPEbbG00'; 
 
   document.getElementById('unlockPayBtn')?.addEventListener('click', () => {
