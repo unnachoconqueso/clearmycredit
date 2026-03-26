@@ -3,90 +3,260 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <!-- Security Headers -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:;">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  
+  <!-- Favicon (ruta relativa) -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
   <title>ClearMyCredit | Your Information</title>
+  <meta name="description" content="Enter your information to generate your FCRA-compliant credit dispute letter.">
+  <meta name="robots" content="noindex, follow">
+  
   <style>
-    /* mantén tu CSS original aquí */
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 0.6s linear infinite;
-      margin-right: 8px;
+    /* ========== TU DISEÑO ORIGINAL ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-    .error-message { display: none; color: #dc2626; font-size: 0.75rem; margin-top: 0.25rem; }
-    .error-message.visible { display: block; }
-    input:invalid, select:invalid { border-color: #dc2626; }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e6f0fa 100%);
+      padding: 2rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .form-container {
+      max-width: 650px;
+      width: 100%;
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
+      padding: 2rem;
+    }
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+    .privacy-notice {
+      background: #f1f5f9;
+      border-left: 4px solid #10b981;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      margin: 1rem 0 1.5rem 0;
+      color: #1e293b;
+    }
+    .progress-section {
+      margin-bottom: 1.8rem;
+    }
+    .progress-bar-bg {
+      background: #e2e8f0;
+      border-radius: 20px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: #0f172a;
+      width: 0%;
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+      color: #475569;
+    }
+    .step {
+      display: none;
+      animation: fade 0.2s ease;
+    }
+    .step.active-step {
+      display: block;
+    }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(5px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+      color: #0f172a;
+    }
+    .required-star::after {
+      content: "*";
+      color: #dc2626;
+      margin-left: 4px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      background: #fff;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #0f172a;
+      box-shadow: 0 0 0 3px rgba(15,23,42,0.1);
+    }
+    small {
+      display: block;
+      margin-top: 0.3rem;
+      color: #64748b;
+      font-size: 0.7rem;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+    button {
+      background: #0f172a;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.8rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+    button.secondary {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .error-message {
+      display: none;
+      color: #dc2626;
+      font-size: 0.7rem;
+      margin-top: 0.25rem;
+    }
+    .error-message.visible {
+      display: block;
+    }
+    input:invalid, select:invalid {
+      border-color: #dc2626;
+    }
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #5d6f83;
+    }
+    footer a {
+      color: #1a4cff;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
 <div class="form-container">
   <h2>✍️ Your dispute letter</h2>
-  <div class="privacy-notice">
+  
+  <div class="privacy-notice" role="note">
     <strong>🔒 Your privacy is protected</strong><br>
-    Your information is stored locally on your device and never sent to our servers.
+    Your information is stored locally on your device and never sent to our servers. 
+    It will be automatically deleted after 24 hours of inactivity.
   </div>
-  <div class="progress-section">
+
+  <div class="progress-section" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Form progress">
     <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
     <div class="step-indicator">
       <span id="stepLabel">Step 1 of 4</span>
       <span class="time-note">⏱️ ~2 minutes total</span>
     </div>
   </div>
+
   <form id="wizardForm" novalidate>
-    <!-- STEP 1 -->
-    <div class="step active-step" id="step1">
+    <!-- STEP 1 - Personal info -->
+    <div class="step active-step" id="step1" role="tabpanel" aria-labelledby="step1-label">
+      <h3 id="step1-label" class="visually-hidden" style="position: absolute; left: -10000px;">Personal Information</h3>
       <div class="form-group">
         <label class="required-star" for="fullName">Full legal name</label>
-        <input type="text" id="fullName" name="fullName" placeholder="John A. Doe" required autocomplete="name" maxlength="100">
+        <input type="text" id="fullName" name="fullName" placeholder="John A. Doe" required 
+               autocomplete="name" maxlength="100">
         <span class="error-message" id="fullName-error">Please enter your full legal name</span>
       </div>
       <div class="form-group">
         <label class="required-star" for="address">Street address</label>
-        <input type="text" id="address" name="address" placeholder="123 Main Street" required autocomplete="street-address">
+        <input type="text" id="address" name="address" placeholder="123 Main Street" required 
+               autocomplete="street-address" maxlength="200">
         <span class="error-message" id="address-error">Please enter your street address</span>
       </div>
       <div class="form-group">
         <label class="required-star" for="city">City</label>
-        <input type="text" id="city" name="city" placeholder="Los Angeles" required autocomplete="address-level2">
+        <input type="text" id="city" name="city" placeholder="Los Angeles" required 
+               autocomplete="address-level2" maxlength="100">
         <span class="error-message" id="city-error">Please enter your city</span>
       </div>
       <div class="form-row" style="display: flex; gap: 1rem; flex-wrap: wrap;">
         <div style="flex:1">
           <label class="required-star" for="state">State</label>
-          <input type="text" id="state" name="state" placeholder="CA" maxlength="2" required autocomplete="address-level1" style="text-transform: uppercase;">
+          <input type="text" id="state" name="state" placeholder="CA" maxlength="2" required 
+                 autocomplete="address-level1" pattern="[A-Za-z]{2}" style="text-transform: uppercase;">
           <span class="error-message" id="state-error">Enter 2-letter state code</span>
         </div>
         <div style="flex:1">
           <label class="required-star" for="zip">ZIP</label>
-          <input type="text" id="zip" name="zip" placeholder="90210" required autocomplete="postal-code" pattern="\d{5}(-\d{4})?">
+          <input type="text" id="zip" name="zip" placeholder="90210" required 
+                 autocomplete="postal-code" pattern="\d{5}(-\d{4})?" maxlength="10">
           <span class="error-message" id="zip-error">Enter a valid ZIP code</span>
         </div>
       </div>
     </div>
-    <!-- STEP 2 -->
-    <div class="step" id="step2">
+
+    <!-- STEP 2 - Account info -->
+    <div class="step" id="step2" role="tabpanel" aria-labelledby="step2-label">
+      <h3 id="step2-label" class="visually-hidden" style="position: absolute; left: -10000px;">Account Information</h3>
       <div class="form-group">
         <label class="required-star" for="creditor">Creditor / bank name</label>
-        <input type="text" id="creditor" name="creditor" placeholder="e.g., Chase Bank" required autocomplete="organization">
+        <input type="text" id="creditor" name="creditor" placeholder="e.g., Chase Bank, LVNV Funding" required 
+               maxlength="150" autocomplete="organization">
         <span class="error-message" id="creditor-error">Please enter the creditor or bank name</span>
       </div>
       <div class="form-group">
         <label for="accountNumber">Account number (optional)</label>
-        <input type="text" id="accountNumber" name="accountNumber" placeholder="XXXXXXXX1234" maxlength="50" autocomplete="off" inputmode="numeric">
+        <input type="text" id="accountNumber" name="accountNumber" placeholder="XXXXXXXX1234" 
+               maxlength="50" autocomplete="off" inputmode="numeric">
         <small>Helps to identify the account. Only enter the last 4 digits for security.</small>
       </div>
     </div>
-    <!-- STEP 3 -->
-    <div class="step" id="step3">
+
+    <!-- STEP 3 - Dispute reason -->
+    <div class="step" id="step3" role="tabpanel" aria-labelledby="step3-label">
+      <h3 id="step3-label" class="visually-hidden" style="position: absolute; left: -10000px;">Dispute Reason</h3>
       <div class="form-group">
         <label class="required-star" for="disputeReason">Reason for dispute</label>
         <select id="disputeReason" name="disputeReason" required>
@@ -99,30 +269,42 @@
         <span class="error-message" id="disputeReason-error">Please select a dispute reason</span>
       </div>
     </div>
-    <!-- STEP 4 -->
-    <div class="step" id="step4">
+
+    <!-- STEP 4 - Additional details -->
+    <div class="step" id="step4" role="tabpanel" aria-labelledby="step4-label">
+      <h3 id="step4-label" class="visually-hidden" style="position: absolute; left: -10000px;">Additional Details</h3>
       <div class="form-group">
         <label for="explanation">Explain what is inaccurate (optional but recommended)</label>
-        <textarea id="explanation" name="explanation" rows="4" maxlength="1000"></textarea>
+        <textarea id="explanation" name="explanation" rows="4" 
+                  placeholder="Describe why this item is wrong, e.g., 'I paid this debt in full on June 2023 and have a confirmation letter'" 
+                  maxlength="1000"></textarea>
         <small>Be specific — helps your dispute. Maximum 1000 characters.</small>
       </div>
     </div>
+
     <div class="button-group">
-      <button type="button" id="prevBtn" class="secondary" style="display: none;">← Back</button>
-      <button type="button" id="nextBtn">Continue →</button>
+      <button type="button" id="prevBtn" class="secondary" style="display: none;" aria-label="Go to previous step">← Back</button>
+      <button type="button" id="nextBtn" aria-label="Continue to next step">Continue →</button>
     </div>
   </form>
-  <footer style="margin-top: 2rem; text-align: center; font-size: 0.75rem;">
+
+  <footer>
     <nav>
       <a href="privacy.html">Privacy</a> • 
       <a href="terms.html">Terms</a> • 
       <a href="disclaimer.html">Disclaimer</a> •
       <a href="cookies.html">Cookies</a>
+      <!-- trust.html eliminado -->
     </nav>
   </footer>
 </div>
+
 <script>
-  window.CMC_CONFIG = { BASE_URL: window.location.origin, NEXT_PAGE: 'preview.html', SESSION_TIMEOUT: 24 * 60 * 60 * 1000 };
+  window.CMC_CONFIG = {
+    BASE_URL: window.location.origin,
+    NEXT_PAGE: 'preview.html',
+    SESSION_TIMEOUT: 24 * 60 * 60 * 1000
+  };
 
   let currentStep = 1;
   const totalSteps = 4;
