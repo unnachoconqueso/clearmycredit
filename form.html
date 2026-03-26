@@ -1,132 +1,122 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>ClearMyCredit | Tu información</title>
+  <title>ClearMyCredit | Your information</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: system-ui, -apple-system, sans-serif; background: #f5f9ff; padding: 1.5rem; color: #0b1c2e; }
-    .form-container { max-width: 700px; margin: 2rem auto; background: white; border-radius: 2rem; padding: 2.5rem; box-shadow: 0 12px 30px rgba(0,0,0,0.05); }
-    .progress-bar-bg { background: #e2edf7; border-radius: 40px; height: 8px; width: 100%; margin: 1.5rem 0; overflow: hidden; }
-    .progress-fill { background: #1a4cff; width: 25%; height: 100%; transition: 0.4s ease; }
+    /* AQUÍ VA TODO TU CSS ORIGINAL DE form (7).html */
+    body { font-family: system-ui, sans-serif; background: #f5f9ff; padding: 1.5rem; color: #0b1c2e; }
+    .form-container { max-width: 700px; margin: 0 auto; background: white; border-radius: 2rem; padding: 2rem; box-shadow: 0 12px 30px rgba(0,0,0,0.05); }
     .step { display: none; }
-    .active-step { display: block; animation: fadeIn 0.4s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .form-group { margin-bottom: 1.5rem; }
-    label { font-weight: 600; display: block; margin-bottom: 0.6rem; font-size: 0.95rem; color: #34495e; }
-    input, select, textarea { width: 100%; padding: 1rem; border: 1.5px solid #e2edf7; border-radius: 12px; font-size: 1rem; transition: 0.2s; }
-    input:focus, textarea:focus { border-color: #1a4cff; outline: none; box-shadow: 0 0 0 4px rgba(26,76,255,0.1); }
-    .button-group { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; }
-    button { background: #1a4cff; color: white; border: none; padding: 1.1rem 2rem; border-radius: 50px; font-weight: 700; cursor: pointer; flex: 1; transition: 0.2s; }
-    button:hover { background: #0f3ad0; transform: translateY(-1px); }
-    button.secondary { background: #f0f4f8; color: #4a627a; }
+    .step.active { display: block; }
+    .progress-bar-bg { background: #e2edf7; border-radius: 40px; height: 8px; width: 100%; margin: 1rem 0; }
+    .progress-fill { background: #1a4cff; height: 100%; width: 25%; border-radius: 40px; transition: 0.3s; }
+    .form-group { margin-bottom: 1.2rem; }
+    label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: 0.8rem; border: 1px solid #e2edf7; border-radius: 12px; font-size: 1rem; }
+    .btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
+    button { flex: 1; padding: 1rem; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; }
+    .btn-next { background: #1a4cff; color: white; }
+    .btn-prev { background: #eef3ff; color: #1a4cff; }
   </style>
 </head>
 <body>
 <div class="form-container">
-  <h2>✍️ Configura tu disputa</h2>
-  <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
+  <h2>Your Information</h2>
+  <div class="progress-bar-bg"><div class="progress-fill" id="fill"></div></div>
 
-  <form id="wizardForm">
-    <div class="step active-step" id="step1">
+  <form id="disputeForm">
+    <div class="step active" id="s1">
       <div class="form-group">
-        <label>Nombre Legal Completo</label>
-        <input type="text" id="fullName" placeholder="Tal como aparece en tu ID" required>
+        <label>Full Name</label>
+        <input type="text" id="fullName" required>
       </div>
       <div class="form-group">
-        <label>Dirección de Residencia</label>
-        <input type="text" id="address" placeholder="Calle, Apt, Suite" required>
+        <label>Full Address</label>
+        <input type="text" id="address" required>
       </div>
     </div>
 
-    <div class="step" id="step2">
+    <div class="step" id="s2">
       <div class="form-group">
-        <label>Nombre del Acreedor / Buró</label>
-        <input type="text" id="creditor" placeholder="Ej: Chase Bank o Experian" required>
+        <label>Creditor Name</label>
+        <input type="text" id="creditor" required>
       </div>
       <div class="form-group">
-        <label>Número de Cuenta (Si lo tienes)</label>
-        <input type="text" id="accountNumber" placeholder="Ej: XXXX-1234">
+        <label>Account Number (if known)</label>
+        <input type="text" id="accountNumber">
       </div>
     </div>
 
-    <div class="step" id="step3">
+    <div class="step" id="s3">
       <div class="form-group">
-        <label>¿Por qué disputas esta información?</label>
-        <select id="disputeReason" required>
-          <option value="" disabled selected>Elige una razón...</option>
-          <option value="not_mine">Esta cuenta no me pertenece (Fraude/Error)</option>
-          <option value="incorrect_balance">El balance reportado es incorrecto</option>
-          <option value="paid_but_not_updated">Ya pagué esta cuenta pero sigue abierta</option>
-          <option value="too_old">Esta deuda es demasiado vieja (Statute of Limitations)</option>
+        <label>Dispute Reason</label>
+        <select id="disputeReason">
+          <option value="" disabled selected>Select a reason...</option>
+          <option value="not_mine">This account does not belong to me</option>
+          <option value="incorrect_balance">The balance is incorrect</option>
+          <option value="paid_not_updated">Account is paid but shows open</option>
         </select>
       </div>
     </div>
 
-    <div class="step" id="step4">
+    <div class="step" id="s4">
       <div class="form-group">
-        <label>Argumento Legal Sugerido</label>
-        <textarea id="explanation" rows="6" placeholder="Selecciona una razón arriba para generar el texto automáticamente..."></textarea>
+        <label>Legal Explanation</label>
+        <textarea id="explanation" rows="6"></textarea>
       </div>
     </div>
 
-    <div class="button-group">
-      <button type="button" id="prevBtn" class="secondary" style="display:none;">Atrás</button>
-      <button type="button" id="nextBtn">Continuar →</button>
+    <div class="btn-group">
+      <button type="button" class="btn-prev" id="prevBtn" style="display:none">Back</button>
+      <button type="button" class="btn-next" id="nextBtn">Next</button>
     </div>
   </form>
 </div>
 
 <script>
-  let currentStep = 1;
-  const totalSteps = 4;
+  let step = 1;
   const templates = {
-    not_mine: "I have reviewed my credit report and this account does not belong to me. I have no record of this debt and request its immediate removal under the FCRA guidelines regarding identity accuracy.",
-    incorrect_balance: "The balance reported for this account is inaccurate. I request a complete verification of the amount reported and an immediate correction to reflect the true status of my obligation.",
-    paid_but_not_updated: "This account was paid in full and should be reflected as 'Paid' or 'Closed'. However, it still shows a balance. I request an immediate update to my credit profile.",
-    too_old: "This account has surpassed the legal reporting period. Under the FCRA, obsolete information must be removed from my credit report."
+    "not_mine": "I have reviewed my credit report and this account does not belong to me. I request its immediate removal under FCRA guidelines.",
+    "incorrect_balance": "The balance reported for this account is inaccurate. I request a verification of the amount reported.",
+    "paid_not_updated": "This account was paid in full but still reflects as unpaid. I request an update to 'Paid/Closed' status."
   };
 
   document.getElementById('disputeReason').addEventListener('change', (e) => {
-    document.getElementById('explanation').value = templates[e.target.value] || "";
+    document.getElementById('explanation').value = templates[e.target.value];
   });
 
-  const nextBtn = document.getElementById('nextBtn');
-  const prevBtn = document.getElementById('prevBtn');
-
-  nextBtn.addEventListener('click', () => {
-    if (currentStep < totalSteps) {
-      currentStep++;
+  document.getElementById('nextBtn').onclick = () => {
+    if (step < 4) {
+      document.getElementById('s'+step).classList.remove('active');
+      step++;
+      document.getElementById('s'+step).classList.add('active');
       updateUI();
     } else {
-      saveAndRedirect();
+      const data = {
+        name: document.getElementById('fullName').value,
+        addr: document.getElementById('address').value,
+        cred: document.getElementById('creditor').value,
+        acc: document.getElementById('accountNumber').value,
+        exp: document.getElementById('explanation').value
+      };
+      localStorage.setItem('disputeData', JSON.stringify(data));
+      window.location.href = 'preview.html';
     }
-  });
+  };
 
-  prevBtn.addEventListener('click', () => {
-    currentStep--;
+  document.getElementById('prevBtn').onclick = () => {
+    document.getElementById('s'+step).classList.remove('active');
+    step--;
+    document.getElementById('s'+step).classList.add('active');
     updateUI();
-  });
+  };
 
   function updateUI() {
-    document.querySelectorAll('.step').forEach((s, i) => s.classList.toggle('active-step', i === currentStep - 1));
-    document.getElementById('progressFill').style.width = `${(currentStep / totalSteps) * 100}%`;
-    prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
-    nextBtn.innerText = currentStep === totalSteps ? 'Revisar mi carta →' : 'Continuar →';
-  }
-
-  function saveAndRedirect() {
-    const data = {
-      fullName: document.getElementById('fullName').value,
-      address: document.getElementById('address').value,
-      creditor: document.getElementById('creditor').value,
-      accountNumber: document.getElementById('accountNumber').value,
-      reason: document.getElementById('disputeReason').options[document.getElementById('disputeReason').selectedIndex].text,
-      explanation: document.getElementById('explanation').value
-    };
-    localStorage.setItem('cmc_current_dispute', JSON.stringify(data));
-    window.location.href = 'preview.html';
+    document.getElementById('fill').style.width = (step*25) + '%';
+    document.getElementById('prevBtn').style.display = step === 1 ? 'none' : 'block';
+    document.getElementById('nextBtn').innerText = step === 4 ? 'Review Letter' : 'Next';
   }
 </script>
 </body>
