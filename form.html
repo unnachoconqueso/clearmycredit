@@ -7,65 +7,67 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; background: #f5f9ff; padding: 1.5rem; color: #0b1c2e; }
-    .form-container { max-width: 700px; margin: 0 auto; background: white; border-radius: 2rem; padding: 2rem 1.8rem; box-shadow: 0 12px 30px rgba(0,0,0,0.05); }
+    .form-container { max-width: 700px; margin: 2rem auto; background: white; border-radius: 2rem; padding: 2.5rem; box-shadow: 0 12px 30px rgba(0,0,0,0.05); }
     .progress-bar-bg { background: #e2edf7; border-radius: 40px; height: 8px; width: 100%; margin: 1.5rem 0; overflow: hidden; }
-    .progress-fill { background: #1a4cff; width: 25%; height: 100%; transition: 0.3s; }
-    .step { display: none; animation: fade 0.3s ease; }
-    .active-step { display: block; }
-    @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .progress-fill { background: #1a4cff; width: 25%; height: 100%; transition: 0.4s ease; }
+    .step { display: none; }
+    .active-step { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .form-group { margin-bottom: 1.5rem; }
-    label { font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem; }
-    input, select, textarea { width: 100%; padding: 0.9rem; border: 1.5px solid #e2edf7; border-radius: 15px; font-size: 1rem; }
-    input:focus { border-color: #1a4cff; outline: none; }
+    label { font-weight: 600; display: block; margin-bottom: 0.6rem; font-size: 0.95rem; color: #34495e; }
+    input, select, textarea { width: 100%; padding: 1rem; border: 1.5px solid #e2edf7; border-radius: 12px; font-size: 1rem; transition: 0.2s; }
+    input:focus, textarea:focus { border-color: #1a4cff; outline: none; box-shadow: 0 0 0 4px rgba(26,76,255,0.1); }
     .button-group { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; }
-    button { background: #1a4cff; color: white; border: none; padding: 1rem 2rem; border-radius: 40px; font-weight: 600; cursor: pointer; flex: 1; }
-    button.secondary { background: #eef3ff; color: #1a4cff; }
+    button { background: #1a4cff; color: white; border: none; padding: 1.1rem 2rem; border-radius: 50px; font-weight: 700; cursor: pointer; flex: 1; transition: 0.2s; }
+    button:hover { background: #0f3ad0; transform: translateY(-1px); }
+    button.secondary { background: #f0f4f8; color: #4a627a; }
   </style>
 </head>
 <body>
 <div class="form-container">
-  <h2>✍️ Crea tu disputa</h2>
+  <h2>✍️ Configura tu disputa</h2>
   <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
 
   <form id="wizardForm">
     <div class="step active-step" id="step1">
       <div class="form-group">
         <label>Nombre Legal Completo</label>
-        <input type="text" id="fullName" placeholder="Ej. Juan Pérez" required>
+        <input type="text" id="fullName" placeholder="Tal como aparece en tu ID" required>
       </div>
       <div class="form-group">
-        <label>Dirección Postal</label>
-        <input type="text" id="address" placeholder="Calle, Ciudad, Estado, ZIP" required>
+        <label>Dirección de Residencia</label>
+        <input type="text" id="address" placeholder="Calle, Apt, Suite" required>
       </div>
     </div>
 
     <div class="step" id="step2">
       <div class="form-group">
-        <label>Nombre del Acreedor / Banco</label>
-        <input type="text" id="creditor" placeholder="Ej. Chase Bank" required>
+        <label>Nombre del Acreedor / Buró</label>
+        <input type="text" id="creditor" placeholder="Ej: Chase Bank o Experian" required>
       </div>
       <div class="form-group">
-        <label>Número de Cuenta (Opcional)</label>
-        <input type="text" id="accountNumber" placeholder="XXXX-XXXX">
+        <label>Número de Cuenta (Si lo tienes)</label>
+        <input type="text" id="accountNumber" placeholder="Ej: XXXX-1234">
       </div>
     </div>
 
     <div class="step" id="step3">
       <div class="form-group">
-        <label>Razón de la Disputa</label>
+        <label>¿Por qué disputas esta información?</label>
         <select id="disputeReason" required>
-          <option value="" disabled selected>Selecciona una opción</option>
-          <option value="not_mine">Esta cuenta no me pertenece</option>
-          <option value="incorrect_balance">El saldo reportado es incorrecto</option>
-          <option value="paid_but_not_updated">Ya pagué esta cuenta pero no se ha actualizado</option>
+          <option value="" disabled selected>Elige una razón...</option>
+          <option value="not_mine">Esta cuenta no me pertenece (Fraude/Error)</option>
+          <option value="incorrect_balance">El balance reportado es incorrecto</option>
+          <option value="paid_but_not_updated">Ya pagué esta cuenta pero sigue abierta</option>
+          <option value="too_old">Esta deuda es demasiado vieja (Statute of Limitations)</option>
         </select>
       </div>
     </div>
 
     <div class="step" id="step4">
       <div class="form-group">
-        <label>Explicación Detallada (Sugerida por el sistema)</label>
-        <textarea id="explanation" rows="5" placeholder="Explica el error..."></textarea>
+        <label>Argumento Legal Sugerido</label>
+        <textarea id="explanation" rows="6" placeholder="Selecciona una razón arriba para generar el texto automáticamente..."></textarea>
       </div>
     </div>
 
@@ -80,9 +82,10 @@
   let currentStep = 1;
   const totalSteps = 4;
   const templates = {
-    not_mine: "He revisado mi informe de crédito y esta cuenta no me pertenece. No tengo registro de esta deuda y solicito su eliminación inmediata según la ley FCRA.",
-    incorrect_balance: "El saldo reportado para esta cuenta es incorrecto. Solicito una verificación completa del monto adeudado y la corrección de cualquier cifra inflada.",
-    paid_but_not_updated: "Esta cuenta fue liquidada en su totalidad. Sin embargo, sigue apareciendo como impagada. Adjunto el comprobante y solicito la actualización del estatus."
+    not_mine: "I have reviewed my credit report and this account does not belong to me. I have no record of this debt and request its immediate removal under the FCRA guidelines regarding identity accuracy.",
+    incorrect_balance: "The balance reported for this account is inaccurate. I request a complete verification of the amount reported and an immediate correction to reflect the true status of my obligation.",
+    paid_but_not_updated: "This account was paid in full and should be reflected as 'Paid' or 'Closed'. However, it still shows a balance. I request an immediate update to my credit profile.",
+    too_old: "This account has surpassed the legal reporting period. Under the FCRA, obsolete information must be removed from my credit report."
   };
 
   document.getElementById('disputeReason').addEventListener('change', (e) => {
@@ -97,8 +100,7 @@
       currentStep++;
       updateUI();
     } else {
-      saveData();
-      window.location.href = 'preview.html';
+      saveAndRedirect();
     }
   });
 
@@ -111,19 +113,20 @@
     document.querySelectorAll('.step').forEach((s, i) => s.classList.toggle('active-step', i === currentStep - 1));
     document.getElementById('progressFill').style.width = `${(currentStep / totalSteps) * 100}%`;
     prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
-    nextBtn.innerText = currentStep === totalSteps ? 'Generar Vista Previa →' : 'Continuar →';
+    nextBtn.innerText = currentStep === totalSteps ? 'Revisar mi carta →' : 'Continuar →';
   }
 
-  function saveData() {
+  function saveAndRedirect() {
     const data = {
       fullName: document.getElementById('fullName').value,
       address: document.getElementById('address').value,
       creditor: document.getElementById('creditor').value,
       accountNumber: document.getElementById('accountNumber').value,
-      reason: document.getElementById('disputeReason').value,
+      reason: document.getElementById('disputeReason').options[document.getElementById('disputeReason').selectedIndex].text,
       explanation: document.getElementById('explanation').value
     };
-    localStorage.setItem('cmc_data', JSON.stringify(data));
+    localStorage.setItem('cmc_current_dispute', JSON.stringify(data));
+    window.location.href = 'preview.html';
   }
 </script>
 </body>
