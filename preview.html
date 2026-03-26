@@ -10,223 +10,32 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
   
-  <!-- SEO -->
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/clearmycredit/favicon.ico">
+  
   <title>ClearMyCredit | Your Dispute Letter Preview</title>
   <meta name="description" content="Preview your FCRA-compliant credit dispute letter before downloading.">
   <meta name="robots" content="noindex, nofollow">
   
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* ... (mantén el CSS existente, pero añade estilo para spinner) ... */
+    .paywall-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
-
-    body {
-      background: #eef2f8;
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      padding: 2rem 1rem;
-    }
-
-    .preview-container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .letter-card {
-      background: white;
-      border-radius: 28px;
-      box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
-      overflow: hidden;
-      position: relative;
-      transition: 0.2s;
-    }
-
-    .letter-paper {
-      padding: 2.5rem;
-      font-family: 'Georgia', 'Times New Roman', Times, serif;
-      line-height: 1.5;
-      background: white;
-      color: #1e2a3a;
-    }
-
-    .letter-paper p {
-      margin-bottom: 1rem;
-    }
-
-    .sender-info, .recipient-info, .letter-date, .subject {
-      margin-bottom: 1.2rem;
-    }
-
-    .subject {
-      font-weight: 600;
-    }
-
-    .paywall-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(255,255,240,0.92);
-      backdrop-filter: blur(6px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 20;
-      flex-direction: column;
-      text-align: center;
-      gap: 1rem;
-    }
-
-    .paywall-card {
-      background: white;
-      padding: 2rem;
-      border-radius: 36px;
-      max-width: 320px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    }
-
-    .paywall-btn {
-      background: #1a4cff;
-      color: white;
-      border: none;
-      padding: 0.9rem 2rem;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 1rem;
-      transition: 0.2s;
-    }
-
-    .paywall-btn:hover {
-      background: #0f3ad0;
-      transform: translateY(-1px);
-    }
-
-    .paywall-btn:focus {
-      outline: 3px solid rgba(26,76,255,0.3);
-      outline-offset: 2px;
-    }
-
-    .download-actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin: 1.5rem 0 1rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      background: #1a4cff;
-      color: white;
-      border: none;
-      padding: 0.8rem 1.6rem;
-      border-radius: 40px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .btn:hover {
-      background: #0f3ad0;
-    }
-
-    .btn:focus {
-      outline: 3px solid rgba(26,76,255,0.3);
-      outline-offset: 2px;
-    }
-
-    .btn-outline {
-      background: white;
-      border: 1.5px solid #1a4cff;
-      color: #1a4cff;
-    }
-
-    .btn-outline:hover {
-      background: #f5f9ff;
-    }
-
-    .success-badge {
-      background: #e0f7e8;
-      color: #1f7840;
-      padding: 0.4rem 1rem;
-      border-radius: 60px;
-      font-size: 0.8rem;
+    .spinner {
       display: inline-block;
-      margin-bottom: 1rem;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.6s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
     }
-
-    .instructions {
-      background: #f8fafc;
-      border: 1px solid #e2edf7;
-      border-radius: 20px;
-      padding: 1.2rem;
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-
-    .instructions h4 {
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-      color: #0b2b3b;
-    }
-
-    .footer-note {
-      margin-top: 1rem;
-      font-size: 0.75rem;
-      text-align: center;
-      color: #5a6e85;
-    }
-
-    .footer-note a {
-      color: #1a4cff;
-      text-decoration: none;
-    }
-
-    .footer-note a:hover {
-      text-decoration: underline;
-    }
-
-    .security-notice {
-      background: #fffbeb;
-      border: 1px solid #fcd34d;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      font-size: 0.8rem;
-      color: #92400e;
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-bottom: 1rem;
-      color: #1a4cff;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
-    .back-link:hover {
-      text-decoration: underline;
-    }
-
-    @media print {
-      body { background: white; padding: 0; }
-      .paywall-overlay, .download-actions, .instructions, .footer-note, .success-badge, .security-notice, .back-link { display: none !important; }
-      .letter-card { box-shadow: none; }
-      .letter-paper { padding: 0.3in; }
-    }
-
-    @media (max-width: 640px) {
-      .letter-paper { padding: 1.5rem; }
-      .download-actions { flex-direction: column; }
-      .btn { width: 100%; }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
-<base target="_blank">
 </head>
 <body>
 <div class="preview-container">
@@ -283,38 +92,22 @@
 
 <script>
   // ==========================================
-  // CONFIGURATION - UPDATE THESE FOR PRODUCTION
+  // CONFIGURATION
   // ==========================================
   window.CMC_CONFIG = {
-    // ⚠️ CRITICAL: Replace with your LIVE Stripe payment link before deploying!
-    // Get your live link from: https://dashboard.stripe.com/payment-links
-    STRIPE_PAYMENT_LINK: 'https://buy.stripe.com/test_aFa9AV4ZK2vu9DRaPEbbG00',
-    
-    // Price display (should match your Stripe price)
+    STRIPE_PAYMENT_LINK: 'https://buy.stripe.com/test_aFa9AV4ZK2vu9DRaPEbbG00', // Reemplazar con LIVE luego
     PRICE: '$5',
-    
-    // Session timeout in milliseconds (24 hours)
     SESSION_TIMEOUT: 24 * 60 * 60 * 1000,
-    
-    // Base URL for redirects
     BASE_URL: window.location.origin,
-    
-    // Return URL after payment (Stripe will append ?payment=success)
-    // Use relative URL for GitHub Pages compatibility
     SUCCESS_URL: './preview.html?payment=success'
   };
 
-  // ==========================================
-  // DATA LOADING & VALIDATION
-  // ==========================================
   let disputeData = {};
   let isUnlocked = false;
 
-  // Check session validity
   function checkSessionValidity() {
     const sessionExpires = localStorage.getItem('cmc_session_expires');
     if (sessionExpires && Date.now() > parseInt(sessionExpires)) {
-      // Session expired - clear all data
       localStorage.removeItem('cmc_dispute_data');
       localStorage.removeItem('cmc_session_expires');
       localStorage.removeItem('cmc_letter_paid');
@@ -323,30 +116,24 @@
     return true;
   }
 
-  // Load form data from localStorage
   function loadData() {
     try {
       const raw = localStorage.getItem('cmc_dispute_data');
-      if (raw) {
-        disputeData = JSON.parse(raw);
-      }
-    } catch(e) {
-      console.error('Failed to parse stored data:', e);
-      disputeData = {};
-    }
+      if (raw) disputeData = JSON.parse(raw);
+    } catch(e) { disputeData = {}; }
   }
 
-  // Validate required data
   function validateData() {
-    if (!disputeData.fullName || !disputeData.creditor) {
-      return false;
-    }
-    return true;
+    return !!(disputeData.fullName && disputeData.creditor);
   }
 
-  // ==========================================
-  // LETTER GENERATION
-  // ==========================================
+  function escapeHtml(str) {
+    if (!str || typeof str !== 'string') return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
   function getDisputeReasonText(reasonKey) {
     const map = {
       'not_mine': 'this account does not belong to me',
@@ -355,14 +142,6 @@
       'other': 'the information reported is inaccurate'
     };
     return map[reasonKey] || 'the information reported is inaccurate';
-  }
-
-  // Enhanced HTML escaping for XSS prevention
-  function escapeHtml(str) {
-    if (!str || typeof str !== 'string') return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
   }
 
   function buildLetterHTML() {
@@ -375,27 +154,14 @@
     const account = escapeHtml(disputeData.accountNumber || '');
     const reasonKey = disputeData.disputeReason || 'other';
     const reasonText = getDisputeReasonText(reasonKey);
-    let explanationText = disputeData.explanation 
-      ? escapeHtml(disputeData.explanation) 
-      : 'I have reviewed my credit report and identified this item as inaccurate.';
-
-    const today = new Date().toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
+    let explanationText = disputeData.explanation ? escapeHtml(disputeData.explanation) : 'I have reviewed my credit report and identified this item as inaccurate.';
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     const addressLine = `${address}, ${city}, ${state} ${zip}`;
 
     return `
-      <div class="sender-info">
-        <strong>${fullName}</strong><br>
-        ${addressLine}
-      </div>
+      <div class="sender-info"><strong>${fullName}</strong><br>${addressLine}</div>
       <div class="letter-date">${today}</div>
-      <div class="recipient-info">
-        <strong>${creditor}</strong><br>
-        Credit Reporting Agency Dispute
-      </div>
+      <div class="recipient-info"><strong>${creditor}</strong><br>Credit Reporting Agency Dispute</div>
       <div class="subject">Re: Account Number ${account || '[account number omitted]'}</div>
       <p>Dear Sir or Madam,</p>
       <p>I am writing to dispute information appearing on my credit report under your company's name. My full name is ${fullName}, and my address is ${addressLine}.</p>
@@ -407,23 +173,14 @@
     `;
   }
 
-  // ==========================================
-  // PAYMENT & UNLOCK LOGIC
-  // ==========================================
   function checkPaymentSuccess() {
     const urlParams = new URLSearchParams(window.location.search);
     const paymentParam = urlParams.get('payment');
     const localPaid = localStorage.getItem('cmc_letter_paid') === 'true';
-    
-    // Check URL parameter OR localStorage
     if (paymentParam === 'success' || localPaid) {
       localStorage.setItem('cmc_letter_paid', 'true');
       unlockLetter();
-      
-      // Clean up URL (remove query params)
-      if (window.history.replaceState) {
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
+      if (window.history.replaceState) window.history.replaceState({}, document.title, window.location.pathname);
       return true;
     }
     return false;
@@ -432,59 +189,44 @@
   function unlockLetter() {
     if (isUnlocked) return;
     isUnlocked = true;
-    
     const overlay = document.getElementById('paywallOverlay');
     const downloadArea = document.getElementById('downloadArea');
-    
     if (overlay) overlay.style.display = 'none';
     if (downloadArea) downloadArea.style.display = 'block';
-    
     localStorage.setItem('cmc_letter_paid', 'true');
-    
-    // Update session expiration on successful unlock
     localStorage.setItem('cmc_session_expires', (Date.now() + CMC_CONFIG.SESSION_TIMEOUT).toString());
   }
 
-  // ==========================================
-  // EVENT HANDLERS
-  // ==========================================
   function initEventHandlers() {
-    // Payment button
     const unlockBtn = document.getElementById('unlockPayBtn');
     if (unlockBtn) {
-      unlockBtn.addEventListener('click', () => {
-        // Store return flag
-        localStorage.setItem('cmc_return_to_preview', 'true');
+      unlockBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Disable button and show spinner
+        unlockBtn.disabled = true;
+        const originalText = unlockBtn.innerHTML;
+        unlockBtn.innerHTML = '<span class="spinner"></span> Redirecting...';
         
-        // Validate Stripe link is configured
         if (CMC_CONFIG.STRIPE_PAYMENT_LINK.includes('YOUR_LIVE_PAYMENT_LINK')) {
           alert('⚠️ Payment system not configured. Please contact support.');
-          console.error('Stripe payment link not configured! Update CMC_CONFIG.STRIPE_PAYMENT_LINK');
+          unlockBtn.disabled = false;
+          unlockBtn.innerHTML = originalText;
           return;
         }
-        
-        // Redirect to Stripe
+        localStorage.setItem('cmc_return_to_preview', 'true');
         window.location.href = CMC_CONFIG.STRIPE_PAYMENT_LINK;
       });
     }
 
-    // Download/PDF button
     const downloadBtn = document.getElementById('downloadPdfBtn');
-    if (downloadBtn) {
-      downloadBtn.addEventListener('click', () => {
-        window.print();
-      });
-    }
+    if (downloadBtn) downloadBtn.addEventListener('click', () => window.print());
 
-    // Copy text button
     const copyBtn = document.getElementById('copyTextBtn');
     if (copyBtn) {
       copyBtn.addEventListener('click', async () => {
         const textContent = document.getElementById('letterContent').innerText;
         try {
           await navigator.clipboard.writeText(textContent);
-          
-          // Visual feedback
           const originalText = copyBtn.textContent;
           copyBtn.textContent = '✅ Copied!';
           copyBtn.disabled = true;
@@ -493,53 +235,39 @@
             copyBtn.disabled = false;
           }, 2000);
         } catch (err) {
-          console.error('Failed to copy:', err);
           alert('Could not copy to clipboard. Please select and copy manually.');
         }
       });
     }
   }
 
-  // ==========================================
-  // INITIALIZATION
-  // ==========================================
   function init() {
-    // Check session first
     if (!checkSessionValidity()) {
-      // Session expired - redirect to form
       window.location.href = 'form.html';
       return;
     }
-
-    // Load data
     loadData();
-
-    // Validate we have the required data
     if (!validateData()) {
-      // Missing data - redirect back to form
       window.location.href = 'form.html';
       return;
     }
-
-    // Render letter
-    const letterContainer = document.getElementById('letterContent');
-    if (letterContainer) {
-      letterContainer.innerHTML = buildLetterHTML();
-    }
-
-    // Check if already paid
+    document.getElementById('letterContent').innerHTML = buildLetterHTML();
     checkPaymentSuccess();
-
-    // Initialize event handlers
     initEventHandlers();
   }
 
-  // Run initialization
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 </script>
+
+<footer style="text-align: center; font-size: 0.75rem; color: #5d6f83; margin-top: 2rem;">
+  <nav>
+    <a href="privacy.html">Privacy</a> • 
+    <a href="terms.html">Terms</a> • 
+    <a href="disclaimer.html">Disclaimer</a> •
+    <a href="cookies.html">Cookies</a> •
+    <a href="trust.html">Trust</a>
+  </nav>
+</footer>
 </body>
 </html>
