@@ -1,0 +1,29 @@
+# ============================================
+# ClearMyCredit - GitHub Pages Configuration
+# ============================================
+
+# Site settings
+title: ClearMyCredit
+description: Generate professional FCRA-compliant credit dispute letters in 30 seconds
+baseurl: "" # leave empty for custom domain
+url: "https://clearmycredit.com" # your custom domain
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Plugins (GitHub Pages compatible)
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - nginx.conf
+  - vercel.json
+  - .htaccess
+  - _headers
+
+# Security note: GitHub Pages does not support custom security headers
+# The CSP and other security measures are implemented via meta tags in HTML files
