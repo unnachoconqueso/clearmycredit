@@ -1,59 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment complete - ClearMyCredit</title>
+  <title>Vista Previa de tu Carta | ClearMyCredit</title>
   <style>
-    body {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      background: #f5f9ff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 1rem;
-    }
-    .card {
-      background: white;
-      max-width: 450px;
-      padding: 2rem;
-      border-radius: 2rem;
-      text-align: center;
-      box-shadow: 0 20px 30px rgba(0,0,0,0.05);
-    }
-    .check {
-      font-size: 3rem;
-    }
-    h2 {
-      margin: 1rem 0 0.5rem;
-    }
-    .btn {
-      background: #1a4cff;
-      color: white;
-      border: none;
-      padding: 0.8rem 1.8rem;
-      border-radius: 40px;
-      font-weight: 600;
-      margin-top: 1.5rem;
-      cursor: pointer;
-      display: inline-block;
-      text-decoration: none;
-    }
+    body { font-family: system-ui, sans-serif; background: #f5f9ff; padding: 2rem; display: flex; flex-direction: column; align-items: center; }
+    .letter-box { background: white; width: 100%; max-width: 600px; padding: 3rem; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
+    .blur-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(transparent, white 40%); backdrop-filter: blur(4px); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2rem; }
+    .payment-card { margin-top: 2rem; background: #1a4cff; color: white; padding: 2rem; border-radius: 1.5rem; text-align: center; max-width: 500px; }
+    .cta-pay { background: white; color: #1a4cff; padding: 1rem 2rem; border-radius: 40px; text-decoration: none; font-weight: 700; display: inline-block; margin-top: 1rem; }
+    pre { white-space: pre-wrap; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; }
   </style>
 </head>
 <body>
-<div class="card">
-  <div class="check">✅</div>
-  <h2>Payment successful!</h2>
-  <p>Your dispute letter is now unlocked. You'll be redirected to download it.</p>
-  <a href="preview.html?status=success" class="btn" id="redirectBtn">View my letter →</a>
-</div>
-<script>
-  setTimeout(() => {
-    window.location.href = 'preview.html?status=success';
-  }, 1200);
-</script>
+  <h2>Tu carta está lista para descargar</h2>
+  
+  <div class="letter-box">
+    <pre id="letterContent"></pre>
+    <div class="blur-overlay">
+      <div style="text-align: center; color: #0b1c2e;">
+        <p><strong>Paga para desbloquear el documento completo</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="payment-card">
+    <h3>Descarga instantánea por solo $19.00</h3>
+    <p>Recibe tu carta profesional en PDF lista para imprimir y enviar.</p>
+    <a href="TU_LINK_DE_STRIPE" class="cta-pay">Pagar ahora y descargar →</a>
+  </div>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem('cmc_data'));
+    if (data) {
+      document.getElementById('letterContent').innerText = `
+${new Date().toLocaleDateString()}
+
+To: Dispute Department
+${data.creditor}
+Account: ${data.accountNumber || 'N/A'}
+
+RE: FORMAL DISPUTE OF INACCURATE INFORMATION
+
+Dear Sir/Madam,
+
+I am writing to formally dispute the following item on my credit report: ${data.creditor}.
+My reason for this dispute is: ${data.reason}.
+
+${data.explanation}
+
+According to the Fair Credit Reporting Act (FCRA)...
+[CONTENIDO BLOQUEADO HASTA EL PAGO]
+      `;
+    }
+  </script>
 </body>
 </html>
