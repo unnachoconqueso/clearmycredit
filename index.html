@@ -1,174 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>ClearMyCredit | Fix your credit report</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #f5f9ff;
-      color: #0b1c2e;
-      line-height: 1.4;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-    }
-
-    .hero {
-      background: white;
-      border-radius: 2rem;
-      padding: 3rem 2rem;
-      text-align: center;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
-      margin-bottom: 2rem;
-    }
-
-    .badge {
-      display: inline-block;
-      background: #e6f0ff;
-      color: #1a4cff;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.3rem 1rem;
-      border-radius: 40px;
-      margin-bottom: 1.5rem;
-    }
-
-    h1 {
-      font-size: 2.8rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #0f2b3d, #1e4c8a);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .subhead {
-      font-size: 1.2rem;
-      color: #4a627a;
-      max-width: 600px;
-      margin: 0 auto 2rem;
-    }
-
-    .trust-badges {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-      margin: 2rem 0;
-    }
-
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #2c4c6e;
-    }
-
-    .trust-item svg {
-      width: 20px;
-      height: 20px;
-      stroke: #1a4cff;
-      stroke-width: 2;
-    }
-
-    .cta-button {
-      background: #1a4cff;
-      color: white;
-      border: none;
-      padding: 1rem 2.5rem;
-      font-size: 1.1rem;
-      font-weight: 700;
-      border-radius: 60px;
-      cursor: pointer;
-      display: inline-block;
-      text-decoration: none;
-      box-shadow: 0 8px 20px rgba(26,76,255,0.25);
-      transition: 0.2s;
-    }
-
-    .cta-button:hover {
-      background: #0f3ad0;
-      transform: translateY(-2px);
-    }
-
-    .footer {
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 1px solid #e2edf7;
-      text-align: center;
-      font-size: 0.75rem;
-      color: #5d6f83;
-    }
-
-    .footer a {
-      color: #1a4cff;
-      text-decoration: none;
-      margin: 0 0.5rem;
-    }
-
-    .disclaimer {
-      max-width: 700px;
-      margin: 1rem auto 0;
-      font-size: 0.7rem;
-    }
-
-    @media (max-width: 640px) {
-      h1 { font-size: 2rem; }
-      .hero { padding: 2rem 1rem; }
-    }
-  </style>
-</head>
-<body>
-<div class="container">
-  <div class="hero">
-    <div class="badge">⚡ FCRA‑compliant tool</div>
-    <h1>Generate a professional credit dispute letter in 30 seconds</h1>
-    <p class="subhead">No lawyers. No templates. Done for you. Used by consumers to dispute inaccurate credit items.</p>
-    
-    <div class="trust-badges">
-      <div class="trust-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-        <span>Real disputes accepted</span>
-      </div>
-      <div class="trust-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        <span>Takes less than 2 min</span>
-      </div>
-      <div class="trust-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M6 14h6m-6-4h12M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"></path></svg>
-        <span>No credit card to start</span>
+<div class="preview-container">
+  <div class="alert-box">✨ Tu carta legal está lista para ser descargada</div>
+  
+  <div class="letter-preview" id="letterDraft">
+    <div class="watermark">PREVIEW - REQUIRES PAYMENT</div>
+    <div class="letter-content">
+      <p>[FECHA DE HOY]</p>
+      <p><strong>To: <span id="viewCreditor"></span></strong></p>
+      <p>Re: Formal Dispute of Account #<span id="viewAccount"></span></p>
+      <p>Dear Dispute Department,</p>
+      <p>I am writing to formally dispute the following item... [CONTENIDO CENSURADO]</p>
+      <div class="blur-text">
+        This is a professional legal draft based on the FCRA (Fair Credit Reporting Act) 
+        specifically tailored to your dispute reason of "<span id="viewReason"></span>".
       </div>
     </div>
-
-    <a href="form.html" class="cta-button">Start Free →</a>
   </div>
 
-<footer class="footer">
-  <div>
-    <a href="privacy.html">Privacy Policy</a> • 
-    <a href="terms.html">Terms of Use</a> • 
-    <a href="disclaimer.html">Disclaimer</a>
+  <div class="payment-card">
+    <h3>Descarga tu carta profesional ahora</h3>
+    <ul class="benefit-list">
+      <li>✅ Formato 100% compatible con FCRA</li>
+      <li>✅ Incluye instrucciones de envío certificado</li>
+      <li>✅ Sin suscripciones mensuales</li>
+    </ul>
+    <a href="TU_STRIPE_CHECKOUT_URL" class="cta-button">Pagar $19.00 y Descargar PDF →</a>
   </div>
-  <div class="disclaimer">
-    <strong>We are not a law firm.</strong> ClearMyCredit is a self‑help tool and does not provide legal advice. No specific credit score outcome is guaranteed. Your data is encrypted and never sold.
-  </div>
-</footer>
 </div>
-</body>
-</html>
