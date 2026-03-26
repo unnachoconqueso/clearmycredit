@@ -126,7 +126,6 @@
       color: #0b1c2e;
     }
   </style>
-<base target="_blank">
 </head>
 <body>
 <div class="card" role="main" aria-labelledby="success-heading">
@@ -157,55 +156,26 @@
   (function() {
     'use strict';
 
-    // Validate payment success from URL or referrer
-    function validatePaymentSuccess() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const paymentStatus = urlParams.get('payment');
-      const sessionId = urlParams.get('session_id');
-      
-      // Mark as paid if we have payment params or if coming from Stripe
-      if (paymentStatus === 'success' || sessionId) {
-        try {
-          localStorage.setItem('cmc_letter_paid', 'true');
-          
-          // Update session expiration
-          const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
-          localStorage.setItem('cmc_session_expires', (Date.now() + SESSION_TIMEOUT).toString());
-          
-          return true;
-        } catch (e) {
-          console.error('Failed to save payment status:', e);
-        }
-      }
-      
-      return false;
-    }
-
-    // Perform redirect
+    // Perform redirect using relative URL (works in subdirectories)
     function redirectToPreview() {
-      const redirectUrl = CMC_CONFIG.BASE_URL + '/' + CMC_CONFIG.SUCCESS_URL;
-      window.location.href = redirectUrl;
+      window.location.href = 'preview.html?payment=success';
     }
 
     // Initialize
     function init() {
-      // Always mark as paid on this page (assumes user reached here after successful payment)
+      // Mark as paid and update session expiration
       try {
         localStorage.setItem('cmc_letter_paid', 'true');
-        
-        // Update session expiration
-        const SESSION_TIMEOUT = 24 * 60 * 60 * 1000;
+        const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
         localStorage.setItem('cmc_session_expires', (Date.now() + SESSION_TIMEOUT).toString());
       } catch (e) {
         console.error('Failed to save payment status:', e);
       }
 
       // Auto-redirect after delay
-     setTimeout(function() {
-  window.location.href = 'preview.html?payment=success';
-}, 2000);
+      setTimeout(redirectToPreview, CMC_CONFIG.REDIRECT_DELAY);
 
-      // Update button click handler
+      // Update button click handler to also use the fixed redirect
       const redirectBtn = document.getElementById('redirectBtn');
       if (redirectBtn) {
         redirectBtn.addEventListener('click', function(e) {
