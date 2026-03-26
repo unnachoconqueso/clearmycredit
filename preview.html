@@ -3,100 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  
-  <!-- Security Headers -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline'; frame-src https://buy.stripe.com https://checkout.stripe.com; connect-src 'self' https://api.stripe.com; img-src 'self' data: https:;">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="/clearmycredit/favicon.ico">
-  
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>ClearMyCredit | Your Dispute Letter Preview</title>
-  <meta name="description" content="Preview your FCRA-compliant credit dispute letter before downloading.">
-  <meta name="robots" content="noindex, nofollow">
-  
   <style>
-    /* ... (mantén el CSS existente, pero añade estilo para spinner) ... */
-    .paywall-btn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-    .spinner {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 0.6s linear infinite;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
+    /* mantén tu CSS original aquí */
+    .paywall-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.6s linear infinite; margin-right: 8px; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 <div class="preview-container">
   <a href="form.html" class="back-link">← Edit my information</a>
-  
   <div class="letter-card" id="letterCard">
     <div class="letter-paper" id="letterContent"></div>
     <div id="paywallOverlay" class="paywall-overlay">
       <div class="paywall-card">
-        <div style="font-size: 2.5rem;" aria-hidden="true">🔒</div>
+        <div style="font-size: 2.5rem;">🔒</div>
         <h3>Unlock your professional letter</h3>
-        <p style="margin: 0.5rem 0;">Download & print your FCRA‑compliant dispute letter</p>
+        <p>Download & print your FCRA‑compliant dispute letter</p>
         <div style="font-size: 1.6rem; font-weight: 800;">$5</div>
-        <p style="font-size: 0.75rem;">One-time · instant access</p>
         <button id="unlockPayBtn" class="paywall-btn">Pay with Stripe →</button>
-        <p style="font-size: 0.7rem; color: #6b7280; margin-top: 0.75rem;">
-          Secure payment powered by Stripe. No card data stored.
-        </p>
+        <p style="font-size: 0.7rem;">Secure payment powered by Stripe. No card data stored.</p>
       </div>
     </div>
   </div>
-  
   <div id="downloadArea" style="display: none; text-align: center; margin-top: 1.5rem;">
     <div class="success-badge">✅ Payment successful - Letter unlocked</div>
-    
-    <div class="security-notice" role="alert">
-      <strong>🔒 Security reminder:</strong> Your letter contains personal information. 
-      Store it securely and delete it from your downloads when no longer needed.
-    </div>
-    
     <div class="download-actions">
-      <button id="downloadPdfBtn" class="btn" aria-label="Download letter as PDF">📄 Download as PDF</button>
-      <button id="copyTextBtn" class="btn btn-outline" aria-label="Copy letter text to clipboard">📋 Copy text</button>
+      <button id="downloadPdfBtn" class="btn">📄 Download as PDF</button>
+      <button id="copyTextBtn" class="btn btn-outline">📋 Copy text</button>
     </div>
-    
-    <div class="instructions" id="instructionsBlock">
+    <div class="instructions">
       <h4>📬 Next steps – How to send your dispute</h4>
       <p><strong>1. Print this letter</strong> (use the PDF download or browser print).</p>
-      <p><strong>2. Attach supporting documents:</strong> Include a copy of your government-issued ID, proof of address (e.g., utility bill), and any evidence you mentioned (payment confirmations, etc.).</p>
-      <p><strong>3. Mail via Certified Mail with Return Receipt Requested</strong> to the credit bureau(s):</p>
-      <ul style="margin: 0.5rem 0 0.5rem 1.5rem;">
-        <li><strong>Equifax:</strong> P.O. Box 740256, Atlanta, GA 30374</li>
-        <li><strong>Experian:</strong> P.O. Box 4500, Allen, TX 75013</li>
-        <li><strong>TransUnion:</strong> P.O. Box 2000, Chester, PA 19016</li>
-      </ul>
-      <p><strong>4. Keep copies</strong> of everything for your records. The credit bureau must investigate within 30 days.</p>
-    </div>
-    
-    <div class="footer-note">
-      ✅ Need help? <a href="disclaimer.html">Read our disclaimer</a> — we are not a law firm, but this letter follows FCRA standards.
+      <p><strong>2. Attach supporting documents:</strong> Copy of ID, proof of address, etc.</p>
+      <p><strong>3. Mail via Certified Mail with Return Receipt Requested</strong> to the credit bureau(s).</p>
     </div>
   </div>
 </div>
-
+<footer style="text-align: center; font-size: 0.75rem; margin-top: 2rem;">
+  <nav>
+    <a href="privacy.html">Privacy</a> • 
+    <a href="terms.html">Terms</a> • 
+    <a href="disclaimer.html">Disclaimer</a> •
+    <a href="cookies.html">Cookies</a>
+  </nav>
+</footer>
 <script>
-  // ==========================================
-  // CONFIGURATION
-  // ==========================================
   window.CMC_CONFIG = {
-    STRIPE_PAYMENT_LINK: 'https://buy.stripe.com/test_aFa9AV4ZK2vu9DRaPEbbG00', // Reemplazar con LIVE luego
-    PRICE: '$5',
+    STRIPE_PAYMENT_LINK: 'https://unnachoconqueso.github.io/clearmycredit/result.html?status=success', // ← Reemplazar antes de lanzar
     SESSION_TIMEOUT: 24 * 60 * 60 * 1000,
     BASE_URL: window.location.origin,
     SUCCESS_URL: './preview.html?payment=success'
@@ -105,33 +64,21 @@
   let disputeData = {};
   let isUnlocked = false;
 
-  function checkSessionValidity() {
-    const sessionExpires = localStorage.getItem('cmc_session_expires');
-    if (sessionExpires && Date.now() > parseInt(sessionExpires)) {
-      localStorage.removeItem('cmc_dispute_data');
-      localStorage.removeItem('cmc_session_expires');
-      localStorage.removeItem('cmc_letter_paid');
-      return false;
-    }
-    return true;
-  }
-
   function loadData() {
     try {
       const raw = localStorage.getItem('cmc_dispute_data');
       if (raw) disputeData = JSON.parse(raw);
-    } catch(e) { disputeData = {}; }
-  }
-
-  function validateData() {
-    return !!(disputeData.fullName && disputeData.creditor);
+    } catch(e) {}
   }
 
   function escapeHtml(str) {
-    if (!str || typeof str !== 'string') return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
   }
 
   function getDisputeReasonText(reasonKey) {
@@ -157,7 +104,6 @@
     let explanationText = disputeData.explanation ? escapeHtml(disputeData.explanation) : 'I have reviewed my credit report and identified this item as inaccurate.';
     const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     const addressLine = `${address}, ${city}, ${state} ${zip}`;
-
     return `
       <div class="sender-info"><strong>${fullName}</strong><br>${addressLine}</div>
       <div class="letter-date">${today}</div>
@@ -166,8 +112,7 @@
       <p>Dear Sir or Madam,</p>
       <p>I am writing to dispute information appearing on my credit report under your company's name. My full name is ${fullName}, and my address is ${addressLine}.</p>
       <p>The account in question (${account ? '#'+account : 'reference account'}) is reported as <strong>${reasonText}</strong>. ${explanationText}</p>
-      <p>Under the Fair Credit Reporting Act (15 U.S.C. § 1681i), I request that you conduct a reasonable reinvestigation of this disputed information. If you are unable to verify the accuracy or completeness of this item, you are required by law to delete it from my credit file.</p>
-      <p>Please provide me with written confirmation of the results of your reinvestigation, including the method of verification and the contact information of any furnisher involved.</p>
+      <p>Under the Fair Credit Reporting Act (15 U.S.C. § 1681i), I request that you conduct a reasonable reinvestigation of this disputed information.</p>
       <p>Sincerely,</p>
       <p><strong>${fullName}</strong></p>
     `;
@@ -197,77 +142,39 @@
     localStorage.setItem('cmc_session_expires', (Date.now() + CMC_CONFIG.SESSION_TIMEOUT).toString());
   }
 
-  function initEventHandlers() {
+  function init() {
+    loadData();
+    if (!disputeData.fullName || !disputeData.creditor) {
+      window.location.href = 'form.html';
+      return;
+    }
+    document.getElementById('letterContent').innerHTML = buildLetterHTML();
     const unlockBtn = document.getElementById('unlockPayBtn');
     if (unlockBtn) {
       unlockBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        // Disable button and show spinner
         unlockBtn.disabled = true;
-        const originalText = unlockBtn.innerHTML;
         unlockBtn.innerHTML = '<span class="spinner"></span> Redirecting...';
-        
-        if (CMC_CONFIG.STRIPE_PAYMENT_LINK.includes('YOUR_LIVE_PAYMENT_LINK')) {
+        if (CMC_CONFIG.STRIPE_PAYMENT_LINK === 'YOUR_LIVE_PAYMENT_LINK') {
           alert('⚠️ Payment system not configured. Please contact support.');
           unlockBtn.disabled = false;
-          unlockBtn.innerHTML = originalText;
+          unlockBtn.innerHTML = 'Pay with Stripe →';
           return;
         }
         localStorage.setItem('cmc_return_to_preview', 'true');
         window.location.href = CMC_CONFIG.STRIPE_PAYMENT_LINK;
       });
     }
-
-    const downloadBtn = document.getElementById('downloadPdfBtn');
-    if (downloadBtn) downloadBtn.addEventListener('click', () => window.print());
-
-    const copyBtn = document.getElementById('copyTextBtn');
-    if (copyBtn) {
-      copyBtn.addEventListener('click', async () => {
-        const textContent = document.getElementById('letterContent').innerText;
-        try {
-          await navigator.clipboard.writeText(textContent);
-          const originalText = copyBtn.textContent;
-          copyBtn.textContent = '✅ Copied!';
-          copyBtn.disabled = true;
-          setTimeout(() => {
-            copyBtn.textContent = originalText;
-            copyBtn.disabled = false;
-          }, 2000);
-        } catch (err) {
-          alert('Could not copy to clipboard. Please select and copy manually.');
-        }
-      });
-    }
-  }
-
-  function init() {
-    if (!checkSessionValidity()) {
-      window.location.href = 'form.html';
-      return;
-    }
-    loadData();
-    if (!validateData()) {
-      window.location.href = 'form.html';
-      return;
-    }
-    document.getElementById('letterContent').innerHTML = buildLetterHTML();
+    document.getElementById('downloadPdfBtn')?.addEventListener('click', () => window.print());
+    document.getElementById('copyTextBtn')?.addEventListener('click', async () => {
+      const textContent = document.getElementById('letterContent').innerText;
+      await navigator.clipboard.writeText(textContent);
+      alert('Letter text copied to clipboard!');
+    });
     checkPaymentSuccess();
-    initEventHandlers();
   }
-
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 </script>
-
-<footer style="text-align: center; font-size: 0.75rem; color: #5d6f83; margin-top: 2rem;">
-  <nav>
-    <a href="privacy.html">Privacy</a> • 
-    <a href="terms.html">Terms</a> • 
-    <a href="disclaimer.html">Disclaimer</a> •
-    <a href="cookies.html">Cookies</a> •
-    <a href="trust.html">Trust</a>
-  </nav>
-</footer>
 </body>
 </html>
